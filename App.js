@@ -5,14 +5,15 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 import ReadScreen from "./screens/ReadScreen";
+import PlanScreen from "./screens/PlanScreen";
 
-function PlanScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Plan!</Text>
-    </View>
-  );
-}
+// function PlanScreen() {
+//   return (
+//     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+//       <Text>Plan!</Text>
+//     </View>
+//   );
+// }
 
 function LearnScreen() {
   return (
@@ -64,8 +65,8 @@ export default function App() {
             // You can return any component that you like here!
             return <FontAwesome5 name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: "tomato",
-          tabBarInactiveTintColor: "gray",
+          tabBarActiveTintColor: "#555",
+          tabBarInactiveTintColor: "#999",
         })}
       >
         <Tab.Screen name="Read" component={ReadScreen} />
