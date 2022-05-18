@@ -30,6 +30,14 @@ function QuestionScreen() {
   );
 }
 
+function LeaderScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Small Group Leaders Only!</Text>
+    </View>
+  );
+}
+
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -48,6 +56,9 @@ export default function App() {
               iconName = "graduation-cap";
             } else if (route.name === "Question") {
               iconName = "question-circle";
+            } else if (route.name === "Leader") {
+              iconName = "user-friends";
+              // iconName = "lock";
             }
 
             // You can return any component that you like here!
@@ -61,6 +72,7 @@ export default function App() {
         <Tab.Screen name="Plan" component={PlanScreen} />
         <Tab.Screen name="Learn" component={LearnScreen} />
         <Tab.Screen name="Question" component={QuestionScreen} />
+        <Tab.Screen name="Leader" component={LeaderScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
