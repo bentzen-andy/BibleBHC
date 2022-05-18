@@ -1,24 +1,67 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import Read from "./Read";
+import React from "react";
+import { Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
-const App = () => {
+import ReadScreen from "./screens/ReadScreen";
+
+function PlanScreen() {
   return (
-    <View style={styles.container}>
-      <Read />
-      <Text>|----BOTTOM NAVBAR-----|</Text>
-      <StatusBar style="auto" />
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Plan!</Text>
     </View>
   );
-};
+}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+function LearnScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Learn!</Text>
+    </View>
+  );
+}
 
-export default App;
+function QuestionScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Question!</Text>
+    </View>
+  );
+}
+
+const Tab = createBottomTabNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === "Read") {
+              iconName = "bible";
+            } else if (route.name === "Plan") {
+              iconName = "calendar-check";
+            } else if (route.name === "Learn") {
+              iconName = "graduation-cap";
+            } else if (route.name === "Question") {
+              iconName = "question-circle";
+            }
+
+            // You can return any component that you like here!
+            return <FontAwesome5 name={iconName} size={size} color={color} />;
+          },
+          tabBarActiveTintColor: "tomato",
+          tabBarInactiveTintColor: "gray",
+        })}
+      >
+        <Tab.Screen name="Read" component={ReadScreen} />
+        <Tab.Screen name="Plan" component={PlanScreen} />
+        <Tab.Screen name="Learn" component={LearnScreen} />
+        <Tab.Screen name="Question" component={QuestionScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
