@@ -1,0 +1,44 @@
+[
+  {
+    "planName": "Logan's List",
+    "readings": [
+      {
+        "book": "Romans",
+        "chapter": "1"
+      },
+      {
+        "book": "Romans",
+        "chapter": "2"
+      },
+      {
+        "book": "Romans",
+        "chapter": "3"
+      }
+    ]
+  },
+  {
+    "planName": "Bible in a Year",
+    "readings": [
+      {
+        "book": "Genesis",
+        "chapter": "1"
+      },
+      {
+        "book": "Genesis",
+        "chapter": "2"
+      },
+      {
+        "book": "Genesis",
+        "chapter": "3"
+      },
+      {
+        "book": "Genesis",
+        "chapter": "4"
+      },
+      {
+        "book": "Genesis",
+        "chapter": "5"
+      }
+    ]
+  }
+]
