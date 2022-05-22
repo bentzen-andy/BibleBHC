@@ -1,8 +1,6 @@
 import React from "react";
 import { Text, View, StyleSheet, Button } from "react-native";
 import mockData from "../../data/mockData";
-import { NavigationContainer } from "@react-navigation/native";
-import ReadingPlan from "./ReadingPlan";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();

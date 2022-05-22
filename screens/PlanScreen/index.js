@@ -1,11 +1,8 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
 import ReadingPlanList from "./ReadingPlanList";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import mockData from "../../data/mockData";
 import ReadingPlan from "./ReadingPlan";
-
-let data = Array.from(mockData);
+import BibleChapter from "../ReadScreen/BibleChapter";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +18,11 @@ const PlanScreen = () => {
         name="ReadingPlan"
         component={ReadingPlan}
         options={{ title: "Reading Plan" }}
+      />
+      <Stack.Screen
+        name="BibleChapter"
+        component={BibleChapter}
+        options={{ title: "Bible" }}
       />
     </Stack.Navigator>
   );

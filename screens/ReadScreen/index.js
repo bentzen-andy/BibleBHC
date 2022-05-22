@@ -1,50 +1,46 @@
 import React, { useState } from "react";
 import {
-  SafeAreaView,
   StyleSheet,
+  SafeAreaView,
   ScrollView,
   TextInput,
   Text,
   TouchableOpacity,
 } from "react-native";
+import BibleChapter from "./BibleChapter";
 
 const Read = () => {
+  const [enteredBook, setEnteredBook] = useState("");
+  const [enteredChapter, setEnteredChapter] = useState("");
   const [book, setBook] = useState("");
   const [chapter, setChapter] = useState("");
-  const [passage, setPassage] = useState("");
 
   const handleSubmit = () => {
-    lookUpPassage(book, chapter);
-    setBook("");
-    setChapter("");
-  };
-
-  const lookUpPassage = (book, chapter) => {
-    fetch(`https://api.esv.org/v3/passage/text/?q=${book}+${chapter}`, {
-      headers: {
-        Accept: "application/json",
-        Authorization: "1b6db31aba45d8b4522b3c284125c18a8d6ebd5d",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => setPassage(data.passages));
+    setBook(enteredBook);
+    setChapter(enteredChapter);
   };
 
   return (
     <SafeAreaView>
       <ScrollView>
-        <TextInput style={styles.input} onChangeText={setBook} value={book} />
-
+        <Text style={{ fontSize: 36 }}>Book:</Text>
         <TextInput
           style={styles.input}
-          onChangeText={setChapter}
-          value={chapter}
+          onChangeText={setEnteredBook}
+          value={enteredBook}
+        />
+
+        <Text style={{ fontSize: 36 }}>Chapter:</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={setEnteredChapter}
+          value={enteredChapter}
           keyboardType="numeric"
         />
         <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
           <Text style={styles.btnText}>Submit</Text>
         </TouchableOpacity>
-        <Text>{passage}</Text>
+        <BibleChapter book={book} chapter={chapter} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -54,12 +50,18 @@ const styles = StyleSheet.create({
   input: {
     margin: 8,
     fontSize: 48,
-    backgroundColor: "#9bf",
+    backgroundColor: "#bbb",
     color: "#000",
     borderRadius: 6,
   },
-  btn: { margin: 5, padding: 10 },
-  btnText: { fontSize: 56 },
+  btn: {
+    margin: 5,
+    padding: 10,
+    backgroundColor: "#82d8f7",
+    borderRadius: 10,
+    width: 200,
+  },
+  btnText: { fontSize: 36 },
 });
 
 export default Read;
