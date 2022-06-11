@@ -6,14 +6,15 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 import ReadScreen from "./screens/ReadScreen";
 import PlanScreen from "./screens/PlanScreen";
+import LearnScreen from "./screens/LearnScreen";
 
-function LearnScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Learn!</Text>
-    </View>
-  );
-}
+// function LearnScreen() {
+//   return (
+//     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+//       <Text>Learn!</Text>
+//     </View>
+//   );
+// }
 
 function QuestionScreen() {
   return (
@@ -38,6 +39,7 @@ export default function App() {
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({ route }) => ({
+          headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
@@ -65,7 +67,7 @@ export default function App() {
         <Tab.Screen name="Plan" component={PlanScreen} />
         <Tab.Screen name="Learn" component={LearnScreen} />
         <Tab.Screen name="Question" component={QuestionScreen} />
-        <Tab.Screen name="Leader" component={LeaderScreen} />
+        {/* <Tab.Screen name="Leader" component={LeaderScreen} /> */}
       </Tab.Navigator>
     </NavigationContainer>
   );

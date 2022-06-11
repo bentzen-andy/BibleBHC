@@ -3,8 +3,6 @@ import { Text, View, StyleSheet, Button } from "react-native";
 import mockData from "../../data/mockData";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-const Stack = createNativeStackNavigator();
-
 let data = Array.from(mockData);
 
 const ReadingPlanList = ({ navigation }) => {
