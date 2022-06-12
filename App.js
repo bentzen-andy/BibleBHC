@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { initDB } from "./helpers/fb-init";
 
 import ReadScreen from "./screens/ReadScreen";
 import PlanScreen from "./screens/PlanScreen";
 import LearnScreen from "./screens/LearnScreen";
-
-import BottomSheet from "react-native-simple-bottom-sheet";
+import QuestionScreen from "./screens/QuestionScreen";
 
 // function LearnScreen() {
 //   return (
@@ -18,13 +18,13 @@ import BottomSheet from "react-native-simple-bottom-sheet";
 //   );
 // }
 
-function QuestionScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Question!</Text>
-    </View>
-  );
-}
+// function QuestionScreen() {
+//   return (
+//     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+//       <Text>Question!</Text>
+//     </View>
+//   );
+// }
 
 // function QuestionScreen() {
 //   return (
@@ -39,7 +39,6 @@ function QuestionScreen() {
 //     </View>
 //   );
 // }
-
 function LeaderScreen() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -51,6 +50,14 @@ function LeaderScreen() {
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  useEffect(() => {
+    try {
+      initDB();
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -81,8 +88,12 @@ export default function App() {
       >
         <Tab.Screen name="Read" component={ReadScreen} />
         <Tab.Screen name="Plan" component={PlanScreen} />
-        <Tab.Screen name="Learn" component={LearnScreen} />
-        <Tab.Screen name="Question" component={QuestionScreen} />
+        {/* <Tab.Screen name="Learn" component={LearnScreen} /> */}
+        <Tab.Screen
+          name="Question"
+          component={QuestionScreen}
+          options={{ title: "Ask a Question" }}
+        />
         {/* <Tab.Screen name="Leader" component={LeaderScreen} /> */}
       </Tab.Navigator>
     </NavigationContainer>

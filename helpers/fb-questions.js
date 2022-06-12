@@ -1,15 +1,15 @@
 import { getDatabase, onValue, push, ref } from "firebase/database";
 
-export function storeReadingPlanItem(item) {
+export function storeQuestion(item) {
   // console.log("Writing: ", item);
   const db = getDatabase();
-  const reference = ref(db, "ReadingPlanData/");
+  const reference = ref(db, "Questions/");
   push(reference, item);
 }
 
-export function setupReadingPlanListener(updateFunc) {
+export function setupQuestionListener(updateFunc) {
   const db = getDatabase();
-  const reference = ref(db, "ReadingPlanData/");
+  const reference = ref(db, "Questions/");
   onValue(reference, (snapshot) => {
     if (snapshot?.val()) {
       const fbObject = snapshot.val();

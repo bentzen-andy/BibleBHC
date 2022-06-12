@@ -11,7 +11,7 @@ import BibleBookList from "./BibleBookList";
 
 import BottomSheet from "react-native-simple-bottom-sheet";
 
-const Read = ({ navigation, route }) => {
+const ReadScreen = ({ navigation, route }) => {
   const [book, setBook] = useState("Genesis");
   const [chapter, setChapter] = useState("1");
   const panelRef = useRef(null);
@@ -64,4 +64,4 @@ const styles = StyleSheet.create({
   },
   headerLeftText: { fontWeight: "bold" },
 });
-export default Read;
+export default ReadScreen;

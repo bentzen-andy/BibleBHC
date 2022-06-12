@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, Button, TouchableOpacity } from "react-native";
 import mockData from "../../data/mockData";
-import {
-  initReadingPlanDB,
-  storeReadingPlanItem,
-  setupReadingPlanListener,
-} from "../../helpers/fb-reading-plans";
+import { setupReadingPlanListener } from "../../helpers/fb-reading-plans";
 
 // let data = Array.from(mockData);
 
@@ -13,11 +9,6 @@ const ReadingPlanList = ({ navigation }) => {
   const [plans, setPlans] = useState([]);
 
   useEffect(() => {
-    try {
-      initReadingPlanDB();
-    } catch (err) {
-      console.log(err);
-    }
     setupReadingPlanListener((items) => {
       setPlans(items);
     });
