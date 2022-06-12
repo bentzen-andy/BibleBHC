@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,10 +8,77 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { CheckBox, ListItem } from "react-native-elements";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ReadingPlanReadings = ({ navigation, route }) => {
-  const readings = route.params;
-  const [checked, setChecked] = useState(false);
+  const readings = route.params.item;
+  const planId = route.params.id;
+  const [checked, setChecked] = useState([]);
+
+  useEffect(() => {
+    getCompletedReadings();
+  }, []);
+
+  // testing; TODO remove this later
+  useEffect(() => {
+    // console.log("----checked");
+    // console.log(checked);
+    // console.log("====");
+  }, [checked]);
+
+  // const getData = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem("@isChecked");
+  //     setChecked(value === "1");
+  //     if (value !== null) {
+  //       // setStoredCheckMark("0")
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
+  const getCompletedReadings = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("@CompletedReadings");
+      const value = jsonValue != null ? JSON.parse(jsonValue) : null;
+      console.log("----parsed json");
+      console.log(value);
+      if (value != null) {
+        setChecked(value);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const isThisChapterRead = (planId, book, chapter) => {
+    // console.log("----planId");
+    // console.log(planId);
+    // console.log("----book");
+    // console.log(book);
+    // console.log("----chapter");
+    // console.log(chapter);
+    // console.log("----checked");
+    // console.log(checked);
+
+    let result = false;
+
+    checked.map((plan) => {
+      if (plan.id === planId) {
+        plan.completedReadings.map((record) => {
+          if (record.book === book && record.chapter === chapter) {
+            result = true;
+          }
+        });
+      }
+    });
+
+    console.log("----result");
+    console.log(result);
+
+    return result;
+  };
 
   FlatListItemSeparator = () => {
     return (
@@ -26,9 +93,13 @@ const ReadingPlanReadings = ({ navigation, route }) => {
   };
 
   const renderReading = ({ index, item }) => {
-    console.log("item");
-    console.log(item.book);
-    console.log("----");
+    // console.log("item");
+    // console.log(item.book);
+    // console.log("----");
+
+    const isChecked = isThisChapterRead(planId, item.book, item.chapter);
+    console.log("----isChecked");
+    console.log(isChecked);
 
     return (
       <TouchableOpacity
@@ -41,9 +112,9 @@ const ReadingPlanReadings = ({ navigation, route }) => {
       >
         <ListItem key={index}>
           <CheckBox
-            checked={checked}
+            checked={isChecked}
             onPress={() => {
-              setChecked((state) => !state);
+              // setChecked((state) => !state);
             }}
           />
           <ListItem.Content>

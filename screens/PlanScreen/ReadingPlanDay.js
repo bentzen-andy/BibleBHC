@@ -10,7 +10,7 @@ import {
 import { CheckBox, ListItem } from "react-native-elements";
 
 const ReadingPlanDay = ({ navigation, route }) => {
-  const { planName, readings } = route.params;
+  const { readings, id } = route.params;
 
   //   const [checked, setChecked] = useState(false);
 
@@ -27,12 +27,12 @@ const ReadingPlanDay = ({ navigation, route }) => {
   };
 
   const renderDay = ({ index, item }) => {
-    console.log("item");
-    console.log(item[0].book);
-    console.log("----");
+    console.log("id");
+    console.log(id);
+    // console.log("----");
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate("ReadingPlanReadings", item)}
+        onPress={() => navigation.navigate("ReadingPlanReadings", { item, id })}
       >
         <ListItem key={index}>
           {/* <CheckBox

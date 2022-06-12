@@ -10,13 +10,14 @@ import {
   Image,
 } from "react-native";
 import { ListItem } from "react-native-elements";
-import mockData from "../../data/mockData";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setupReadingPlanListener } from "../../helpers/fb-reading-plans";
 
 // let data = Array.from(mockData);
 
 const ReadingPlanList = ({ navigation }) => {
   const [plans, setPlans] = useState([]);
+  const [noStoredCheckMarks, setNoStoredCheckMarks] = useState(false);
 
   useEffect(() => {
     setupReadingPlanListener((items) => {
@@ -24,8 +25,66 @@ const ReadingPlanList = ({ navigation }) => {
     });
   }, []);
 
-  console.log("----plans");
-  console.log(plans);
+  useEffect(() => {
+    // check in local storage if three is any record of the user completing any readings
+    getCompletedReadings();
+  }, [plans]);
+
+  useEffect(() => {
+    // if there is no history of completed readings, set local storage to note that every
+    // reading in every plan is unread.
+    // console.log("---time to set the plans as unread");
+    // console.log(plans);
+    let completedReadings = plans.map((plan) => {
+      return { id: plan.id, completedReadings: [] };
+    });
+
+    // console.log("----completedReadings - before");
+    // console.log(completedReadings);
+
+    // testing: manually enter one of the readings as checked TODO: remove this later
+    // completedReadings.map((item) => {
+    //   if (item.id === "-N4MyN-xuvGZ-86qfgVv") {
+    //     item.completedReadings.push({ book: "Genesis", chapter: "2" });
+    //   }
+    // });
+
+    console.log("----completedReadings - after");
+    console.log(completedReadings);
+
+    storeCompletedReadings(completedReadings);
+  }, [noStoredCheckMarks]);
+
+  const getCompletedReadings = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("@CompletedReadings");
+      console.log("----jsonValue");
+      console.log(jsonValue);
+
+      const value = jsonValue != null ? JSON.parse(jsonValue) : null;
+      console.log("----parsed json");
+      console.log(value);
+      if (value === null) {
+        setNoStoredCheckMarks(true);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const storeCompletedReadings = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem("@CompletedReadings", jsonValue);
+      console.log("----jsonValue");
+      console.log(jsonValue);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // console.log("----plans");
+  // console.log(plans);
 
   FlatListItemSeparator = () => {
     return (
