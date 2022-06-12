@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Text, SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { ESV_API_KEY } from "../../api/esv-credentials";
 
 const BibleChapter = ({ book, chapter, route }) => {
   const [passage, setPassage] = useState("");
@@ -10,13 +11,14 @@ const BibleChapter = ({ book, chapter, route }) => {
     } else {
       lookUpPassage(book, chapter);
     }
+    // lookUpPassage(book, chapter);
   }, [book, chapter]);
 
   const lookUpPassage = (book, chapter) => {
     fetch(`https://api.esv.org/v3/passage/text/?q=${book}+${chapter}`, {
       headers: {
         Accept: "application/json",
-        Authorization: "1b6db31aba45d8b4522b3c284125c18a8d6ebd5d",
+        Authorization: ESV_API_KEY,
       },
     })
       .then((response) => response.json())
@@ -33,7 +35,7 @@ const BibleChapter = ({ book, chapter, route }) => {
 };
 
 const styles = StyleSheet.create({
-  bibleText: { fontSize: 20 },
+  bibleText: { fontSize: 20, margin: 16 },
 });
 
 export default BibleChapter;

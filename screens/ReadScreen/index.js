@@ -1,67 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  TextInput,
+  View,
   Text,
+  Dimensions,
   TouchableOpacity,
 } from "react-native";
 import BibleChapter from "./BibleChapter";
+import BibleBookList from "./BibleBookList";
 
-const Read = () => {
-  const [enteredBook, setEnteredBook] = useState("");
-  const [enteredChapter, setEnteredChapter] = useState("");
-  const [book, setBook] = useState("");
-  const [chapter, setChapter] = useState("");
+import BottomSheet from "react-native-simple-bottom-sheet";
 
-  const handleSubmit = () => {
-    setBook(enteredBook);
-    setChapter(enteredChapter);
-  };
+const Read = ({ navigation, route }) => {
+  const [book, setBook] = useState("Genesis");
+  const [chapter, setChapter] = useState("1");
+  const panelRef = useRef(null);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <View style={styles.headerLeft}>
+          <TouchableOpacity onPress={() => panelRef.current.togglePanel()}>
+            <Text style={styles.headerLeftText}>
+              {book} {chapter}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ),
+    });
+  });
 
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <Text style={{ fontSize: 36 }}>Book:</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setEnteredBook}
-          value={enteredBook}
+    <View>
+      <BibleChapter book={book} chapter={chapter} />
+      <BottomSheet
+        isOpen={false}
+        sliderMinHeight={0}
+        sliderMaxHeight={Dimensions.get("window").height * 0.8}
+        ref={(ref) => (panelRef.current = ref)}
+      >
+        <BibleBookList
+          setBook={setBook}
+          setChapter={setChapter}
+          panelRef={panelRef}
         />
-
-        <Text style={{ fontSize: 36 }}>Chapter:</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setEnteredChapter}
-          value={enteredChapter}
-          keyboardType="numeric"
-        />
-        <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
-          <Text style={styles.btnText}>Submit</Text>
-        </TouchableOpacity>
-        <BibleChapter book={book} chapter={chapter} />
-      </ScrollView>
-    </SafeAreaView>
+      </BottomSheet>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  input: {
-    margin: 8,
-    fontSize: 48,
-    backgroundColor: "#bbb",
-    color: "#000",
-    borderRadius: 6,
+  headerLeft: {
+    marginLeft: 5,
+    borderColor: "#ddd",
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 24,
+    backgroundColor: "#ddd",
   },
-  btn: {
-    margin: 5,
-    padding: 10,
-    backgroundColor: "#82d8f7",
-    borderRadius: 10,
-    width: 200,
-  },
-  btnText: { fontSize: 36 },
+  headerLeftText: { fontWeight: "bold" },
 });
-
 export default Read;

@@ -5308,7 +5308,7 @@ prompts@^2.3.2, prompts@^2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@*, prop-types@^15.6.0:
+prop-types@*, prop-types@^15.6.0, prop-types@^15.7.2:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -5439,6 +5439,13 @@ react-native-screens@~3.11.1:
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
+
+react-native-simple-bottom-sheet@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-simple-bottom-sheet/-/react-native-simple-bottom-sheet-1.0.3.tgz#f725511af25464e1cd5df80de3acfcb6a46c74f1"
+  integrity sha512-ulg7NOfVbFxJxvTLwQUbtEOW4HLfyMchgnVjmjDGfoMF/Gr2Kx4YJjDXA394Ub78hN8/R2URStvVxh6Sy5TbAw==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-native-web@0.17.7:
   version "0.17.7"

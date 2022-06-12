@@ -8,7 +8,12 @@ const Stack = createNativeStackNavigator();
 
 const PlanScreen = () => {
   return (
-    <Stack.Navigator initialRouteName="ReadingPlanList">
+    <Stack.Navigator
+      initialRouteName="ReadingPlanList"
+      screenOptions={({ route }) => ({
+        // headerShown: false,
+      })}
+    >
       <Stack.Screen
         name="ReadingPlanList"
         component={ReadingPlanList}

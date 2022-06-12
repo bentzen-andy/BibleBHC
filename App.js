@@ -8,6 +8,8 @@ import ReadScreen from "./screens/ReadScreen";
 import PlanScreen from "./screens/PlanScreen";
 import LearnScreen from "./screens/LearnScreen";
 
+import BottomSheet from "react-native-simple-bottom-sheet";
+
 // function LearnScreen() {
 //   return (
 //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -24,6 +26,20 @@ function QuestionScreen() {
   );
 }
 
+// function QuestionScreen() {
+//   return (
+//     <View style={{ flex: 1 }}>
+//       <View>
+//         <Text>Your content</Text>
+//       </View>
+//       <BottomSheet isOpen>
+//         <Text>The component to render inside the panel</Text>
+//         <View />
+//       </BottomSheet>
+//     </View>
+//   );
+// }
+
 function LeaderScreen() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -39,7 +55,7 @@ export default function App() {
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({ route }) => ({
-          headerShown: false,
+          // headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
