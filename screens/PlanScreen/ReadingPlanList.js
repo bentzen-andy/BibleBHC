@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Button, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Button,
+  TouchableOpacity,
+  TouchableHighlight,
+  FlatList,
+  Image,
+} from "react-native";
+import { ListItem } from "react-native-elements";
 import mockData from "../../data/mockData";
 import { setupReadingPlanListener } from "../../helpers/fb-reading-plans";
 
@@ -17,54 +27,68 @@ const ReadingPlanList = ({ navigation }) => {
   console.log("----plans");
   console.log(plans);
 
-  return (
-    <View style={{ flex: 1 }}>
-      {plans.map((readingPlan) => (
-        <View style={styles.plan} key={readingPlan.id}>
-          <View style={styles.planImage}>
-            <Text>[IMG]</Text>
-          </View>
-          <View style={styles.planDescription}>
-            <Button
-              title={readingPlan.planName}
-              onPress={() =>
-                navigation.navigate("ReadingPlanDay", {
-                  readingPlan,
-                })
-              }
-            />
-          </View>
-        </View>
-      ))}
-
-      {/* <TouchableOpacity
-        onPress={() => {
-          storeReadingPlanItem(plan);
-          storeReadingPlanItem(plan2);
+  FlatListItemSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "100%",
+          backgroundColor: "#000",
         }}
+      />
+    );
+  };
+
+  const renderPlan = ({ index, item }) => {
+    const ICONS = {
+      book: require("../../assets/book.jpg"),
+      cross: require("../../assets/cross.jpg"),
+    };
+
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.navigate("ReadingPlanDay", item)}
       >
-        <Text>Add plan</Text>
-      </TouchableOpacity> */}
-    </View>
+        <ListItem key={index}>
+          <Image
+            source={ICONS[item.planImage]}
+            style={{ width: 100, height: 55 }}
+          />
+          <ListItem.Content>
+            <ListItem.Title>{item.planName}</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+      </TouchableOpacity>
+    );
+  };
+
+  return (
+    <FlatList
+      style={styles.screen}
+      keyExtractor={(item) => item.id}
+      data={plans}
+      ItemSeparatorComponent={FlatListItemSeparator}
+      renderItem={renderPlan}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  plan: {
-    flexDirection: "row",
-  },
-  planImage: {
+  screen: {
     flex: 1,
-    backgroundColor: "#888",
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
+    padding: 4,
+    paddingTop: 10,
+    backgroundColor: "#E8EAF6",
   },
-  planDescription: {
-    flex: 5,
-    backgroundColor: "#bbb",
-    height: 50,
-    justifyContent: "center",
+  pointStyle: {
+    color: "#000",
+    fontSize: 24,
+  },
+  dateStyle: {
+    fontStyle: "italic",
+    fontSize: 10,
+    alignSelf: "flex-end",
   },
 });
 

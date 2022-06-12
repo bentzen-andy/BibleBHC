@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { View, TouchableOpacity, Text } from "react-native";
 import ReadingPlanList from "./ReadingPlanList";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ReadingPlanReadings from "./ReadingPlanReadings";
@@ -7,14 +8,15 @@ import BibleChapter from "../ReadScreen/BibleChapter";
 
 const Stack = createNativeStackNavigator();
 
-const PlanScreen = () => {
+const PlanScreen = ({ navigation, route }) => {
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, []);
+
   return (
-    <Stack.Navigator
-      initialRouteName="ReadingPlanList"
-      screenOptions={({ route }) => ({
-        // headerShown: false,
-      })}
-    >
+    <Stack.Navigator initialRouteName="ReadingPlanList">
       <Stack.Screen
         name="ReadingPlanList"
         component={ReadingPlanList}

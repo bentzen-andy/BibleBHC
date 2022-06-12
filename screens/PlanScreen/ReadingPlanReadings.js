@@ -1,11 +1,11 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, StyleSheet } from "react-native";
 
 const ReadingPlanReadings = ({ navigation, route }) => {
   const { dailyReadings } = route.params;
 
   return (
-    <View>
+    <View style={styles.screen}>
       {dailyReadings.map((reading) => (
         <Button
           key={`${reading.book}${reading.chapter}`}
@@ -21,5 +21,14 @@ const ReadingPlanReadings = ({ navigation, route }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    padding: 4,
+    paddingTop: 10,
+    backgroundColor: "#E8EAF6",
+  },
+});
 
 export default ReadingPlanReadings;
