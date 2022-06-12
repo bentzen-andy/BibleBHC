@@ -1,13 +1,12 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
 
-const ReadingPlan = ({ navigation, route }) => {
-  const { planName, readings } = route.params.readingPlan;
+const ReadingPlanReadings = ({ navigation, route }) => {
+  const { dailyReadings } = route.params;
 
   return (
     <View>
-      <Text>{planName}</Text>
-      {readings.map((reading) => (
+      {dailyReadings.map((reading) => (
         <Button
           key={`${reading.book}${reading.chapter}`}
           title={`[ ] ${reading.book} ${reading.chapter}`}
@@ -23,4 +22,4 @@ const ReadingPlan = ({ navigation, route }) => {
   );
 };
 
-export default ReadingPlan;
+export default ReadingPlanReadings;

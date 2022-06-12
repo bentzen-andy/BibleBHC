@@ -1,15 +1,35 @@
-import React from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Text, View, StyleSheet, Button, TouchableOpacity } from "react-native";
 import mockData from "../../data/mockData";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  initReadingPlanDB,
+  storeReadingPlanItem,
+  setupReadingPlanListener,
+} from "../../helpers/fb-reading-plans";
 
-let data = Array.from(mockData);
+// let data = Array.from(mockData);
 
 const ReadingPlanList = ({ navigation }) => {
+  const [plans, setPlans] = useState([]);
+
+  useEffect(() => {
+    try {
+      initReadingPlanDB();
+    } catch (err) {
+      console.log(err);
+    }
+    setupReadingPlanListener((items) => {
+      setPlans(items);
+    });
+  }, []);
+
+  console.log("----plans");
+  console.log(plans);
+
   return (
     <View style={{ flex: 1 }}>
-      {data.map((readingPlan) => (
-        <View style={styles.plan} key={readingPlan.planName}>
+      {plans.map((readingPlan) => (
+        <View style={styles.plan} key={readingPlan.id}>
           <View style={styles.planImage}>
             <Text>[IMG]</Text>
           </View>
@@ -17,7 +37,7 @@ const ReadingPlanList = ({ navigation }) => {
             <Button
               title={readingPlan.planName}
               onPress={() =>
-                navigation.navigate("ReadingPlan", {
+                navigation.navigate("ReadingPlanDay", {
                   readingPlan,
                 })
               }
@@ -25,6 +45,15 @@ const ReadingPlanList = ({ navigation }) => {
           </View>
         </View>
       ))}
+
+      {/* <TouchableOpacity
+        onPress={() => {
+          storeReadingPlanItem(plan);
+          storeReadingPlanItem(plan2);
+        }}
+      >
+        <Text>Add plan</Text>
+      </TouchableOpacity> */}
     </View>
   );
 };
