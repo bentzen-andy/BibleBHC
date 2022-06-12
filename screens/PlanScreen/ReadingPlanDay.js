@@ -1,23 +1,64 @@
-import React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
+import { CheckBox, ListItem } from "react-native-elements";
 
 const ReadingPlanDay = ({ navigation, route }) => {
   const { planName, readings } = route.params;
 
+  //   const [checked, setChecked] = useState(false);
+
+  FlatListItemSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "100%",
+          backgroundColor: "#000",
+        }}
+      />
+    );
+  };
+
+  const renderDay = ({ index, item }) => {
+    console.log("item");
+    console.log(item[0].book);
+    console.log("----");
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.navigate("ReadingPlanReadings", item)}
+      >
+        <ListItem key={index}>
+          {/* <CheckBox
+            checked={checked}
+            onPress={() => {
+              setChecked((state) => !state);
+            }}
+          /> */}
+          <ListItem.Content>
+            <ListItem.Title>Day: {index + 1}</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View style={styles.screen}>
-      <Text>{planName}</Text>
-      {readings.map((dailyReadings, i) => (
-        <Button
-          key={i}
-          title={`Day: ${i + 1}`}
-          onPress={() =>
-            navigation.navigate("ReadingPlanReadings", {
-              dailyReadings,
-            })
-          }
-        />
-      ))}
+      <FlatList
+        style={styles.screen}
+        keyExtractor={(item) => `${item[0].book}-${item[0].chapter}`}
+        data={readings}
+        ItemSeparatorComponent={FlatListItemSeparator}
+        renderItem={renderDay}
+      />
     </View>
   );
 };

@@ -1,12 +1,73 @@
-import React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
+import { CheckBox, ListItem } from "react-native-elements";
 
 const ReadingPlanReadings = ({ navigation, route }) => {
-  const { dailyReadings } = route.params;
+  const readings = route.params;
+  const [checked, setChecked] = useState(false);
+
+  FlatListItemSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "100%",
+          backgroundColor: "#000",
+        }}
+      />
+    );
+  };
+
+  const renderReading = ({ index, item }) => {
+    console.log("item");
+    console.log(item.book);
+    console.log("----");
+
+    return (
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("BibleChapter", {
+            book: item.book,
+            chapter: item.chapter,
+          })
+        }
+      >
+        <ListItem key={index}>
+          <CheckBox
+            checked={checked}
+            onPress={() => {
+              setChecked((state) => !state);
+            }}
+          />
+          <ListItem.Content>
+            <ListItem.Title>
+              {item.book} {item.chapter}
+            </ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.screen}>
-      {dailyReadings.map((reading) => (
+      <FlatList
+        style={styles.screen}
+        keyExtractor={(item) => `${item.book}-${item.chapter}`}
+        data={readings}
+        ItemSeparatorComponent={FlatListItemSeparator}
+        renderItem={renderReading}
+      />
+
+      {/* {readings.map((reading) => (
         <Button
           key={`${reading.book}${reading.chapter}`}
           title={`[ ] ${reading.book} ${reading.chapter}`}
@@ -17,7 +78,7 @@ const ReadingPlanReadings = ({ navigation, route }) => {
             })
           }
         />
-      ))}
+      ))} */}
     </View>
   );
 };
