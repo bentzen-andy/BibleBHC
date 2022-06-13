@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-root-toast";
 import { ESV_API_KEY } from "../../api/esv-credentials";
 import { BIBLE } from "../../data/bible";
 
@@ -15,42 +16,15 @@ const BibleChapter = ({
   book,
   chapter,
   assignedReadings,
-  assignedReadingIndex,
+  setBook,
+  setChapter,
   planId,
   route,
   navigation,
   panelRef,
 }) => {
   const [passage, setPassage] = useState("");
-  const [currBook, setCurrBook] = useState(book);
-  const [currChapter, setCurrChapter] = useState(chapter);
-
-  const [prevBook, setPrevBook] = useState("");
-  const [nextBook, setNextBook] = useState("");
-
-  const [prevChapter, setPrevChapter] = useState("");
-  const [nextChapter, setNextChapter] = useState("");
-
-  const [readingIndex, setReadingIndex] = useState(assignedReadingIndex);
-
-  // console.log("----book");
-  // console.log(book);
-  // console.log("----chapter");
-  // console.log(chapter);
-  // console.log("----assignedReadings");
-  // console.log(assignedReadings);
-  // console.log("----assignedReadingIndex");
-  // console.log(assignedReadingIndex);
-  // console.log("----planId");
-  // console.log(planId);
-  // console.log("----prevBook");
-  // console.log(prevBook);
-  // console.log("----prevChapter");
-  // console.log(prevChapter);
-  // console.log("----nextBook");
-  // console.log(nextBook);
-  // console.log("----nextChapter");
-  // console.log(nextChapter);
+  const [completedReadings, setCompletedReadings] = useState([]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -58,9 +32,7 @@ const BibleChapter = ({
         <View style={styles.headerLeft}>
           <TouchableOpacity onPress={() => panelRef.current.togglePanel()}>
             <Text style={styles.headerLeftText}>
-              {currBook === ""
-                ? `${book} ${chapter}`
-                : `${currBook} ${currChapter}`}
+              {book} {chapter}
             </Text>
           </TouchableOpacity>
         </View>
@@ -76,11 +48,111 @@ const BibleChapter = ({
     }
   }, [book, chapter, route?.params]);
 
-  // useEffect(() => {
-  //   setReadingIndex(assignedReadingIndex);
-  // }, [assignedReadingIndex]);
+  useEffect(() => {
+    if (
+      assignedReadings &&
+      completedReadings.every((element) => element) &&
+      assignedReadings.length === completedReadings.length
+    ) {
+      Toast.show("Daily reading complete!", {
+        duration: Toast.durations.LONG,
+        animation: true,
+        hideOnPress: true,
+      });
+      setTimeout(() => {
+        navigation.navigate("ReadingPlanList", {
+          item: assignedReadings,
+          planId: planId,
+        });
+      }, 1500);
+    }
+  }, [completedReadings]);
 
-  const lookUpPassage = (book, chapter) => {
+  function advanceLeft() {
+    if (assignedReadings) {
+      let index;
+      assignedReadings.map((item, i) => {
+        if (item.book === book && item.chapter === chapter) {
+          index = i;
+        }
+      });
+      index--;
+      if (index < 0) index++;
+      let prevBook = assignedReadings[index].book;
+      let prevChapter = assignedReadings[index].chapter;
+      setBook(prevBook);
+      setChapter(prevChapter);
+      lookUpPassage(prevBook, prevChapter);
+      setAssignedReadingCompletion();
+      return;
+    }
+
+    let chapterNumber = +chapter;
+    let index = +BIBLE.filter((bk) => bk.book === book)[0].id;
+    let prevBook;
+    let prevChapter;
+
+    // if last chapter in book or in Bible
+    if (book === "Genesis" && chapterNumber === 1) {
+      prevBook = "Revelation";
+      prevChapter = 22;
+    } else if (chapterNumber === 1) {
+      prevBook = BIBLE[index - 1].book;
+      prevChapter = BIBLE[index - 1].numChapters;
+    } else {
+      prevBook = book;
+      prevChapter = chapterNumber - 1;
+    }
+
+    setBook(prevBook);
+    setChapter(prevChapter);
+    lookUpPassage(prevBook, prevChapter);
+  }
+
+  function advanceRight() {
+    if (assignedReadings) {
+      let index;
+      assignedReadings.map((item, i) => {
+        if (item.book === book && item.chapter === chapter) {
+          index = i;
+        }
+      });
+      index++;
+      if (index >= assignedReadings.length) index--;
+      let nextBook = assignedReadings[index].book;
+      let nextChapter = assignedReadings[index].chapter;
+
+      setBook(nextBook);
+      setChapter(nextChapter);
+      lookUpPassage(nextBook, nextChapter);
+      setCompletedReading(`${planId}${book}${chapter}`);
+      setAssignedReadingCompletion();
+      return;
+    }
+
+    let chapterNumber = +chapter;
+    let index = +BIBLE.filter((bk) => bk.book === book)[0].id;
+    let nextBook;
+    let nextChapter;
+
+    // if last chapter in book or in Bible
+    if (book === "Revelation" && chapterNumber === 22) {
+      nextBook = "Genesis";
+      nextChapter = 1;
+    } else if (chapterNumber === BIBLE[index].numChapters) {
+      nextBook = BIBLE[index + 1].book;
+      nextChapter = 1;
+    } else {
+      nextBook = book;
+      nextChapter = chapterNumber + 1;
+    }
+
+    setBook(nextBook);
+    setChapter(nextChapter);
+    lookUpPassage(nextBook, nextChapter);
+  }
+
+  function lookUpPassage(book, chapter) {
     fetch(`https://api.esv.org/v3/passage/text/?q=${book}+${chapter}`, {
       headers: {
         Accept: "application/json",
@@ -89,97 +161,46 @@ const BibleChapter = ({
     })
       .then((response) => response.json())
       .then((data) => setPassage(data.passages))
-      .then(() => setCurrBook(book))
-      .then(() => setCurrChapter(chapter))
-      .then(() => findPrevPassage(book, chapter))
-      .then(() => findNextPassage(book, chapter))
       .catch((err) => console.log(err));
-  };
+  }
 
-  const findPrevPassage = (book, chapter) => {
-    if (assignedReadings) {
-      // console.log("=====findPrevPassage=====");
-      // console.log("----assignedReadings");
-      // console.log(assignedReadings);
-      // console.log("----assignedReadingIndex");
-      // console.log(assignedReadingIndex);
-      setReadingIndex(() => {
-        let i = readingIndex - 1;
-        if (i < 0) i = 0;
-        console.log("----i");
-        console.log(i);
-        setPrevBook(assignedReadings[i].book);
-        setPrevChapter(assignedReadings[i].chapter);
-        return i;
-      });
-
-      return;
-    }
-
-    let chapterNumber = +chapter;
-    let index = +BIBLE.filter((bk) => bk.book === book)[0].id;
-    // if first chapter in book or in Bible
-    if (book === "Genesis" && chapterNumber === 1) {
-      setPrevBook("Revelation");
-      setPrevChapter("22");
-    } else if (chapterNumber === 1) {
-      setPrevChapter(BIBLE[index - 1].numChapters);
-      setPrevBook(BIBLE[index - 1].book);
-    } else {
-      setPrevChapter(chapterNumber - 1);
-      setPrevBook(book);
-    }
-  };
-
-  const findNextPassage = (book, chapter) => {
-    if (assignedReadings) {
-      // console.log("=====findNextPassage=====");
-      // console.log("----assignedReadings");
-      // console.log(assignedReadings);
-      // console.log("----assignedReadingIndex");
-      // console.log(assignedReadingIndex);
-      setReadingIndex(() => {
-        let i = readingIndex + 1;
-        if (i >= assignedReadings.length) i = assignedReadings.length - 1;
-        console.log("----assignedReadings.length");
-        console.log(assignedReadings.length);
-        console.log("----readingIndex");
-        console.log(readingIndex);
-        console.log("----i");
-        console.log(i);
-        setNextBook(assignedReadings[i].book);
-        setNextChapter(assignedReadings[i].chapter);
-        return i;
-      });
-
-      // console.log("==END===findNextPassage=====");
-      // TODO check off the reading as done
-      // TODO: use a toast to show the assigned readings are done, maybe navigate to the plan screen
-      return;
-    }
-
-    let chapterNumber = +chapter;
-    let index = +BIBLE.filter((bk) => bk.book === book)[0].id;
-    // if last chapter in book or in Bible
-    if (book === "Revelation" && chapterNumber === 22) {
-      setNextBook("Genesis");
-      setNextChapter("1");
-    } else if (chapterNumber === BIBLE[index].numChapters) {
-      setNextChapter(1);
-      setNextBook(BIBLE[index + 1].book);
-    } else {
-      setNextChapter(chapterNumber + 1);
-      setNextBook(book);
-    }
-  };
-
-  const setCompletedReading = async (value) => {
+  async function setCompletedReading(value) {
     try {
       await AsyncStorage.setItem(`@${value}`, value);
     } catch (err) {
       console.log(err);
     }
-  };
+  }
+
+  async function getStoredValue(value, action) {
+    try {
+      let val = await AsyncStorage.getItem(`@${value}`);
+      action(val);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  function setAssignedReadingCompletion() {
+    let readingIds = assignedReadings.map(
+      (item) => `${planId}${item.book}${item.chapter}`
+    );
+    readingIds.map((id) =>
+      getStoredValue(id, (val) => {
+        setCompletedReadings((curr) => {
+          let arr = [...curr];
+          arr.push(val);
+          // keep only unique values
+          arr = [...new Set(arr)];
+          // remove null values
+          arr = arr.filter((element) => {
+            return element !== null;
+          });
+          return arr;
+        });
+      })
+    );
+  }
 
   return (
     <SafeAreaView>
@@ -203,9 +224,7 @@ const BibleChapter = ({
           borderRadius: 25,
         }}
         onPress={() => {
-          lookUpPassage(prevBook, prevChapter);
-          setCurrBook(prevBook);
-          setCurrChapter(prevChapter);
+          advanceLeft();
         }}
       >
         <Text
@@ -236,10 +255,7 @@ const BibleChapter = ({
           borderRadius: 25,
         }}
         onPress={() => {
-          lookUpPassage(nextBook, nextChapter);
-          setCurrBook(nextBook);
-          setCurrChapter(nextChapter);
-          setCompletedReading(`${planId}${book}${chapter}`);
+          advanceRight();
         }}
       >
         <Text

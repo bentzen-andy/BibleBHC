@@ -6,7 +6,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const ReadingPlanReadings = ({ navigation, route }) => {
   const readings = route.params.item;
   const planId = route.params.id;
-
   const [checked, setChecked] = useState([]);
 
   useEffect(() => {
@@ -14,7 +13,7 @@ const ReadingPlanReadings = ({ navigation, route }) => {
       (reading) => `${planId}${reading.book}${reading.chapter}`
     );
     getCompletedReadings(readingIds);
-  }, []);
+  });
 
   const getCompletedReadings = async (readingIds) => {
     try {
