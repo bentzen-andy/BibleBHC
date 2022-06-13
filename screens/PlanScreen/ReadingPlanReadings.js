@@ -16,15 +16,13 @@ const ReadingPlanReadings = ({ navigation, route }) => {
   const [checked, setChecked] = useState([]);
 
   useEffect(() => {
-    getCompletedReadings();
+    let readingIds = readings.map(
+      (reading) => `${planId}${reading.book}${reading.chapter}`
+    );
+    console.log("----readingIds");
+    console.log(readingIds);
+    getCompletedReadings(readingIds);
   }, []);
-
-  // testing; TODO remove this later
-  useEffect(() => {
-    // console.log("----checked");
-    // console.log(checked);
-    // console.log("====");
-  }, [checked]);
 
   // const getData = async () => {
   //   try {
@@ -38,12 +36,61 @@ const ReadingPlanReadings = ({ navigation, route }) => {
   //   }
   // };
 
-  const getCompletedReadings = async () => {
+  const saveCheckedItem = (planId, book, chapter) => {
+    console.log(planId);
+    console.log(book);
+    console.log(chapter);
+    console.log(checked);
+    let completedReadings = {
+      id: planId,
+      completedReadings: [{ book, chapter }],
+    };
+
+    storeCompletedReadings(completedReadings);
+  };
+
+  const storeCompletedReadings = async (value) => {
     try {
-      const jsonValue = await AsyncStorage.getItem("@CompletedReadings");
-      const value = jsonValue != null ? JSON.parse(jsonValue) : null;
-      console.log("----parsed json");
-      console.log(value);
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem("@CompletedReadings", jsonValue);
+      console.log("----jsonValue");
+      console.log(jsonValue);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const toggleCompletedReading = async (value) => {
+    try {
+      const retrievedVal = await AsyncStorage.getItem(`@${value}`);
+      if (retrievedVal != null) {
+        await AsyncStorage.removeItem(`@${value}`);
+      } else {
+        await AsyncStorage.setItem(`@${value}`, value);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getCompletedReadings = async (readingIds) => {
+    try {
+      let arr = [];
+      for (const id of readingIds) {
+        const value = await AsyncStorage.getItem(`@${id}`);
+        arr.push(value);
+      }
+      console.log("----arr");
+      console.log(arr);
+      setChecked(arr);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getCompletedReading = async () => {
+    try {
+      const value = await AsyncStorage.getItem("@CompletedReadings");
       if (value != null) {
         setChecked(value);
       }
@@ -65,7 +112,7 @@ const ReadingPlanReadings = ({ navigation, route }) => {
     let result = false;
 
     checked.map((plan) => {
-      if (plan.id === planId) {
+      if (plan?.id && plan.id === planId) {
         plan.completedReadings.map((record) => {
           if (record.book === book && record.chapter === chapter) {
             result = true;
@@ -112,9 +159,9 @@ const ReadingPlanReadings = ({ navigation, route }) => {
       >
         <ListItem key={index}>
           <CheckBox
-            checked={isChecked}
+            checked={checked.includes(`${planId}${item.book}${item.chapter}`)}
             onPress={() => {
-              // setChecked((state) => !state);
+              toggleCompletedReading(`${planId}${item.book}${item.chapter}`);
             }}
           />
           <ListItem.Content>
@@ -140,7 +187,7 @@ const ReadingPlanReadings = ({ navigation, route }) => {
 
       {/* {readings.map((reading) => (
         <Button
-          key={`${reading.book}${reading.chapter}`}
+          key={`${reading.book}${reading.book}${reading.chapter}`}
           title={`[ ] ${reading.book} ${reading.chapter}`}
           onPress={() =>
             navigation.navigate("BibleChapter", {
