@@ -15,7 +15,36 @@ import BottomSheet from "react-native-simple-bottom-sheet";
 const ReadScreen = ({ navigation, route }) => {
   const [book, setBook] = useState("Genesis");
   const [chapter, setChapter] = useState("1");
+  const [assignedReadings, setAssignedReadings] = useState(null);
+  const [assignedReadingIndex, setAssignedReadingIndex] = useState(0);
+  const [planId, setPlanId] = useState("");
+
   const panelRef = useRef(null);
+
+  // console.log("----route");
+  // console.log(route);
+  // console.log("----book");
+  // console.log(book);
+  // console.log("----chapter");
+  // console.log(chapter);
+  // console.log("----assignedReadings");
+  // console.log(assignedReadings);
+  // console.log("----assignedReadingIndex");
+  // console.log(assignedReadingIndex);
+  // console.log("----planId");
+  // console.log(planId);
+
+  useEffect(() => {
+    if (route.params?.book && route.params?.chapter) {
+      setBook(route.params.book);
+      setChapter(route.params.chapter);
+    }
+    if (route.params?.assignedReadings) {
+      setAssignedReadings(route.params.assignedReadings);
+      setAssignedReadingIndex(route.params.assignedReadingIndex);
+      setPlanId(route.params.planId);
+    }
+  }, [route?.params]);
 
   return (
     <View>
@@ -23,6 +52,9 @@ const ReadScreen = ({ navigation, route }) => {
         book={book}
         chapter={chapter}
         navigation={navigation}
+        assignedReadings={assignedReadings}
+        assignedReadingIndex={assignedReadingIndex}
+        planId={planId}
         panelRef={panelRef}
       />
       <BottomSheet

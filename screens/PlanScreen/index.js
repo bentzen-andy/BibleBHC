@@ -4,7 +4,7 @@ import ReadingPlanList from "./ReadingPlanList";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ReadingPlanReadings from "./ReadingPlanReadings";
 import ReadingPlanDay from "./ReadingPlanDay";
-import BibleChapter from "../ReadScreen/BibleChapter";
+import ReadScreen from "../ReadScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,8 +33,8 @@ const PlanScreen = ({ navigation, route }) => {
         options={{ title: "Reading Plan Readings" }}
       />
       <Stack.Screen
-        name="BibleChapter"
-        component={BibleChapter}
+        name="ReadScreen"
+        component={ReadScreen}
         options={{ title: "Bible" }}
       />
     </Stack.Navigator>
