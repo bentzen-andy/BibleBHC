@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import {
   View,
+  Keyboard,
   Text,
+  ScrollView,
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from "react-native";
 import Toast from "react-native-root-toast";
 import { storeQuestion } from "../../helpers/fb-questions";
@@ -31,6 +34,8 @@ const QuestionScreen = () => {
   }
 
   return (
+    // <ScrollView>
+    //   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.container}>
       <Text style={styles.text}>
         Ask a question about life, faith, or anything!{" "}
@@ -55,6 +60,8 @@ const QuestionScreen = () => {
         </TouchableOpacity>
       </View>
     </View>
+    //   </TouchableWithoutFeedback>
+    // </ScrollView>
   );
 };
 

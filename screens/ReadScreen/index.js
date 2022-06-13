@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   View,
+  TouchableWithoutFeedback,
   Text,
   Dimensions,
   TouchableOpacity,
@@ -16,23 +17,14 @@ const ReadScreen = ({ navigation, route }) => {
   const [chapter, setChapter] = useState("1");
   const panelRef = useRef(null);
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <View style={styles.headerLeft}>
-          <TouchableOpacity onPress={() => panelRef.current.togglePanel()}>
-            <Text style={styles.headerLeftText}>
-              {book} {chapter}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      ),
-    });
-  });
-
   return (
     <View>
-      <BibleChapter book={book} chapter={chapter} />
+      <BibleChapter
+        book={book}
+        chapter={chapter}
+        navigation={navigation}
+        panelRef={panelRef}
+      />
       <BottomSheet
         isOpen={false}
         sliderMinHeight={0}
@@ -49,19 +41,4 @@ const ReadScreen = ({ navigation, route }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  headerLeft: {
-    marginLeft: 5,
-    borderColor: "#ddd",
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 24,
-    backgroundColor: "#ddd",
-  },
-  headerLeftText: { fontWeight: "bold" },
-});
 export default ReadScreen;
