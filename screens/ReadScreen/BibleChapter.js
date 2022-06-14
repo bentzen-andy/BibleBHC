@@ -9,6 +9,9 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-root-toast";
+
+import { AntDesign } from "@expo/vector-icons";
+
 import { ESV_API_KEY } from "../../api/esv-credentials";
 import { BIBLE } from "../../data/bible";
 
@@ -26,8 +29,11 @@ const BibleChapter = ({
   const [passage, setPassage] = useState("");
   const [completedReadings, setCompletedReadings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [scrollTimerId, setScrollTimerId] = useState(null);
 
   const scrollRef = useRef(null);
+  const buttonLeftRef = useRef(null);
+  const buttonRightRef = useRef(null);
 
   useEffect(() => {
     navigation.setOptions({
@@ -164,12 +170,17 @@ const BibleChapter = ({
       },
     })
       .then((response) => response.json())
-      .then((data) => setPassage(data.passages))
+      .then((data) => {
+        let lines = data.passages[0].split("\n");
+        lines.splice(0, 2);
+        return lines.join("\n");
+      })
+      .then((text) => setPassage(text))
       .catch((err) => console.log(err));
 
     // setIsLoading(true);
     setIsLoading(false);
-    scrollRef.current.scrollTo({ x: 5, y: 5, animated: false });
+    scrollRef.current.scrollTo({ x: 0, y: 0, animated: true });
   }
 
   async function setCompletedReading(value) {
@@ -212,106 +223,69 @@ const BibleChapter = ({
 
   return (
     <SafeAreaView>
-      <ScrollView ref={scrollRef}>
-        {isLoading && (
-          <View style={styles.loading}>
-            <Text style={styles.loadingText}>Loading...</Text>
-          </View>
-        )}
-        {!isLoading && (
-          <Text style={styles.bibleText}>
-            {passage}
-            {`
-            
-            
-            
-            
-            
-
-
-
-            
-            
-            
-            
-            `}
-          </Text>
-        )}
+      <ScrollView
+        ref={scrollRef}
+        bounces
+        onScrollBeginDrag={() => {
+          clearTimeout(scrollTimerId);
+          buttonLeftRef.current.setNativeProps({ style: { color: "#eeea" } });
+          buttonRightRef.current.setNativeProps({ style: { color: "#eeea" } });
+        }}
+        onScrollEndDrag={() => {
+          let scrollTimerId = setTimeout(() => {
+            buttonLeftRef.current.setNativeProps({ style: { color: "#444" } });
+            buttonRightRef.current.setNativeProps({ style: { color: "#444" } });
+          }, 1500);
+          setScrollTimerId(scrollTimerId);
+        }}
+      >
+        <Text style={styles.bibleText}>
+          {isLoading ? "Loading..." : passage}
+        </Text>
       </ScrollView>
       <TouchableOpacity
-        style={{
-          position: "absolute",
-          left: 50,
-          bottom: 50,
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          borderWidth: 1,
-          // padding: 20,
-          backgroundColor: "#555",
-          width: 50,
-          // width: 300,
-          height: 50,
-          borderRadius: 25,
-        }}
+        style={[styles.button, styles.buttonLeft]}
         onPress={() => {
           advanceLeft();
         }}
       >
-        <Text
-          style={{
-            fontSize: 18,
-            fontWeight: "bold",
-            color: "#fff",
-          }}
-        >
-          {"<"}
-        </Text>
+        <AntDesign
+          name="leftcircleo"
+          style={styles.buttonText}
+          ref={buttonLeftRef}
+        />
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={{
-          position: "absolute",
-          right: 50,
-          bottom: 50,
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          borderWidth: 1,
-          // padding: 20,
-          backgroundColor: "#555",
-          width: 50,
-          // width: 300,
-          height: 50,
-          borderRadius: 25,
-        }}
+        style={[styles.button, styles.buttonRight]}
         onPress={() => {
           advanceRight();
         }}
       >
-        <Text
-          style={{
-            fontSize: 18,
-            fontWeight: "bold",
-            color: "#fff",
-          }}
-        >
-          {">"}
-        </Text>
+        <AntDesign
+          name="rightcircleo"
+          style={styles.buttonText}
+          ref={buttonRightRef}
+        />
       </TouchableOpacity>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  bibleText: { fontSize: 20, margin: 16 },
-  loading: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    // height: 1000,
+  button: {
+    position: "absolute",
+    bottom: 50,
+    backgroundColor: "#eeea",
+    borderRadius: 25,
   },
-  loadingText: { flex: 1, fontSize: 20, margin: 16 },
+  buttonText: {
+    fontSize: 48,
+    color: "#444",
+  },
+  buttonLeft: { left: 50 },
+  buttonRight: { right: 50 },
+  bibleText: { fontSize: 20, margin: 16 },
   headerLeft: {
     marginLeft: 5,
     borderColor: "#ddd",

@@ -39,13 +39,13 @@ import QuestionScreen from "./screens/QuestionScreen";
 //     </View>
 //   );
 // }
-function LeaderScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Small Group Leaders Only!</Text>
-    </View>
-  );
-}
+// function LeaderScreen() {
+//   return (
+//     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+//       <Text>Small Group Leaders Only!</Text>
+//     </View>
+//   );
+// }
 
 const Tab = createBottomTabNavigator();
 

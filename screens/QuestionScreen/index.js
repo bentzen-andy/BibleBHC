@@ -36,39 +36,39 @@ const QuestionScreen = () => {
   }
 
   return (
-    // <ScrollView>
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        <Text style={styles.text}>
-          Ask a question about life, faith, or anything!{" "}
-        </Text>
-        <TextInput
-          style={styles.input}
-          value={enteredQuestion}
-          autoFocus={true}
-          autoCorrect={true}
-          numberOfLines={8}
-          multiline
-          // errorStyle={styles.inputError}
-          // errorMessage={validate(enteredQuestion)}
-          onChangeText={setEnteredQuestion}
-        />
-        <View style={styles.buttonRow}>
-          <TouchableOpacity onPress={clearInput} style={styles.cancel}>
-            <Text style={styles.buttonText}>Cancel</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleSubmit} style={styles.submit}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </TouchableOpacity>
+    <View style={styles.container}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={{ height: "100%", margin: 20 }}>
+          <Text style={styles.text}>
+            Ask a question about life, faith, or anything!{" "}
+          </Text>
+          <TextInput
+            style={styles.input}
+            value={enteredQuestion}
+            autoFocus={true}
+            autoCorrect={true}
+            numberOfLines={8}
+            multiline
+            // errorStyle={styles.inputError}
+            // errorMessage={validate(enteredQuestion)}
+            onChangeText={setEnteredQuestion}
+          />
+          <View style={styles.buttonRow}>
+            <TouchableOpacity onPress={clearInput} style={styles.cancel}>
+              <Text style={styles.buttonText}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleSubmit} style={styles.submit}>
+              <Text style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </TouchableWithoutFeedback>
-    // </ScrollView>
+      </TouchableWithoutFeedback>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { margin: 20 },
+  container: { backgroundColor: "#fff" },
   text: { fontSize: 24 },
   input: {
     marginTop: 20,
@@ -115,8 +115,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuestionScreen;
-
 // style={{
 //   height: 40,
 //   width: 160,
@@ -125,3 +123,5 @@ export default QuestionScreen;
 //   justifyContent: "center",
 //   alignItems: "center",
 // }}
+
+export default QuestionScreen;

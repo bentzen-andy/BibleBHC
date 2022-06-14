@@ -32,31 +32,39 @@ const ReadScreen = ({ navigation, route }) => {
   }, [route?.params]);
 
   return (
-    <View>
-      <BibleChapter
-        book={book}
-        chapter={chapter}
-        navigation={navigation}
-        assignedReadings={assignedReadings}
-        setBook={setBook}
-        setChapter={setChapter}
-        planId={planId}
-        panelRef={panelRef}
-      />
-      <BottomSheet
-        isOpen={false}
-        sliderMinHeight={0}
-        sliderMaxHeight={Dimensions.get("window").height * 0.8}
-        ref={(ref) => (panelRef.current = ref)}
-      >
-        <BibleBookList
+    <View style={styles.container}>
+      <View style={{ height: "100%" }}>
+        <BibleChapter
+          book={book}
+          chapter={chapter}
+          navigation={navigation}
+          assignedReadings={assignedReadings}
           setBook={setBook}
           setChapter={setChapter}
+          planId={planId}
           panelRef={panelRef}
         />
-      </BottomSheet>
+      </View>
+      <View>
+        <BottomSheet
+          isOpen={false}
+          sliderMinHeight={0}
+          sliderMaxHeight={Dimensions.get("window").height * 0.8}
+          ref={(ref) => (panelRef.current = ref)}
+        >
+          <BibleBookList
+            setBook={setBook}
+            setChapter={setChapter}
+            panelRef={panelRef}
+          />
+        </BottomSheet>
+      </View>
     </View>
   );
 };
-
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#fff",
+  },
+});
 export default ReadScreen;
