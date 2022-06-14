@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>6039544799-0k1juo7tstpf233vt7ipekp36nul8qvu.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.6039544799-0k1juo7tstpf233vt7ipekp36nul8qvu</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDHI-Lm76sd_mkGK27cQUqlfV5J86bWF1I</string>
+	<key>GCM_SENDER_ID</key>
+	<string>6039544799</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.andrewbentzen.biblebhc</string>
+	<key>PROJECT_ID</key>
+	<string>biblebhc</string>
+	<key>STORAGE_BUCKET</key>
+	<string>biblebhc.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:6039544799:ios:a4c632622cc0fcd4459a6a</string>
+	<key>DATABASE_URL</key>
+	<string>https://biblebhc-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

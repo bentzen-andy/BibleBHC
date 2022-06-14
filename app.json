@@ -14,20 +14,37 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
+
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.andrewbentzen.biblebhc",
+      "buildNumber": "1.0.0",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
+      "package": "com.andybentzen.biblebhc",
+      "versionCode": 1,
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "config": {
+        "firebase": {
+          "apiKey": "AIzaSyD_cdTFTVwH2gUXWs-kT09gIkIK0_cC4mY",
+          "authDomain": "biblebhc.firebaseapp.com",
+          "databaseURL": "https://biblebhc-default-rtdb.firebaseio.com",
+          "projectId": "biblebhc",
+          "storageBucket": "biblebhc.appspot.com",
+          "messagingSenderId": "6039544799",
+          "appId": "1:6039544799:web:9cf21db106dcfabf459a6a",
+          "measurementId": "G-Y6MLBPPV5B"
+        }
+      }
     }
   }
 }

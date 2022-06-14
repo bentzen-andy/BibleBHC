@@ -161,9 +161,17 @@ const BibleChapter = ({
     lookUpPassage(nextBook, nextChapter);
   }
 
+  function hasOnlyOneChapter(book) {
+    return BIBLE.filter((item) => item.book === book)[0].numChapters === 1;
+  }
+
   function lookUpPassage(book, chapter) {
     setIsLoading(true);
-    fetch(`https://api.esv.org/v3/passage/text/?q=${book}+${chapter}`, {
+
+    // The API treats single-chapter books differently.
+    let theChapter = hasOnlyOneChapter(book) ? "" : chapter;
+
+    fetch(`https://api.esv.org/v3/passage/text/?q=${book}+${theChapter}`, {
       headers: {
         Accept: "application/json",
         Authorization: ESV_API_KEY,

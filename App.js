@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+import * as Analytics from "expo-firebase-analytics";
+
+import React, { useEffect, useRef } from "react";
 import { Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -10,46 +12,12 @@ import PlanScreen from "./screens/PlanScreen";
 import LearnScreen from "./screens/LearnScreen";
 import QuestionScreen from "./screens/QuestionScreen";
 
-// function LearnScreen() {
-//   return (
-//     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-//       <Text>Learn!</Text>
-//     </View>
-//   );
-// }
-
-// function QuestionScreen() {
-//   return (
-//     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-//       <Text>Question!</Text>
-//     </View>
-//   );
-// }
-
-// function QuestionScreen() {
-//   return (
-//     <View style={{ flex: 1 }}>
-//       <View>
-//         <Text>Your content</Text>
-//       </View>
-//       <BottomSheet isOpen>
-//         <Text>The component to render inside the panel</Text>
-//         <View />
-//       </BottomSheet>
-//     </View>
-//   );
-// }
-// function LeaderScreen() {
-//   return (
-//     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-//       <Text>Small Group Leaders Only!</Text>
-//     </View>
-//   );
-// }
-
-const Tab = createBottomTabNavigator();
-
 export default function App() {
+  const navigationRef = useRef();
+  const routeNameRef = useRef();
+
+  const Tab = createBottomTabNavigator();
+
   useEffect(() => {
     try {
       initDB();
@@ -59,7 +27,24 @@ export default function App() {
   });
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      ref={navigationRef}
+      onReady={() =>
+        (routeNameRef.current = navigationRef.current.getCurrentRoute().name)
+      }
+      onStateChange={async () => {
+        const previousRouteName = routeNameRef.current;
+        const currentRouteName = navigationRef.current.getCurrentRoute().name;
+        if (previousRouteName !== currentRouteName) {
+          await Analytics.logEvent("screen_view", {
+            screen_name: currentRouteName,
+            screen_class: currentRouteName,
+          });
+        }
+        // Save the current route name for later comparison
+        routeNameRef.current = currentRouteName;
+      }}
+    >
       <Tab.Navigator
         screenOptions={({ route }) => ({
           // headerShown: false,

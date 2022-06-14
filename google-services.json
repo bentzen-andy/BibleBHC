@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "6039544799",
+    "firebase_url": "https://biblebhc-default-rtdb.firebaseio.com",
+    "project_id": "biblebhc",
+    "storage_bucket": "biblebhc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:6039544799:android:80fb11395be294b0459a6a",
+        "android_client_info": {
+          "package_name": "com.andybentzen.biblebhc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "6039544799-goin7f7cg077gsjjfupdfg3fdglv87tl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdCi7gcBoc3VPl_ngJrLwmuV1lgyNAV-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "6039544799-goin7f7cg077gsjjfupdfg3fdglv87tl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "6039544799-0k1juo7tstpf233vt7ipekp36nul8qvu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.andrewbentzen.biblebhc"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
