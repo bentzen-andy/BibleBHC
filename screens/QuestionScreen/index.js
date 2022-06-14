@@ -53,13 +53,27 @@ const QuestionScreen = () => {
             // errorMessage={validate(enteredQuestion)}
             onChangeText={setEnteredQuestion}
           />
-          <View style={styles.buttonRow}>
-            <TouchableOpacity onPress={clearInput} style={styles.cancel}>
-              <Text style={styles.buttonText}>Cancel</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleSubmit} style={styles.submit}>
-              <Text style={styles.buttonText}>Submit</Text>
-            </TouchableOpacity>
+
+          <View style={styles.buttonRows}>
+            <View style={styles.buttonTopRow}>
+              <TouchableOpacity
+                onPress={() => {
+                  console.log("button pressed");
+                }}
+                style={styles.submitPhotoButton}
+              >
+                <Text style={styles.buttonText}>Upload Photo</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.buttonSecondRow}>
+              <TouchableOpacity onPress={clearInput} style={styles.cancel}>
+                <Text style={styles.buttonText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleSubmit} style={styles.submit}>
+                <Text style={styles.buttonText}>Submit</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -79,8 +93,22 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     fontSize: 18,
   },
-  buttonRow: {
+  buttonRows: {
     flex: 1,
+    flexDirection: "column",
+    alignContent: "flex-end",
+    // marginBottom: 300,
+    textAlign: "right",
+  },
+  buttonTopRow: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    textAlign: "right",
+    // marginLeft: 20,
+  },
+  buttonSecondRow: {
+    flex: 7,
     flexDirection: "row",
     justifyContent: "flex-end",
     textAlign: "right",
@@ -89,7 +117,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    marginLeft: 30,
+    // marginLeft: 30,
+    marginRight: 10,
     marginVertical: 20,
     backgroundColor: "#555",
     borderRadius: 9,
@@ -101,6 +130,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginLeft: 10,
+    marginVertical: 20,
+    backgroundColor: "#42a5f5",
+    borderRadius: 9,
+    height: 40,
+    width: 160,
+  },
+
+  submitPhotoButton: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    // marginLeft: 10,
     marginVertical: 20,
     backgroundColor: "#42a5f5",
     borderRadius: 9,
