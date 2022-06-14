@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Text,
   View,
@@ -25,6 +25,9 @@ const BibleChapter = ({
 }) => {
   const [passage, setPassage] = useState("");
   const [completedReadings, setCompletedReadings] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const scrollRef = useRef(null);
 
   useEffect(() => {
     navigation.setOptions({
@@ -153,6 +156,7 @@ const BibleChapter = ({
   }
 
   function lookUpPassage(book, chapter) {
+    setIsLoading(true);
     fetch(`https://api.esv.org/v3/passage/text/?q=${book}+${chapter}`, {
       headers: {
         Accept: "application/json",
@@ -162,6 +166,10 @@ const BibleChapter = ({
       .then((response) => response.json())
       .then((data) => setPassage(data.passages))
       .catch((err) => console.log(err));
+
+    // setIsLoading(true);
+    setIsLoading(false);
+    scrollRef.current.scrollTo({ x: 5, y: 5, animated: false });
   }
 
   async function setCompletedReading(value) {
@@ -204,8 +212,31 @@ const BibleChapter = ({
 
   return (
     <SafeAreaView>
-      <ScrollView>
-        <Text style={styles.bibleText}>{passage}</Text>
+      <ScrollView ref={scrollRef}>
+        {isLoading && (
+          <View style={styles.loading}>
+            <Text style={styles.loadingText}>Loading...</Text>
+          </View>
+        )}
+        {!isLoading && (
+          <Text style={styles.bibleText}>
+            {passage}
+            {`
+            
+            
+            
+            
+            
+
+
+
+            
+            
+            
+            
+            `}
+          </Text>
+        )}
       </ScrollView>
       <TouchableOpacity
         style={{
@@ -274,6 +305,13 @@ const BibleChapter = ({
 
 const styles = StyleSheet.create({
   bibleText: { fontSize: 20, margin: 16 },
+  loading: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    // height: 1000,
+  },
+  loadingText: { flex: 1, fontSize: 20, margin: 16 },
   headerLeft: {
     marginLeft: 5,
     borderColor: "#ddd",

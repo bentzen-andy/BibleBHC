@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     height: 40,
     margin: 4,
   },
-  chapterText: { fontSize: 24 },
+  chapterText: { fontSize: 16 },
 });
 
 export default BibleChapterList;
