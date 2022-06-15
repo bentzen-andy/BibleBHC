@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 
 const PreviewImage = ({ navigation, capturedImage, setPreviewVisible }) => {
   const savePhoto = async () => {
@@ -18,17 +19,29 @@ const PreviewImage = ({ navigation, capturedImage, setPreviewVisible }) => {
       style={styles.container}
     >
       <View style={styles.buttonContainer}>
-        <View style={styles.buttonRow}>
-          <TouchableOpacity
-            onPress={() => setPreviewVisible(false)}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Re-take</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={savePhoto} style={styles.button}>
-            <Text style={styles.buttonText}>save photo</Text>
-          </TouchableOpacity>
-        </View>
+        {/* <Viewxxx style={styles.buttonRow}> */}
+        <TouchableOpacity
+          onPress={() => setPreviewVisible(false)}
+          style={styles.button}
+        >
+          {/* <Text style={styles.buttonText}>Re-take</Text> */}
+          <AntDesign
+            name="closecircle"
+            size={48}
+            color="#fff"
+            style={{ margin: -20 }}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={savePhoto} style={styles.button}>
+          {/* <Text style={styles.buttonText}>Save photo</Text> */}
+          <AntDesign
+            name="checkcircle"
+            size={48}
+            color="#fff"
+            style={{ margin: -20 }}
+          />
+        </TouchableOpacity>
+        {/* </Viewxxx> */}
       </View>
     </ImageBackground>
   );
@@ -37,21 +50,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+
   buttonContainer: {
     flex: 1,
-    flexDirection: "column",
-    padding: 15,
-    justifyContent: "flex-end",
+    backgroundColor: "transparent",
+    flexDirection: "row",
+    marginBottom: 40,
   },
   buttonRow: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
   button: {
-    width: 130,
-    height: 40,
+    flex: 1,
+    alignSelf: "flex-end",
     alignItems: "center",
-    borderRadius: 4,
   },
   buttonText: {
     color: "#fff",

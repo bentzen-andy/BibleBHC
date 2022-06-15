@@ -12,6 +12,7 @@ import {
 import Toast from "react-native-root-toast";
 import { storeQuestion } from "../../helpers/fb-questions";
 import { storeImage } from "../../helpers/fb-images";
+import { AntDesign } from "@expo/vector-icons";
 
 const QuestionForm = ({ navigation, route }) => {
   const [enteredQuestion, setEnteredQuestion] = useState("");
@@ -26,6 +27,7 @@ const QuestionForm = ({ navigation, route }) => {
 
   function clearInput() {
     setEnteredQuestion("");
+    setValidationMsg("");
     setSavedImage(null);
     Keyboard.dismiss();
   }
@@ -71,8 +73,6 @@ const QuestionForm = ({ navigation, route }) => {
           />
           <Text style={styles.inputError}>{validationMsg}</Text>
 
-          <Text>{savedImage && savedImage.uri.split("/").pop()}</Text>
-
           <View style={styles.buttonRows}>
             <View style={styles.buttonTopRow}>
               <TouchableOpacity
@@ -93,6 +93,21 @@ const QuestionForm = ({ navigation, route }) => {
                 <Text style={styles.buttonText}>Submit</Text>
               </TouchableOpacity>
             </View>
+          </View>
+
+          <View style={styles.attachmentImg}>
+            {savedImage && (
+              <AntDesign
+                name="picture"
+                size={48}
+                color="black"
+                style={{ textAlign: "right" }}
+              />
+            )}
+
+            {savedImage && (
+              <Text style={{ textAlign: "right" }}>Image attached</Text>
+            )}
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -120,7 +135,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignContent: "flex-end",
-    // marginBottom: 300,
     textAlign: "right",
   },
   buttonTopRow: {
@@ -128,19 +142,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     textAlign: "right",
-    // marginLeft: 20,
   },
   buttonSecondRow: {
-    flex: 7,
+    flex: 1,
     flexDirection: "row",
     justifyContent: "flex-end",
     textAlign: "right",
   },
+  attachmentImg: { flex: 2.5 },
   cancel: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    // marginLeft: 30,
     marginRight: 10,
     marginVertical: 20,
     backgroundColor: "#555",
@@ -178,14 +191,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 });
-
-// style={{
-//   height: 40,
-//   width: 160,
-//   backgroundColor: "#333",
-//   flex: 1,
-//   justifyContent: "center",
-//   alignItems: "center",
-// }}
 
 export default QuestionForm;

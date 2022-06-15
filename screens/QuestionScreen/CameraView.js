@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import PreviewImage from "./PreviewImage";
 import { Camera, CameraType } from "expo-camera";
+import { AntDesign } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 const CameraView = ({ navigation, route }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -56,10 +58,20 @@ const CameraView = ({ navigation, route }) => {
                 );
               }}
             >
-              <Text style={styles.text}> Flip </Text>
+              {/* <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  alignItems: "flex-end",
+                }}
+              > */}
+              {/* <Text style={styles.text}>Flip</Text> */}
+              <AntDesign name="retweet" size={48} color="#fff" />
+              {/* </View> */}
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={takePicture}>
-              <Text style={styles.text}> [TAKE PICTURE] </Text>
+              {/* <Text style={styles.text}> [TAKE PICTURE] </Text> */}
+              <Feather name="aperture" size={48} color="#fff" />
             </TouchableOpacity>
           </View>
         </Camera>
@@ -88,7 +100,8 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 18,
-    color: "white",
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
 
