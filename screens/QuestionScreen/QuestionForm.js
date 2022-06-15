@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Keyboard,
@@ -11,24 +11,35 @@ import {
 } from "react-native";
 import Toast from "react-native-root-toast";
 import { storeQuestion } from "../../helpers/fb-questions";
+import { storeImage } from "../../helpers/fb-images";
 
 const QuestionForm = ({ navigation, route }) => {
   const [enteredQuestion, setEnteredQuestion] = useState("");
   const [validationMsg, setValidationMsg] = useState("");
+  const [savedImage, setSavedImage] = useState(null);
 
-  const clearInput = () => {
+  useEffect(() => {
+    if (route.params) {
+      setSavedImage(route.params);
+    }
+  }, [route?.params]);
+
+  function clearInput() {
     setEnteredQuestion("");
+    setSavedImage(null);
     Keyboard.dismiss();
-  };
+  }
 
-  const handleSubmit = () => {
+  function handleSubmit() {
     if (enteredQuestion === "") {
       setValidationMsg("Entry cannot be blank.");
       return;
     } else {
       setValidationMsg("");
     }
-    storeQuestion(enteredQuestion);
+
+    const imageId = savedImage ? savedImage.uri.split("/").pop() : "n/a";
+    storeQuestion({ enteredQuestion, imageId });
     setEnteredQuestion("");
     Keyboard.dismiss();
     Toast.show("Your question has been submitted!", {
@@ -36,14 +47,18 @@ const QuestionForm = ({ navigation, route }) => {
       animation: true,
       hideOnPress: true,
     });
-  };
+    if (savedImage) {
+      storeImage(savedImage, imageId);
+    }
+    setSavedImage(null);
+  }
 
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={{ height: "100%", margin: 20 }}>
           <Text style={styles.text}>
-            Ask a question about life, faith, or anything!{" "}
+            Ask a question about life, faith, or anything!
           </Text>
           <TextInput
             style={styles.input}
@@ -55,6 +70,8 @@ const QuestionForm = ({ navigation, route }) => {
             onChangeText={setEnteredQuestion}
           />
           <Text style={styles.inputError}>{validationMsg}</Text>
+
+          <Text>{savedImage && savedImage.uri.split("/").pop()}</Text>
 
           <View style={styles.buttonRows}>
             <View style={styles.buttonTopRow}>

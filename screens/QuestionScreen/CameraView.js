@@ -21,7 +21,7 @@ const CameraView = ({ navigation, route }) => {
   async function takePicture() {
     const photo = await cameraRef.current.takePictureAsync({
       quality: 0.7,
-      base64: true,
+      // base64: true,
     });
     setPreviewVisible(true);
     setCapturedImage(photo);
@@ -41,6 +41,7 @@ const CameraView = ({ navigation, route }) => {
         <PreviewImage
           capturedImage={capturedImage}
           setPreviewVisible={setPreviewVisible}
+          navigation={navigation}
         />
       )}
 

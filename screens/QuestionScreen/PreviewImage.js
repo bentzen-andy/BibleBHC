@@ -6,22 +6,10 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
 
-const PreviewImage = ({ capturedImage, setPreviewVisible }) => {
+const PreviewImage = ({ navigation, capturedImage, setPreviewVisible }) => {
   const savePhoto = async () => {
-    const storage = getStorage();
-    const uri = capturedImage.uri;
-    const imageName = capturedImage.uri.split("/").pop();
-
-    const response = await fetch(uri);
-    const blob = await response.blob();
-
-    const storageRef = ref(storage, `QuestionScreenUploads/${imageName}`);
-
-    uploadBytes(storageRef, blob).then((snapshot) => {
-      console.log("Uploaded a blob or file!");
-    });
+    navigation.navigate("QuestionForm", capturedImage);
   };
 
   return (
