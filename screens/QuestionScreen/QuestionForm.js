@@ -14,6 +14,7 @@ import { storeQuestion } from "../../helpers/fb-questions";
 
 const QuestionForm = ({ navigation, route }) => {
   const [enteredQuestion, setEnteredQuestion] = useState("");
+  const [validationMsg, setValidationMsg] = useState("");
 
   const clearInput = () => {
     setEnteredQuestion("");
@@ -21,6 +22,12 @@ const QuestionForm = ({ navigation, route }) => {
   };
 
   const handleSubmit = () => {
+    if (enteredQuestion === "") {
+      setValidationMsg("Entry cannot be blank.");
+      return;
+    } else {
+      setValidationMsg("");
+    }
     storeQuestion(enteredQuestion);
     setEnteredQuestion("");
     Keyboard.dismiss();
@@ -30,10 +37,6 @@ const QuestionForm = ({ navigation, route }) => {
       hideOnPress: true,
     });
   };
-
-  function validate(msg) {
-    return msg === "" ? "Entry cannot be blank." : "";
-  }
 
   return (
     <View style={styles.container}>
@@ -49,10 +52,9 @@ const QuestionForm = ({ navigation, route }) => {
             autoCorrect={true}
             numberOfLines={8}
             multiline
-            // errorStyle={styles.inputError}
-            // errorMessage={validate(enteredQuestion)}
             onChangeText={setEnteredQuestion}
           />
+          <Text style={styles.inputError}>{validationMsg}</Text>
 
           <View style={styles.buttonRows}>
             <View style={styles.buttonTopRow}>
@@ -62,7 +64,7 @@ const QuestionForm = ({ navigation, route }) => {
                 }}
                 style={styles.submitPhotoButton}
               >
-                <Text style={styles.buttonText}>Upload Photo</Text>
+                <Text style={styles.buttonText}>Attach Photo</Text>
               </TouchableOpacity>
             </View>
 
@@ -92,6 +94,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     fontSize: 18,
+  },
+  inputError: {
+    color: "#c45",
+    fontWeight: "bold",
   },
   buttonRows: {
     flex: 1,
