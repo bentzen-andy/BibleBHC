@@ -6,9 +6,9 @@ import ReadingPlanReadings from "./ReadingPlanReadings";
 import ReadingPlanDay from "./ReadingPlanDay";
 import ReadScreen from "../ReadScreen";
 
-const Stack = createNativeStackNavigator();
-
 const PlanScreen = ({ navigation, route }) => {
+  const Stack = createNativeStackNavigator();
+
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
