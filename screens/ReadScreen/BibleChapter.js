@@ -10,7 +10,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-root-toast";
 import { AntDesign } from "@expo/vector-icons";
-import { ESV_API_KEY } from "../../api/esv-credentials";
+import { ESV_API_KEY } from "../../helpers/esv-credentials";
 import { BIBLE } from "../../data/bible";
 
 // This component displays the Bible text, and provides a few buttons
