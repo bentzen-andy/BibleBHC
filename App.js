@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { initDB } from "./helpers/fb-init";
+
 import ReadScreen from "./screens/ReadScreen";
 import PlanScreen from "./screens/PlanScreen";
 import QuestionScreen from "./screens/QuestionScreen";

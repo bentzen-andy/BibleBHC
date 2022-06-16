@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import PreviewImage from "./PreviewImage";
 import { Camera, CameraType } from "expo-camera";
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+
+import PreviewImage from "./PreviewImage";
 
 const CameraView = ({ navigation, route }) => {
   const [hasPermission, setHasPermission] = useState(null);

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, View, Dimensions } from "react-native";
+import BottomSheet from "react-native-simple-bottom-sheet";
+
 import BibleChapter from "./BibleChapter";
 import BibleBookList from "./BibleBookList";
-
-import BottomSheet from "react-native-simple-bottom-sheet";
 
 const ReadScreen = ({ navigation, route }) => {
   const [book, setBook] = useState("Genesis");

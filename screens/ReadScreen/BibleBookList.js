@@ -1,9 +1,8 @@
 import React from "react";
 import { Text, View, FlatList, StyleSheet } from "react-native";
+import { BIBLE } from "../../data/bible";
 
 import BibleChapterList from "./BibleChapterList";
-
-import { BIBLE } from "../../data/bible";
 
 const BibleBookList = ({ setBook, setChapter, panelRef }) => {
   const renderBook = ({ item }) => {

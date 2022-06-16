@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
-import ReadingPlanList from "./ReadingPlanList";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
 import ReadingPlanReadings from "./ReadingPlanReadings";
+import ReadingPlanList from "./ReadingPlanList";
 import ReadingPlanDay from "./ReadingPlanDay";
 import ReadScreen from "../ReadScreen";
 

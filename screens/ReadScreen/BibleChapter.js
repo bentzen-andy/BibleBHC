@@ -9,9 +9,7 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-root-toast";
-
 import { AntDesign } from "@expo/vector-icons";
-
 import { ESV_API_KEY } from "../../api/esv-credentials";
 import { BIBLE } from "../../data/bible";
 

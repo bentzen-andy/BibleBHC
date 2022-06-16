@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-  Image,
-} from "react-native";
+import { StyleSheet, TouchableOpacity, FlatList, Image } from "react-native";
 import { ListItem } from "react-native-elements";
-import FlatListItemSeparator from "./FlatListItemSeparator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setupReadingPlanListener } from "../../helpers/fb-reading-plans";
+
+import FlatListItemSeparator from "./FlatListItemSeparator";
 
 const ReadingPlanList = ({ navigation }) => {
   const [plans, setPlans] = useState([]);
@@ -36,18 +31,6 @@ const ReadingPlanList = ({ navigation }) => {
       console.log(err);
     }
   }
-
-  // const FlatListItemSeparator = () => {
-  //   return (
-  //     <View
-  //       style={{
-  //         height: 1,
-  //         width: "100%",
-  //         backgroundColor: "#000",
-  //       }}
-  //     />
-  //   );
-  // };
 
   const renderPlan = ({ index, item }) => {
     const ICONS = {

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
-import FlatListItemSeparator from "./FlatListItemSeparator";
 import { CheckBox, ListItem } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import FlatListItemSeparator from "./FlatListItemSeparator";
 
 const ReadingPlanReadings = ({ navigation, route }) => {
   const readings = route.params.item;
@@ -41,18 +42,6 @@ const ReadingPlanReadings = ({ navigation, route }) => {
       console.log(err);
     }
   }
-
-  // const FlatListItemSeparator = () => {
-  //   return (
-  //     <View
-  //       style={{
-  //         height: 1,
-  //         width: "100%",
-  //         backgroundColor: "#000",
-  //       }}
-  //     />
-  //   );
-  // };
 
   const renderReading = ({ index, item }) => {
     return (
