@@ -15,4 +15,7 @@ web-build/
 
 fb-credentials.js
 api
+esv-credentials.js
 dummy-data.js
+google-services.json
+GoogleService-Info.plist
