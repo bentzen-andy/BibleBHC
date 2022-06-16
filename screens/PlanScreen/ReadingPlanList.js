@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, FlatList, Image } from "react-native";
 import { ListItem } from "react-native-elements";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setupReadingPlanListener } from "../../helpers/fb-reading-plans";
 
 import FlatListItemSeparator from "./FlatListItemSeparator";
@@ -14,23 +13,6 @@ const ReadingPlanList = ({ navigation }) => {
       setPlans(items);
     });
   }, []);
-
-  useEffect(() => {
-    // check in local storage if three is any record of the user completing any readings
-    let completedReadings = plans.map((plan) => {
-      return { id: plan.id, completedReadings: [] };
-    });
-    storeCompletedReadings(completedReadings);
-  }, [plans]);
-
-  async function storeCompletedReadings(value) {
-    try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem("@CompletedReadings", jsonValue);
-    } catch (err) {
-      console.log(err);
-    }
-  }
 
   const renderPlan = ({ index, item }) => {
     const ICONS = {
