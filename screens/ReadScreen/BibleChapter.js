@@ -31,7 +31,7 @@ const BibleChapter = ({
   planId,
   route,
   navigation,
-  panelRef,
+  setIsVisible,
 }) => {
   const [passage, setPassage] = useState("");
   const [completedReadings, setCompletedReadings] = useState([]);
@@ -64,7 +64,7 @@ const BibleChapter = ({
           )}
           {!assignedReadings && (
             <View style={styles.headerLeft}>
-              <TouchableOpacity onPress={() => panelRef.current.togglePanel()}>
+              <TouchableOpacity onPress={() => setIsVisible(true)}>
                 <Text style={styles.headerLeftText}>
                   {book} {chapter}
                 </Text>

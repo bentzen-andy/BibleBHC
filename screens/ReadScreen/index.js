@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
-import BottomSheet from "react-native-simple-bottom-sheet";
+import { StyleSheet, Text, View, Dimensions, SafeAreaView } from "react-native";
+import { BottomSheet, Button, ListItem } from "react-native-elements";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { AntDesign } from "@expo/vector-icons";
+import { BIBLE } from "../../data/bible";
+
+// import BottomSheet from "react-native-simple-bottom-sheet";
 
 import BibleChapter from "./BibleChapter";
 import BibleBookList from "./BibleBookList";
@@ -20,8 +25,26 @@ const ReadScreen = ({ navigation, route }) => {
   const [chapter, setChapter] = useState("1");
   const [assignedReadings, setAssignedReadings] = useState(null);
   const [planId, setPlanId] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
 
-  const panelRef = useRef(null);
+  const list = BIBLE.map((item) => {
+    return {
+      title: item.book,
+      containerStyle: { backgroundColor: "#fff" },
+      titleStyle: { color: "#000" },
+      onPress: () => console.log(item.book),
+    };
+  });
+
+  list.unshift({
+    title: <AntDesign name="close" size={24} color="black" />,
+    containerStyle: { backgroundColor: "#eee", borderBottomWidth: 1 },
+    titleStyle: { color: "#000" },
+    onPress: () => setIsVisible(false),
+  });
+
+  // const panelRef = useRef(null);
+  // type BottomSheetComponentProps = {};
 
   // Gets the book/chapter/plan info if the user navigated here from
   // the PlanScreen.
@@ -37,7 +60,7 @@ const ReadScreen = ({ navigation, route }) => {
   }, [route?.params]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.bibleText}>
         <BibleChapter
           book={book}
@@ -47,11 +70,24 @@ const ReadScreen = ({ navigation, route }) => {
           setBook={setBook}
           setChapter={setChapter}
           planId={planId}
-          panelRef={panelRef}
+          setIsVisible={setIsVisible}
         />
       </View>
       <View>
-        <BottomSheet
+        <BottomSheet isVisible={isVisible} style={{ marginTop: 50 }}>
+          {list.map((l, i) => (
+            <ListItem
+              key={i}
+              containerStyle={l.containerStyle}
+              onPress={l.onPress}
+            >
+              <ListItem.Content>
+                <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+          ))}
+        </BottomSheet>
+        {/* <BottomSheet
           isOpen={false}
           sliderMinHeight={0}
           sliderMaxHeight={Dimensions.get("window").height * 0.8}
@@ -62,9 +98,9 @@ const ReadScreen = ({ navigation, route }) => {
             setChapter={setChapter}
             panelRef={panelRef}
           />
-        </BottomSheet>
+        </BottomSheet> */}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
