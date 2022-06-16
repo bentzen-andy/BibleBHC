@@ -20,6 +20,7 @@ const ReadingPlanList = ({ navigation }) => {
     const ICONS = {
       book: require("../../assets/book.jpg"),
       cross: require("../../assets/cross.jpg"),
+      stress: require("../../assets/stress.jpg"),
     };
     return (
       <TouchableOpacity

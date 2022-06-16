@@ -1,5 +1,11 @@
 import React from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 
 // This component is a listing of chapter buttons that the user can
 // tap on the call up a new chapter.
@@ -15,22 +21,24 @@ const BibleChapterList = ({
   if (!expanded) return <View />;
 
   return (
-    <View style={styles.chapters}>
-      {[...Array(numChapters)].fill("").map((item, i) => (
-        <TouchableOpacity
-          key={`${book}${i}`}
-          onPress={() => {
-            setBook(book);
-            setChapter(i + 1);
-            setIsVisible(false);
-          }}
-        >
-          <View style={styles.chapterContainer}>
-            <Text style={styles.chapterText}> {i + 1}</Text>
-          </View>
-        </TouchableOpacity>
-      ))}
-    </View>
+    <ScrollView>
+      <View style={styles.chapters}>
+        {[...Array(numChapters)].fill("").map((item, i) => (
+          <TouchableOpacity
+            key={`${book}${i}`}
+            onPress={() => {
+              setBook(book);
+              setChapter(i + 1);
+              setIsVisible(false);
+            }}
+          >
+            <View style={styles.chapterContainer}>
+              <Text style={styles.chapterText}> {i + 1}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </ScrollView>
   );
 };
 
@@ -50,8 +58,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderWidth: 1,
     borderRadius: 3,
-    width: 60,
-    height: 60,
+    width: 30,
+    height: 30,
     margin: 6,
   },
   chapterText: { fontSize: 16 },

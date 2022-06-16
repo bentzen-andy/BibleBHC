@@ -19,3 +19,4 @@ esv-credentials.js
 dummy-data.js
 google-services.json
 GoogleService-Info.plist
+*-credentials.js
