@@ -38,12 +38,27 @@ const BibleChapter = ({
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <View style={styles.headerLeft}>
-          <TouchableOpacity onPress={() => panelRef.current.togglePanel()}>
-            <Text style={styles.headerLeftText}>
-              {book} {chapter}
-            </Text>
-          </TouchableOpacity>
+        <View>
+          {assignedReadings && (
+            <View style={styles.headerLeftPlanReading}>
+              <Text style={styles.headerLeftText}>
+                Plan Reading: {getPlanReadingIndex() + 1} of{" "}
+                {assignedReadings.length}
+              </Text>
+              <Text style={styles.headerLeftText}>
+                {book} {chapter}
+              </Text>
+            </View>
+          )}
+          {!assignedReadings && (
+            <View style={styles.headerLeft}>
+              <TouchableOpacity onPress={() => panelRef.current.togglePanel()}>
+                <Text style={styles.headerLeftText}>
+                  {book} {chapter}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       ),
     });
@@ -73,7 +88,7 @@ const BibleChapter = ({
           item: assignedReadings,
           planId: planId,
         });
-      }, 1500);
+      }, 2000);
     }
   }, [completedReadings]);
 
@@ -89,6 +104,8 @@ const BibleChapter = ({
       if (index < 0) index++;
       let prevBook = assignedReadings[index].book;
       let prevChapter = assignedReadings[index].chapter;
+
+      setCompletedReading(`${planId}${book}${chapter}`);
       setBook(prevBook);
       setChapter(prevChapter);
       lookUpPassage(prevBook, prevChapter);
@@ -131,11 +148,11 @@ const BibleChapter = ({
       let nextBook = assignedReadings[index].book;
       let nextChapter = assignedReadings[index].chapter;
 
+      setCompletedReading(`${planId}${book}${chapter}`);
+      setAssignedReadingCompletion();
       setBook(nextBook);
       setChapter(nextChapter);
       lookUpPassage(nextBook, nextChapter);
-      setCompletedReading(`${planId}${book}${chapter}`);
-      setAssignedReadingCompletion();
       return;
     }
 
@@ -159,6 +176,16 @@ const BibleChapter = ({
     setBook(nextBook);
     setChapter(nextChapter);
     lookUpPassage(nextBook, nextChapter);
+  }
+
+  function getPlanReadingIndex() {
+    let index;
+    assignedReadings.map((item, i) => {
+      if (item.book === book && item.chapter === chapter) {
+        index = i;
+      }
+    });
+    return index;
   }
 
   function hasOnlyOneChapter(book) {
@@ -305,6 +332,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 24,
     backgroundColor: "#ddd",
+  },
+  headerLeftPlanReading: {
+    marginLeft: 5,
+    borderColor: "#fff",
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 24,
+    backgroundColor: "#fff",
   },
   headerLeftText: { fontWeight: "bold" },
 });
