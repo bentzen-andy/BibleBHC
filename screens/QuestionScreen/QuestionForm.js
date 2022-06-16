@@ -56,7 +56,7 @@ const QuestionForm = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={{ height: "100%", margin: 20 }}>
+        <View style={styles.formContainer}>
           <Text style={styles.text}>
             Ask a question about life, faith, or anything!
           </Text>
@@ -99,12 +99,12 @@ const QuestionForm = ({ navigation, route }) => {
                 name="picture"
                 size={48}
                 color="black"
-                style={{ textAlign: "right" }}
+                style={styles.attachmentImgIcon}
               />
             )}
 
             {savedImage && (
-              <Text style={{ textAlign: "right" }}>Image attached</Text>
+              <Text style={styles.attachmentImgText}>Image attached</Text>
             )}
           </View>
         </View>
@@ -115,6 +115,7 @@ const QuestionForm = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: { backgroundColor: "#fff" },
+  formContainer: { height: "100%", margin: 20 },
   text: { fontSize: 24 },
   input: {
     marginTop: 20,
@@ -148,6 +149,8 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   attachmentImg: { flex: 2.5 },
+  attachmentImgIcon: { textAlign: "right" },
+  attachmentImgText: { textAlign: "right" },
   cancel: {
     flex: 1,
     alignItems: "center",

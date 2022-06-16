@@ -26,7 +26,7 @@ const ReadScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <View style={{ height: "100%" }}>
+      <View style={styles.bibleText}>
         <BibleChapter
           book={book}
           chapter={chapter}
@@ -59,5 +59,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
   },
+  bibleText: { height: "100%" },
 });
 export default ReadScreen;

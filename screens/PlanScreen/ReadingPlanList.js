@@ -43,10 +43,7 @@ const ReadingPlanList = ({ navigation }) => {
         onPress={() => navigation.navigate("ReadingPlanDay", item)}
       >
         <ListItem key={index}>
-          <Image
-            source={ICONS[item.planImage]}
-            style={{ width: 100, height: 55 }}
-          />
+          <Image source={ICONS[item.planImage]} style={styles.icon} />
           <ListItem.Content>
             <ListItem.Title>{item.planName}</ListItem.Title>
           </ListItem.Content>
@@ -83,6 +80,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     alignSelf: "flex-end",
   },
+  icon: { width: 100, height: 55 },
 });
 
 export default ReadingPlanList;

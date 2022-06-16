@@ -11,7 +11,7 @@ const BibleBookList = ({ setBook, setChapter, panelRef }) => {
         <View>
           <Text style={styles.bibleBookText}>{item.book}</Text>
         </View>
-        <View style={{ flex: 1, flexDirection: "row" }}>
+        <View style={styles.bibleChapterList}>
           <BibleChapterList
             book={item.book}
             numChapters={item.numChapters}
@@ -37,6 +37,7 @@ const BibleBookList = ({ setBook, setChapter, panelRef }) => {
 
 const styles = StyleSheet.create({
   bibleBookText: { fontSize: 18 },
+  bibleChapterList: { flex: 1, flexDirection: "row" },
 });
 
 export default BibleBookList;

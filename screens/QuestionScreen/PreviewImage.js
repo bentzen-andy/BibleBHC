@@ -26,7 +26,7 @@ const PreviewImage = ({ navigation, capturedImage, setPreviewVisible }) => {
             name="closecircle"
             size={48}
             color="#fff"
-            style={{ margin: -20 }}
+            style={styles.cameraButton}
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={savePhoto} style={styles.button}>
@@ -34,7 +34,7 @@ const PreviewImage = ({ navigation, capturedImage, setPreviewVisible }) => {
             name="checkcircle"
             size={48}
             color="#fff"
-            style={{ margin: -20 }}
+            style={styles.cameraButton}
           />
         </TouchableOpacity>
       </View>
@@ -65,5 +65,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 20,
   },
+  cameraButton: { margin: -20 },
 });
 export default PreviewImage;
