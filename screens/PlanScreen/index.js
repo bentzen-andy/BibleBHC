@@ -15,6 +15,7 @@ const PlanScreen = ({ navigation }) => {
     });
   }, []);
 
+  // Routes for the Bible-reading plan screens
   return (
     <Stack.Navigator initialRouteName="ReadingPlanList">
       <Stack.Screen

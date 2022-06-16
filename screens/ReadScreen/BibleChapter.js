@@ -13,6 +13,15 @@ import { AntDesign } from "@expo/vector-icons";
 import { ESV_API_KEY } from "../../api/esv-credentials";
 import { BIBLE } from "../../data/bible";
 
+// This component displays the Bible text, and provides a few buttons
+// to navigate to other chapters.
+
+// This component basically handles three different things:
+// 1. It calls up to the ESV API to go get the requested Bible passage.
+// 2. It handles three buttons to allow the user to change to a new book/chapter.
+// 3. It understands whether or not the user is currently working on an assigned
+//    reading via the PlanScreen. If so, it uses a few extra functions to update
+//    the reader's progress by tracking the completed readings in local storage.
 const BibleChapter = ({
   book,
   chapter,
@@ -33,6 +42,11 @@ const BibleChapter = ({
   const buttonLeftRef = useRef(null);
   const buttonRightRef = useRef(null);
 
+  // Places button / text at the header
+  // If the user is currently reading as part of the reading plan,
+  // then there is not button to change to a different chapter. Chapter
+  // navigations are handled by the "next" and "prev" buttons the bottom of
+  // the screen.
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -62,6 +76,7 @@ const BibleChapter = ({
     });
   });
 
+  // Looks up the passage (conditionally, based on where the component routed from).
   useEffect(() => {
     if (route?.params.book && route?.params.chapter) {
       lookUpPassage(route.params.book, route.params.chapter);
@@ -70,6 +85,8 @@ const BibleChapter = ({
     }
   }, [book, chapter, route?.params]);
 
+  // Checks if the user has finished their assigned readings (if they are currently
+  // in a reading plan).
   useEffect(() => {
     if (
       assignedReadings &&
@@ -90,6 +107,7 @@ const BibleChapter = ({
     }
   }, [completedReadings]);
 
+  // See comment for "advanceRight()" This component navigates back instead of forward.
   function advanceLeft() {
     if (assignedReadings) {
       let index;
@@ -116,7 +134,7 @@ const BibleChapter = ({
     let prevBook;
     let prevChapter;
 
-    // if last chapter in book or in Bible
+    // if first chapter in book or in Bible
     if (book === "Genesis" && chapterNumber === 1) {
       prevBook = "Revelation";
       prevChapter = 22;
@@ -133,6 +151,9 @@ const BibleChapter = ({
     lookUpPassage(prevBook, prevChapter);
   }
 
+  // Handles the button to display the next chapter.
+  // Note: if a reading plan is active, this will bring the reader to the next chapter
+  // in the reading plan, not necessarily the chapter that follows the current chapter.
   function advanceRight() {
     if (assignedReadings) {
       let index;
@@ -176,6 +197,9 @@ const BibleChapter = ({
     lookUpPassage(nextBook, nextChapter);
   }
 
+  // The current reading plan will be stored in an array. This helper function
+  // determines which index of the reading plan array we are currently on based
+  // on which book/chapter is actively displayed.
   function getPlanReadingIndex() {
     let index;
     assignedReadings.map((item, i) => {
@@ -186,10 +210,14 @@ const BibleChapter = ({
     return index;
   }
 
+  // The ESV handles single-chapter books differently for it's required API
+  // query string. You have to omit chapter argument in the request, otherwise
+  // it will only give you the first verse of chapter 1.
   function hasOnlyOneChapter(book) {
     return BIBLE.filter((item) => item.book === book)[0].numChapters === 1;
   }
 
+  // Pulls down the bible text from the API.
   function lookUpPassage(book, chapter) {
     setIsLoading(true);
 
@@ -216,6 +244,8 @@ const BibleChapter = ({
     scrollRef.current.scrollTo({ x: 0, y: 0, animated: true });
   }
 
+  // Stores a reading ID in local storage so that the plan checklist
+  // can show it as read
   async function setCompletedReading(value) {
     try {
       await AsyncStorage.setItem(`@${value}`, value);
@@ -224,6 +254,7 @@ const BibleChapter = ({
     }
   }
 
+  // Checks in local storage whether a particular reading has been read.
   async function getStoredValue(value, action) {
     try {
       let val = await AsyncStorage.getItem(`@${value}`);
@@ -233,6 +264,9 @@ const BibleChapter = ({
     }
   }
 
+  // Checks all the daily readings in the current plan to see which of they have
+  // already been read. It then stores the completed readings in the component's state
+  // via a callback function.
   function setAssignedReadingCompletion() {
     let readingIds = assignedReadings.map(
       (item) => `${planId}${item.book}${item.chapter}`
@@ -245,9 +279,7 @@ const BibleChapter = ({
           // keep only unique values
           arr = [...new Set(arr)];
           // remove null values
-          arr = arr.filter((element) => {
-            return element !== null;
-          });
+          arr = arr.filter((element) => element !== null);
           return arr;
         });
       })

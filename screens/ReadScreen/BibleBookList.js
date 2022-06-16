@@ -4,6 +4,9 @@ import { BIBLE } from "../../data/bible";
 
 import BibleChapterList from "./BibleChapterList";
 
+// This component is a simple listing of the books of the Bible.
+// This list of books goes in a slider that the user can summon
+// by pressing a button.
 const BibleBookList = ({ setBook, setChapter, panelRef }) => {
   const renderBook = ({ item }) => {
     return (

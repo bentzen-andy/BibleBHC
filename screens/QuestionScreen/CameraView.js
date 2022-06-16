@@ -6,7 +6,9 @@ import { Feather } from "@expo/vector-icons";
 
 import PreviewImage from "./PreviewImage";
 
-const CameraView = ({ navigation, route }) => {
+// This component allows the user to take a picture that can
+// then be attached and sent along with their question.
+const CameraView = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(CameraType.back);
   const [previewVisible, setPreviewVisible] = useState(false);
@@ -14,6 +16,7 @@ const CameraView = ({ navigation, route }) => {
 
   const cameraRef = useRef();
 
+  // Gets permission to use the user's camera.
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -24,7 +27,6 @@ const CameraView = ({ navigation, route }) => {
   async function takePicture() {
     const photo = await cameraRef.current.takePictureAsync({
       quality: 0.7,
-      // base64: true,
     });
     setPreviewVisible(true);
     setCapturedImage(photo);

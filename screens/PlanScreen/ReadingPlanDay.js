@@ -4,6 +4,8 @@ import { ListItem } from "react-native-elements";
 
 import FlatListItemSeparator from "./FlatListItemSeparator";
 
+// This component is a list of Day items that the user can tap on.
+// Each Day item brings you do the assigned readings for that day.
 const ReadingPlanDay = ({ navigation, route }) => {
   const { readings, id } = route.params;
 

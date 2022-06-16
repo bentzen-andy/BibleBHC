@@ -1,6 +1,8 @@
 import React from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
+// This component is a listing of chapter buttons that the user can
+// tap on the call up a new chapter.
 const BibleChapterList = ({
   book,
   numChapters,

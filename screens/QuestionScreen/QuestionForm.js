@@ -13,11 +13,15 @@ import { storeQuestion } from "../../helpers/fb-questions";
 import { storeImage } from "../../helpers/fb-images";
 import { AntDesign } from "@expo/vector-icons";
 
+// This component gives the user a form to submit anonymous
+// questions directly to our church's youth pastor.
 const QuestionForm = ({ navigation, route }) => {
   const [enteredQuestion, setEnteredQuestion] = useState("");
   const [validationMsg, setValidationMsg] = useState("");
   const [savedImage, setSavedImage] = useState(null);
 
+  // Checks and handles a photo in the case that the user
+  // just saved an image.
   useEffect(() => {
     if (route.params) {
       setSavedImage(route.params);
@@ -31,6 +35,10 @@ const QuestionForm = ({ navigation, route }) => {
     Keyboard.dismiss();
   }
 
+  // Sends the question and the image along to the server.
+  // Note that the image and question must be stored separately
+  // due to Firebase requirements, but they are linked by the
+  // same ID, which is taken from the image's assigned name.
   function handleSubmit() {
     if (enteredQuestion === "") {
       setValidationMsg("Entry cannot be blank.");

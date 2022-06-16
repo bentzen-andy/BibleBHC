@@ -5,6 +5,16 @@ import BottomSheet from "react-native-simple-bottom-sheet";
 import BibleChapter from "./BibleChapter";
 import BibleBookList from "./BibleBookList";
 
+// This component is the heart of the application. This is the Bible
+// screen, with the text in the main part of the screen and a button
+// in the corner to look up a book/chapter.
+
+// The user can route to this screen via the Tab navigator at the root
+// of the app, or via the PlanScreen if the user picks one of the daily
+// readings. If the user navigate by way of the Bible tab, then it will
+// default to page 1 of the Bible (Genesis ch 1). Otherwise if they come
+// from the PlanScreen, then this component will look up that reading's
+// book/chapter via the navigation object.
 const ReadScreen = ({ navigation, route }) => {
   const [book, setBook] = useState("Genesis");
   const [chapter, setChapter] = useState("1");
@@ -13,6 +23,8 @@ const ReadScreen = ({ navigation, route }) => {
 
   const panelRef = useRef(null);
 
+  // Gets the book/chapter/plan info if the user navigated here from
+  // the PlanScreen.
   useEffect(() => {
     if (route.params?.book && route.params?.chapter) {
       setBook(route.params.book);

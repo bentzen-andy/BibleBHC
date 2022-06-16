@@ -9,7 +9,10 @@ import ReadScreen from "./screens/ReadScreen";
 import PlanScreen from "./screens/PlanScreen";
 import QuestionScreen from "./screens/QuestionScreen";
 
+// Root of the application
+// Handles routing for tabs. Each tab may have multiple screens.
 export default function App() {
+  // Do not remove these refs! They are used for Firebase analytics.
   const navigationRef = useRef();
   const routeNameRef = useRef();
 
@@ -29,6 +32,7 @@ export default function App() {
       onReady={() =>
         (routeNameRef.current = navigationRef.current.getCurrentRoute().name)
       }
+      // Used for Firebase analytics.
       onStateChange={async () => {
         const previousRouteName = routeNameRef.current;
         const currentRouteName = navigationRef.current.getCurrentRoute().name;

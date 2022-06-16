@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
+// This component give the user the option to review a photo before saving.
 const PreviewImage = ({ navigation, capturedImage, setPreviewVisible }) => {
   async function savePhoto() {
     navigation.navigate("QuestionForm", capturedImage);

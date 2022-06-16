@@ -5,9 +5,11 @@ import { setupReadingPlanListener } from "../../helpers/fb-reading-plans";
 
 import FlatListItemSeparator from "./FlatListItemSeparator";
 
+// This component is a list of reading plans that the user is subscribed to
 const ReadingPlanList = ({ navigation }) => {
   const [plans, setPlans] = useState([]);
 
+  // Pulls all the reading plans down from the server.
   useEffect(() => {
     setupReadingPlanListener((items) => {
       setPlans(items);
@@ -19,7 +21,6 @@ const ReadingPlanList = ({ navigation }) => {
       book: require("../../assets/book.jpg"),
       cross: require("../../assets/cross.jpg"),
     };
-
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate("ReadingPlanDay", item)}
