@@ -9,7 +9,11 @@ const BibleChapterList = ({
   setBook,
   setChapter,
   setIsVisible,
+  expanded,
 }) => {
+  // Optimization to keep the slider from rendering every chapter button
+  if (!expanded) return <View />;
+
   return (
     <View style={styles.chapters}>
       {[...Array(numChapters)].fill("").map((item, i) => (
@@ -36,17 +40,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     backgroundColor: "#fff",
+    margin: 10,
   },
   chapterContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "#000",
+    borderColor: "#999",
     backgroundColor: "#fff",
     borderWidth: 1,
-    width: 40,
-    height: 40,
-    margin: 4,
+    borderRadius: 3,
+    width: 60,
+    height: 60,
+    margin: 6,
   },
   chapterText: { fontSize: 16 },
 });

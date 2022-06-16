@@ -1,9 +1,6 @@
-import react, { useState } from "react";
-import { StyleSheet, Text, View, Dimensions, SafeAreaView } from "react-native";
-import { BottomSheet, Button, ListItem } from "react-native-elements";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { AntDesign } from "@expo/vector-icons";
-import { BIBLE } from "../../data/bible";
+import React, { useState } from "react";
+import { ListItem } from "react-native-elements";
+
 import BibleChapterList from "./BibleChapterList";
 
 const Book = ({ book, numChapters, setBook, setChapter, setIsVisible }) => {
@@ -13,7 +10,9 @@ const Book = ({ book, numChapters, setBook, setChapter, setIsVisible }) => {
     <ListItem.Accordion
       content={
         <ListItem.Content>
-          <ListItem.Title>{book}</ListItem.Title>
+          <ListItem.Title style={expanded && { fontWeight: "bold" }}>
+            {book}
+          </ListItem.Title>
         </ListItem.Content>
       }
       containerStyle={{ backgroundColor: "#fff" }}
@@ -28,6 +27,7 @@ const Book = ({ book, numChapters, setBook, setChapter, setIsVisible }) => {
         setBook={setBook}
         setChapter={setChapter}
         setIsVisible={setIsVisible}
+        expanded={expanded}
       />
     </ListItem.Accordion>
   );

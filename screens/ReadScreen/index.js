@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, Text, View, Dimensions, SafeAreaView } from "react-native";
-import { BottomSheet, Button, ListItem } from "react-native-elements";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, SafeAreaView } from "react-native";
+import { BottomSheet, ListItem } from "react-native-elements";
 import { AntDesign } from "@expo/vector-icons";
 import { BIBLE } from "../../data/bible";
 
@@ -53,11 +52,17 @@ const ReadScreen = ({ navigation, route }) => {
         />
       </View>
       <View>
-        <BottomSheet isVisible={isVisible} style={{ marginTop: 50 }}>
+        <BottomSheet
+          isVisible={isVisible}
+          style={{ marginTop: 50, backgroundColor: "#fff" }}
+        >
           <ListItem
             key={0}
             onPress={() => setIsVisible(false)}
-            containerStyle={{ backgroundColor: "#eee", borderBottomWidth: 1 }}
+            containerStyle={{
+              backgroundColor: "#eee",
+              borderBottomWidth: 1,
+            }}
           >
             <ListItem.Content>
               <ListItem.Title>

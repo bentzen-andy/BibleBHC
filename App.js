@@ -8,7 +8,6 @@ import { initDB } from "./helpers/fb-init";
 import ReadScreen from "./screens/ReadScreen";
 import PlanScreen from "./screens/PlanScreen";
 import QuestionScreen from "./screens/QuestionScreen";
-import Test from "./screens/Test";
 
 // Root of the application
 // Handles routing for tabs. Each tab may have multiple screens.
@@ -82,7 +81,6 @@ export default function App() {
           component={QuestionScreen}
           options={{ title: "Ask a Question" }}
         />
-        <Tab.Screen name="Test" component={Test} options={{ title: "Test" }} />
       </Tab.Navigator>
     </NavigationContainer>
   );
