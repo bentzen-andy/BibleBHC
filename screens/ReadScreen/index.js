@@ -5,10 +5,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import { BIBLE } from "../../data/bible";
 
-// import BottomSheet from "react-native-simple-bottom-sheet";
-
+import Book from "./Book";
 import BibleChapter from "./BibleChapter";
-import BibleBookList from "./BibleBookList";
 
 // This component is the heart of the application. This is the Bible
 // screen, with the text in the main part of the screen and a button
@@ -26,25 +24,6 @@ const ReadScreen = ({ navigation, route }) => {
   const [assignedReadings, setAssignedReadings] = useState(null);
   const [planId, setPlanId] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-
-  const list = BIBLE.map((item) => {
-    return {
-      title: item.book,
-      containerStyle: { backgroundColor: "#fff" },
-      titleStyle: { color: "#000" },
-      onPress: () => console.log(item.book),
-    };
-  });
-
-  list.unshift({
-    title: <AntDesign name="close" size={24} color="black" />,
-    containerStyle: { backgroundColor: "#eee", borderBottomWidth: 1 },
-    titleStyle: { color: "#000" },
-    onPress: () => setIsVisible(false),
-  });
-
-  // const panelRef = useRef(null);
-  // type BottomSheetComponentProps = {};
 
   // Gets the book/chapter/plan info if the user navigated here from
   // the PlanScreen.
@@ -75,30 +54,29 @@ const ReadScreen = ({ navigation, route }) => {
       </View>
       <View>
         <BottomSheet isVisible={isVisible} style={{ marginTop: 50 }}>
-          {list.map((l, i) => (
-            <ListItem
-              key={i}
-              containerStyle={l.containerStyle}
-              onPress={l.onPress}
-            >
-              <ListItem.Content>
-                <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
-              </ListItem.Content>
-            </ListItem>
+          <ListItem
+            key={0}
+            onPress={() => setIsVisible(false)}
+            containerStyle={{ backgroundColor: "#eee", borderBottomWidth: 1 }}
+          >
+            <ListItem.Content>
+              <ListItem.Title>
+                <AntDesign name="close" size={24} color="black" />
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+
+          {BIBLE.map((item) => (
+            <Book
+              key={item.book}
+              book={item.book}
+              numChapters={item.numChapters}
+              setBook={setBook}
+              setChapter={setChapter}
+              setIsVisible={setIsVisible}
+            />
           ))}
         </BottomSheet>
-        {/* <BottomSheet
-          isOpen={false}
-          sliderMinHeight={0}
-          sliderMaxHeight={Dimensions.get("window").height * 0.8}
-          ref={(ref) => (panelRef.current = ref)}
-        >
-          <BibleBookList
-            setBook={setBook}
-            setChapter={setChapter}
-            panelRef={panelRef}
-          />
-        </BottomSheet> */}
       </View>
     </SafeAreaView>
   );
