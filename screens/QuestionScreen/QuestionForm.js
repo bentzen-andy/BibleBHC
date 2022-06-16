@@ -38,7 +38,6 @@ const QuestionForm = ({ navigation, route }) => {
     } else {
       setValidationMsg("");
     }
-
     const imageId = savedImage ? savedImage.uri.split("/").pop() : "n/a";
     storeQuestion({ enteredQuestion, imageId });
     setEnteredQuestion("");

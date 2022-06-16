@@ -1,21 +1,22 @@
 import React from "react";
 import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import FlatListItemSeparator from "./FlatListItemSeparator";
 import { ListItem } from "react-native-elements";
 
 const ReadingPlanDay = ({ navigation, route }) => {
   const { readings, id } = route.params;
 
-  FlatListItemSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 1,
-          width: "100%",
-          backgroundColor: "#000",
-        }}
-      />
-    );
-  };
+  // const FlatListItemSeparator = () => {
+  //   return (
+  //     <View
+  //       style={{
+  //         height: 1,
+  //         width: "100%",
+  //         backgroundColor: "#000",
+  //       }}
+  //     />
+  //   );
+  // };
 
   const renderDay = ({ index, item }) => {
     return (

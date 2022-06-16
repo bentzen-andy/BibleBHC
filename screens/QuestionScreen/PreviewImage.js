@@ -8,9 +8,9 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 
 const PreviewImage = ({ navigation, capturedImage, setPreviewVisible }) => {
-  const savePhoto = async () => {
+  async function savePhoto() {
     navigation.navigate("QuestionForm", capturedImage);
-  };
+  }
 
   return (
     <ImageBackground

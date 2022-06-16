@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import FlatListItemSeparator from "./FlatListItemSeparator";
 import { CheckBox, ListItem } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -15,7 +16,7 @@ const ReadingPlanReadings = ({ navigation, route }) => {
     getCompletedReadings(readingIds);
   });
 
-  const getCompletedReadings = async (readingIds) => {
+  async function getCompletedReadings(readingIds) {
     try {
       let arr = [];
       for (const id of readingIds) {
@@ -26,9 +27,9 @@ const ReadingPlanReadings = ({ navigation, route }) => {
     } catch (err) {
       console.log(err);
     }
-  };
+  }
 
-  const toggleCompletedReading = async (value) => {
+  async function toggleCompletedReading(value) {
     try {
       const retrievedVal = await AsyncStorage.getItem(`@${value}`);
       if (retrievedVal != null) {
@@ -39,19 +40,19 @@ const ReadingPlanReadings = ({ navigation, route }) => {
     } catch (err) {
       console.log(err);
     }
-  };
+  }
 
-  FlatListItemSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 1,
-          width: "100%",
-          backgroundColor: "#000",
-        }}
-      />
-    );
-  };
+  // const FlatListItemSeparator = () => {
+  //   return (
+  //     <View
+  //       style={{
+  //         height: 1,
+  //         width: "100%",
+  //         backgroundColor: "#000",
+  //       }}
+  //     />
+  //   );
+  // };
 
   const renderReading = ({ index, item }) => {
     return (

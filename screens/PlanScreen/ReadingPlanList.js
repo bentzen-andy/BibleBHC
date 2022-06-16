@@ -7,6 +7,7 @@ import {
   Image,
 } from "react-native";
 import { ListItem } from "react-native-elements";
+import FlatListItemSeparator from "./FlatListItemSeparator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setupReadingPlanListener } from "../../helpers/fb-reading-plans";
 
@@ -27,26 +28,26 @@ const ReadingPlanList = ({ navigation }) => {
     storeCompletedReadings(completedReadings);
   }, [plans]);
 
-  const storeCompletedReadings = async (value) => {
+  async function storeCompletedReadings(value) {
     try {
       const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem("@CompletedReadings", jsonValue);
     } catch (err) {
       console.log(err);
     }
-  };
+  }
 
-  FlatListItemSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 1,
-          width: "100%",
-          backgroundColor: "#000",
-        }}
-      />
-    );
-  };
+  // const FlatListItemSeparator = () => {
+  //   return (
+  //     <View
+  //       style={{
+  //         height: 1,
+  //         width: "100%",
+  //         backgroundColor: "#000",
+  //       }}
+  //     />
+  //   );
+  // };
 
   const renderPlan = ({ index, item }) => {
     const ICONS = {
