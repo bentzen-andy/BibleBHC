@@ -1,11 +1,4 @@
-import { getDatabase, onValue, push, ref } from "firebase/database";
-
-export function storeReadingPlanItem(item) {
-  // console.log("Writing: ", item);
-  const db = getDatabase();
-  const reference = ref(db, "ReadingPlanData/");
-  push(reference, item);
-}
+import { getDatabase, onValue, ref } from "firebase/database";
 
 export function setupReadingPlanListener(updateFunc) {
   const db = getDatabase();

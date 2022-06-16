@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
-import { View, TouchableOpacity, Text } from "react-native";
 import ReadingPlanList from "./ReadingPlanList";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ReadingPlanReadings from "./ReadingPlanReadings";
 import ReadingPlanDay from "./ReadingPlanDay";
 import ReadScreen from "../ReadScreen";
 
-const PlanScreen = ({ navigation, route }) => {
+const PlanScreen = ({ navigation }) => {
   const Stack = createNativeStackNavigator();
 
   useEffect(() => {

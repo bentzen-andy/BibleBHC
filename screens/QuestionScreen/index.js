@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import QuestionForm from "./QuestionForm";
 import CameraView from "./CameraView";
 
-const QuestionScreen = ({ navigation, route }) => {
+const QuestionScreen = ({ navigation }) => {
   const Stack = createNativeStackNavigator();
 
   useEffect(() => {

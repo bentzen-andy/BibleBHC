@@ -1,7 +1,6 @@
 import React from "react";
 import {
   StyleSheet,
-  Text,
   View,
   TouchableOpacity,
   ImageBackground,
@@ -19,12 +18,10 @@ const PreviewImage = ({ navigation, capturedImage, setPreviewVisible }) => {
       style={styles.container}
     >
       <View style={styles.buttonContainer}>
-        {/* <Viewxxx style={styles.buttonRow}> */}
         <TouchableOpacity
           onPress={() => setPreviewVisible(false)}
           style={styles.button}
         >
-          {/* <Text style={styles.buttonText}>Re-take</Text> */}
           <AntDesign
             name="closecircle"
             size={48}
@@ -33,7 +30,6 @@ const PreviewImage = ({ navigation, capturedImage, setPreviewVisible }) => {
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={savePhoto} style={styles.button}>
-          {/* <Text style={styles.buttonText}>Save photo</Text> */}
           <AntDesign
             name="checkcircle"
             size={48}
@@ -41,7 +37,6 @@ const PreviewImage = ({ navigation, capturedImage, setPreviewVisible }) => {
             style={{ margin: -20 }}
           />
         </TouchableOpacity>
-        {/* </Viewxxx> */}
       </View>
     </ImageBackground>
   );

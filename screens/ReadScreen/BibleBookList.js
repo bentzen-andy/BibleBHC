@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Text,
-  View,
-  ScrollView,
-  FlatList,
-  SafeAreaView,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { Text, View, FlatList, StyleSheet } from "react-native";
 
 import BibleChapterList from "./BibleChapterList";
 

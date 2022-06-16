@@ -58,19 +58,9 @@ const CameraView = ({ navigation, route }) => {
                 );
               }}
             >
-              {/* <View
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  alignItems: "flex-end",
-                }}
-              > */}
-              {/* <Text style={styles.text}>Flip</Text> */}
               <AntDesign name="retweet" size={48} color="#fff" />
-              {/* </View> */}
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={takePicture}>
-              {/* <Text style={styles.text}> [TAKE PICTURE] </Text> */}
               <Feather name="aperture" size={48} color="#fff" />
             </TouchableOpacity>
           </View>

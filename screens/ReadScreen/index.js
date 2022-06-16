@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  StyleSheet,
-  View,
-  TouchableWithoutFeedback,
-  Text,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, Dimensions } from "react-native";
 import BibleChapter from "./BibleChapter";
 import BibleBookList from "./BibleBookList";
 

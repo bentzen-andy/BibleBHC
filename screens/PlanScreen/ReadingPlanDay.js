@@ -1,18 +1,9 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
-import { CheckBox, ListItem } from "react-native-elements";
+import React from "react";
+import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import { ListItem } from "react-native-elements";
 
 const ReadingPlanDay = ({ navigation, route }) => {
   const { readings, id } = route.params;
-
-  //   const [checked, setChecked] = useState(false);
 
   FlatListItemSeparator = () => {
     return (
@@ -27,20 +18,11 @@ const ReadingPlanDay = ({ navigation, route }) => {
   };
 
   const renderDay = ({ index, item }) => {
-    console.log("id");
-    console.log(id);
-    // console.log("----");
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate("ReadingPlanReadings", { item, id })}
       >
         <ListItem key={index}>
-          {/* <CheckBox
-            checked={checked}
-            onPress={() => {
-              setChecked((state) => !state);
-            }}
-          /> */}
           <ListItem.Content>
             <ListItem.Title>Day: {index + 1}</ListItem.Title>
           </ListItem.Content>
