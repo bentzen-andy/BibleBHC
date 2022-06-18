@@ -12,6 +12,7 @@ import Toast from "react-native-root-toast";
 import { AntDesign } from "@expo/vector-icons";
 import { ESV_API_KEY } from "../../helpers/esv-credentials";
 import { BIBLE } from "../../data/bible";
+import { sup, sub } from "subsup";
 
 // This component displays the Bible text, and provides a few buttons
 // to navigate to other chapters.
@@ -41,6 +42,22 @@ const BibleChapter = ({
   const scrollRef = useRef(null);
   const buttonLeftRef = useRef(null);
   const buttonRightRef = useRef(null);
+
+  // formate the chapter numbers with superscript
+  let formattedPassage = passage
+    .split(" ")
+    .map((word) => (word.match(/[[0-9]*]/) ? sup(word) : word))
+    .join(" ");
+
+  // formate the footnote numbers with subscript
+  formattedPassage = formattedPassage
+    .split(" ")
+    .map((word) =>
+      word.match(/\([0-9]*\)/)
+        ? `${word.replace(/\([0-9]*\)/, "")}${sub(word)}`
+        : word
+    )
+    .join(" ");
 
   // Places button / text at the header
   // If the user is currently reading as part of the reading plan,
@@ -305,7 +322,7 @@ const BibleChapter = ({
         }}
       >
         <Text style={styles.bibleText}>
-          {isLoading ? "Loading..." : passage}
+          {isLoading ? "Loading..." : formattedPassage}
         </Text>
       </ScrollView>
       <TouchableOpacity

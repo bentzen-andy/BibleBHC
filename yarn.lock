@@ -6990,6 +6990,11 @@ structured-headers@^0.4.1:
   resolved "https://registry.yarnpkg.com/structured-headers/-/structured-headers-0.4.1.tgz#77abd9410622c6926261c09b9d16cf10592694d1"
   integrity sha512-0MP/Cxx5SzeeZ10p/bZI0S6MpgD+yxAhi1BOQ34jgnMXsCq3j1t6tQnZu+KdlL7dvJTLT3g9xN8tl10TqgFMcg==
 
+subsup@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/subsup/-/subsup-1.0.0.tgz#6174a648f086f0dbf001a10e940cb23d2e11ac98"
+  integrity sha512-kpfPGwtPn+1gwlSohBXKzAhTVcf4Gkz1sxwKuTFqRI/xOJY0aXiFl4aeW8+KQ2YnrvrbkLXCf5/azQSoNWHSrQ==
+
 sucrase@^3.20.0:
   version "3.21.0"
   resolved "https://registry.yarnpkg.com/sucrase/-/sucrase-3.21.0.tgz#6a5affdbe716b22e4dc99c57d366ad0d216444b9"
