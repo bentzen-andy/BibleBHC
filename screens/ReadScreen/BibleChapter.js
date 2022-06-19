@@ -43,22 +43,6 @@ const BibleChapter = ({
   const buttonLeftRef = useRef(null);
   const buttonRightRef = useRef(null);
 
-  // formate the chapter numbers with superscript
-  let formattedPassage = passage
-    .split(" ")
-    .map((word) => (word.match(/[[0-9]*]/) ? sup(word) : word))
-    .join(" ");
-
-  // formate the footnote numbers with subscript
-  formattedPassage = formattedPassage
-    .split(" ")
-    .map((word) =>
-      word.match(/\([0-9]*\)/)
-        ? `${word.replace(/\([0-9]*\)/, "")}${sub(word)}`
-        : word
-    )
-    .join(" ");
-
   // Places button / text at the header
   // If the user is currently reading as part of the reading plan,
   // then there is not button to change to a different chapter. Chapter
@@ -249,11 +233,19 @@ const BibleChapter = ({
     })
       .then((response) => response.json())
       .then((data) => {
+        // remove the first line of the passage because it's redundant
         let lines = data.passages[0].split("\n");
         lines.splice(0, 2);
         return lines.join("\n");
       })
-      .then((text) => setPassage(text))
+      // change verse numbers to superscript
+      .then((passage) =>
+        passage
+          .split(" ")
+          .map((word) => (word.match(/[[0-9]*]/) ? sup(word) : word))
+          .join(" ")
+      )
+      .then((passage) => setPassage(passage))
       .catch((err) => console.log(err));
 
     // setIsLoading(true);
@@ -322,7 +314,7 @@ const BibleChapter = ({
         }}
       >
         <Text style={styles.bibleText}>
-          {isLoading ? "Loading..." : formattedPassage}
+          {isLoading ? "Loading..." : passage}
         </Text>
       </ScrollView>
       <TouchableOpacity
