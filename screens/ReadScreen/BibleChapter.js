@@ -27,6 +27,7 @@ import { getBibleChapterNLT } from "../../helpers/getBibleChapterNLT";
 const BibleChapter = ({
   book,
   chapter,
+  bibleVersion,
   assignedReadings,
   setBook,
   setChapter,
@@ -34,9 +35,9 @@ const BibleChapter = ({
   route,
   navigation,
   setIsVisible,
+  setBibleVersionListIsVisible,
 }) => {
   const [passage, setPassage] = useState("");
-  const [bibleVersion, setBibleVersion] = useState("ESV");
   const [completedReadings, setCompletedReadings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [scrollTimerId, setScrollTimerId] = useState(null);
@@ -52,6 +53,7 @@ const BibleChapter = ({
   // the screen.
   useEffect(() => {
     navigation.setOptions({
+      title: "",
       headerLeft: () => (
         <View>
           {assignedReadings && (
@@ -67,11 +69,24 @@ const BibleChapter = ({
           )}
           {!assignedReadings && (
             <View style={styles.headerLeft}>
-              <TouchableOpacity onPress={() => setIsVisible(true)}>
-                <Text style={styles.headerLeftText}>
-                  {book} {chapter}
-                </Text>
-              </TouchableOpacity>
+              <View>
+                <TouchableOpacity
+                  style={styles.bibleChapterButton}
+                  onPress={() => setIsVisible(true)}
+                >
+                  <Text style={styles.headerLeftText}>
+                    {book} {chapter}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <TouchableOpacity
+                  style={styles.bibleVersionButton}
+                  onPress={() => setBibleVersionListIsVisible(true)}
+                >
+                  <Text style={styles.headerLeftText}>{bibleVersion}</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
         </View>
@@ -99,7 +114,7 @@ const BibleChapter = ({
       lookUpPassage(book, chapter);
       scrollRef.current.scrollTo({ x: 0, y: 0, animated: true });
     }
-  }, [book, chapter, route?.params]);
+  }, [book, chapter, bibleVersion, route?.params]);
 
   // Checks if the user has finished their assigned readings (if they are currently
   // in a reading plan).
@@ -349,16 +364,10 @@ const styles = StyleSheet.create({
   buttonRight: { right: 50 },
   bibleText: { fontSize: 20, margin: 16 },
   headerLeft: {
+    flex: 1,
+    flexDirection: "row",
     marginLeft: 5,
-    borderColor: "#ddd",
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 24,
-    backgroundColor: "#ddd",
+    marginTop: 5,
   },
   headerLeftPlanReading: {
     marginLeft: -20,
@@ -371,6 +380,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 24,
     backgroundColor: "#fff",
+  },
+  bibleChapterButton: {
+    textAlign: "center",
+    borderWidth: 0,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    marginLeft: 1,
+    borderBottomLeftRadius: 24,
+    borderTopLeftRadius: 24,
+    backgroundColor: "#ddd",
+  },
+  bibleVersionButton: {
+    textAlign: "center",
+    borderWidth: 0,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    marginLeft: 1,
+    borderBottomRightRadius: 24,
+    borderTopRightRadius: 24,
+    backgroundColor: "#ddd",
   },
   headerLeftText: { fontWeight: "bold" },
   headerRightImage: { width: 46, height: 42 },

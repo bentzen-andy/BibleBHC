@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, SafeAreaView } from "react-native";
+import { Text, StyleSheet, View, SafeAreaView } from "react-native";
 import { BottomSheet, ListItem } from "react-native-elements";
 import { AntDesign } from "@expo/vector-icons";
 import { BIBLE } from "../../data/bible";
@@ -20,9 +20,12 @@ import BibleChapter from "./BibleChapter";
 const ReadScreen = ({ navigation, route }) => {
   const [book, setBook] = useState("Genesis");
   const [chapter, setChapter] = useState("1");
+  const [bibleVersion, setBibleVersion] = useState("NLT");
   const [assignedReadings, setAssignedReadings] = useState(null);
   const [planId, setPlanId] = useState("");
   const [isVisible, setIsVisible] = useState(false);
+  const [bibleVersionListIsVisible, setBibleVersionListIsVisible] =
+    useState(false);
 
   // Gets the book/chapter/plan info if the user navigated here from
   // the PlanScreen.
@@ -43,12 +46,14 @@ const ReadScreen = ({ navigation, route }) => {
         <BibleChapter
           book={book}
           chapter={chapter}
+          bibleVersion={bibleVersion}
           navigation={navigation}
           assignedReadings={assignedReadings}
           setBook={setBook}
           setChapter={setChapter}
           planId={planId}
           setIsVisible={setIsVisible}
+          setBibleVersionListIsVisible={setBibleVersionListIsVisible}
         />
       </View>
       <View>
@@ -74,13 +79,76 @@ const ReadScreen = ({ navigation, route }) => {
           {BIBLE.map((item) => (
             <Book
               key={item.book}
-              book={item.book}
+              book={
+                bibleVersion === "NLT" && item.book === "Song of Solomon"
+                  ? "Song of Songs"
+                  : item.book
+              }
               numChapters={item.numChapters}
               setBook={setBook}
               setChapter={setChapter}
               setIsVisible={setIsVisible}
             />
           ))}
+        </BottomSheet>
+
+        <BottomSheet
+          isVisible={bibleVersionListIsVisible}
+          style={{ marginTop: 50, backgroundColor: "#fff", height: 10000 }}
+        >
+          <ListItem
+            key={"bible-versions"}
+            onPress={() => setBibleVersionListIsVisible(false)}
+            containerStyle={{
+              backgroundColor: "#eee",
+              borderBottomWidth: 1,
+            }}
+          >
+            <ListItem.Content>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <AntDesign name="close" size={24} color="black" />
+                <View style={{ marginLeft: 80 }}>
+                  <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    Bible Versions
+                  </Text>
+                </View>
+              </View>
+            </ListItem.Content>
+          </ListItem>
+
+          <ListItem
+            key={"bible-version-esv"}
+            onPress={() => {
+              setBibleVersion("ESV");
+              setBibleVersionListIsVisible(false);
+            }}
+          >
+            <ListItem.Content>
+              <ListItem.Title>
+                <Text>English Standard Version (ESV)</Text>
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+          <ListItem
+            key={"bible-version-nlt"}
+            onPress={() => {
+              setBibleVersion("NLT");
+              setBibleVersionListIsVisible(false);
+            }}
+          >
+            <ListItem.Content>
+              <ListItem.Title>
+                <Text>New Living Translation (NLT)</Text>
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
         </BottomSheet>
       </View>
     </SafeAreaView>
