@@ -80,7 +80,7 @@ const QuestionForm = ({ navigation, route }) => {
           <Text style={styles.inputError}>{validationMsg}</Text>
 
           <View style={styles.buttonRows}>
-            <View style={styles.buttonTopRow}>
+            {/* <View style={styles.buttonTopRow}>
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("CameraView");
@@ -89,7 +89,7 @@ const QuestionForm = ({ navigation, route }) => {
               >
                 <Text style={styles.buttonText}>Attach Photo</Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
 
             <View style={styles.buttonSecondRow}>
               <TouchableOpacity onPress={clearInput} style={styles.cancel}>

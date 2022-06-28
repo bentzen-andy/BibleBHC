@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   Text,
   View,
+  Image,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -72,6 +73,17 @@ const BibleChapter = ({
               </TouchableOpacity>
             </View>
           )}
+        </View>
+      ),
+      headerRight: () => (
+        <View>
+          <Image
+            source={require("../../assets/Berkley_HillsChurch_Logo_Black-400x361.png")}
+            style={[
+              styles.headerRightImage,
+              !assignedReadings && { marginRight: 16 },
+            ]}
+          />
         </View>
       ),
     });
@@ -373,7 +385,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ddd",
   },
   headerLeftPlanReading: {
-    marginLeft: 5,
+    marginLeft: -20,
     borderColor: "#fff",
     borderTopWidth: 1,
     borderBottomWidth: 1,
@@ -385,6 +397,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   headerLeftText: { fontWeight: "bold" },
+  headerRightImage: { width: 46, height: 42 },
 });
 
 export default BibleChapter;
