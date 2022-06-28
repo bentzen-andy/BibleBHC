@@ -12,8 +12,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-root-toast";
 import { AntDesign } from "@expo/vector-icons";
 import { ESV_API_KEY } from "../../helpers/esv-credentials";
+import { NLT_API_KEY } from "../../helpers/nlt-credentials";
 import { BIBLE } from "../../data/bible";
 import { sup, sub } from "subsup";
+// const HTMLParser = require("fast-html-parser");
+// import DOMParser from "react-native-html-parser";
+import { parse } from "himalaya";
 
 // This component displays the Bible text, and provides a few buttons
 // to navigate to other chapters.
@@ -36,6 +40,7 @@ const BibleChapter = ({
   setIsVisible,
 }) => {
   const [passage, setPassage] = useState("");
+  const [bibleVersion, setBibleVersion] = useState("NLT");
   const [completedReadings, setCompletedReadings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [scrollTimerId, setScrollTimerId] = useState(null);
@@ -93,8 +98,10 @@ const BibleChapter = ({
   useEffect(() => {
     if (route?.params.book && route?.params.chapter) {
       lookUpPassage(route.params.book, route.params.chapter);
+      scrollRef.current.scrollTo({ x: 0, y: 0, animated: true });
     } else {
       lookUpPassage(book, chapter);
+      scrollRef.current.scrollTo({ x: 0, y: 0, animated: true });
     }
   }, [book, chapter, route?.params]);
 
@@ -138,6 +145,7 @@ const BibleChapter = ({
       setBook(prevBook);
       setChapter(prevChapter);
       lookUpPassage(prevBook, prevChapter);
+      scrollRef.current.scrollTo({ x: 0, y: 0, animated: true });
       setAssignedReadingCompletion();
       return;
     }
@@ -162,6 +170,7 @@ const BibleChapter = ({
     setBook(prevBook);
     setChapter(prevChapter);
     lookUpPassage(prevBook, prevChapter);
+    scrollRef.current.scrollTo({ x: 0, y: 0, animated: true });
   }
 
   // Handles the button to display the next chapter.
@@ -185,6 +194,7 @@ const BibleChapter = ({
       setBook(nextBook);
       setChapter(nextChapter);
       lookUpPassage(nextBook, nextChapter);
+      scrollRef.current.scrollTo({ x: 0, y: 0, animated: true });
       return;
     }
 
@@ -208,6 +218,7 @@ const BibleChapter = ({
     setBook(nextBook);
     setChapter(nextChapter);
     lookUpPassage(nextBook, nextChapter);
+    scrollRef.current.scrollTo({ x: 0, y: 0, animated: true });
   }
 
   // The current reading plan will be stored in an array. This helper function
@@ -223,17 +234,87 @@ const BibleChapter = ({
     return index;
   }
 
-  // The ESV handles single-chapter books differently for it's required API
-  // query string. You have to omit chapter argument in the request, otherwise
-  // it will only give you the first verse of chapter 1.
-  function hasOnlyOneChapter(book) {
-    return BIBLE.filter((item) => item.book === book)[0].numChapters === 1;
-  }
-
   // Pulls down the bible text from the API.
   function lookUpPassage(book, chapter) {
     setIsLoading(true);
+    if (bibleVersion === "NLT") getBibleChapterNLT(book, chapter);
+    if (bibleVersion === "ESV") getBibleChapterESV(book, chapter);
+    setIsLoading(false);
+  }
 
+  function getBibleChapterNLT(book, chapter) {
+    fetch(
+      `https://api.nlt.to/api/passages?ref=${book}.${chapter}&version=NLT&key=${NLT_API_KEY}`
+    )
+      .then((response) => response.text())
+      .then((html) => {
+        html = html.replace(" <!DOCTYPE html>", "");
+        const json = parse(html)[0].children[3];
+
+        let textArr = [];
+        extractNltTextObjects(json, textArr, "", "");
+        let passage = extractNltText(textArr);
+        setPassage(passage);
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function extractNltTextObjects(
+    obj,
+    textArr,
+    parentElement,
+    grandParentElement
+  ) {
+    if (obj.type === "text") {
+      textArr.push({ attributes: grandParentElement, text: obj.content });
+    }
+    if (obj.children) {
+      for (let i = 0; i < obj.children.length; i++) {
+        let theGrandParent = parentElement;
+        let theParentClass = obj.children[i].attributes;
+
+        extractNltTextObjects(
+          obj.children[i],
+          textArr,
+          theParentClass,
+          theGrandParent
+        );
+      }
+    }
+  }
+
+  function extractNltText(arr) {
+    return arr
+      .map((item) => {
+        let cssClass = "";
+        if (item.attributes) {
+          cssClass = item.attributes.filter((attr) => attr.key === "class");
+          cssClass = cssClass.length > 0 ? cssClass[0].value : "";
+        }
+        console.log({ cssClass, text: item.text });
+        // console.log({ attr: item.attributes, text: item.text });
+
+        if (item.attributes === "") return "";
+        if (item.text === "\n") return item.text;
+        if (item.attributes.length === 0) return "";
+
+        if (cssClass === "subhead") return item.text + "\n";
+        if (cssClass === "vn") return sup(item.text);
+        if (cssClass === "bk_ch_vs_header") return "";
+        if (cssClass === "cw") return "";
+        if (cssClass === "chapter-number") return "";
+        if (cssClass === "cw_ch") return "";
+        if (cssClass === "a-tn") return "";
+        if (cssClass === "tn") return "";
+        if (cssClass === "tn-ref") return " ";
+        let correctedText = item.text.replace(/&nbsp;/g, " ");
+        return correctedText;
+      })
+      .join("")
+      .slice(2);
+  }
+
+  function getBibleChapterESV(book, chapter) {
     // The API treats single-chapter books differently.
     let theChapter = hasOnlyOneChapter(book) ? "" : chapter;
 
@@ -259,10 +340,13 @@ const BibleChapter = ({
       )
       .then((passage) => setPassage(passage))
       .catch((err) => console.log(err));
+  }
 
-    // setIsLoading(true);
-    setIsLoading(false);
-    scrollRef.current.scrollTo({ x: 0, y: 0, animated: true });
+  // The ESV API handles single-chapter books differently for its required API
+  // query string. You have to omit the chapter argument in the request, otherwise
+  // it will only give you the first verse of chapter 1.
+  function hasOnlyOneChapter(book) {
+    return BIBLE.filter((item) => item.book === book)[0].numChapters === 1;
   }
 
   // Stores a reading ID in local storage so that the plan checklist
