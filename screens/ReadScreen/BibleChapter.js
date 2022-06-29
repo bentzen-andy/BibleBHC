@@ -53,7 +53,6 @@ const BibleChapter = ({
   // the screen.
   useEffect(() => {
     navigation.setOptions({
-      title: "",
       headerLeft: () => (
         <View>
           {assignedReadings && (
@@ -97,7 +96,7 @@ const BibleChapter = ({
             source={require("../../assets/Berkley_HillsChurch_Logo_Black-400x361.png")}
             style={[
               styles.headerRightImage,
-              !assignedReadings && { marginRight: 16 },
+              !assignedReadings && { marginRight: 20 },
             ]}
           />
         </View>
@@ -249,6 +248,7 @@ const BibleChapter = ({
   function lookUpPassage(book, chapter) {
     setIsLoading(true);
     if (bibleVersion === "NLT") {
+      book = book === "Song of Solomon" ? "Song of Songs" : book;
       getBibleChapterNLT(book, chapter).then((text) => setPassage(text));
     }
     if (bibleVersion === "ESV") {

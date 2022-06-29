@@ -8,6 +8,7 @@ import { initDB } from "./helpers/fb-init";
 import ReadScreen from "./screens/ReadScreen";
 import PlanScreen from "./screens/PlanScreen";
 import QuestionScreen from "./screens/QuestionScreen";
+import PrayerScreen from "./screens/PrayerScreen";
 
 // Root of the application
 // Handles routing for tabs. Each tab may have multiple screens.
@@ -57,6 +58,8 @@ export default function App() {
               iconName = "calendar-check";
             } else if (route.name === "Question") {
               iconName = "question-circle";
+            } else if (route.name === "Prayer") {
+              iconName = "pray";
             }
 
             return <FontAwesome5 name={iconName} size={size} color={color} />;
@@ -73,12 +76,17 @@ export default function App() {
         <Tab.Screen
           name="Plan"
           component={PlanScreen}
-          options={{ title: "Plans" }}
+          options={{ title: "Plan" }}
         />
         <Tab.Screen
           name="Question"
           component={QuestionScreen}
           options={{ title: "Ask a Question" }}
+        />
+        <Tab.Screen
+          name="Prayer"
+          component={PrayerScreen}
+          options={{ title: "Prayer Request" }}
         />
       </Tab.Navigator>
     </NavigationContainer>

@@ -71,7 +71,21 @@ const ReadScreen = ({ navigation, route }) => {
           >
             <ListItem.Content>
               <ListItem.Title>
-                <AntDesign name="close" size={24} color="black" />
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <AntDesign name="close" size={24} color="black" />
+                  <View style={{ marginLeft: 80 }}>
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      Books of the Bible
+                    </Text>
+                  </View>
+                </View>
               </ListItem.Title>
             </ListItem.Content>
           </ListItem>
@@ -79,11 +93,7 @@ const ReadScreen = ({ navigation, route }) => {
           {BIBLE.map((item) => (
             <Book
               key={item.book}
-              book={
-                bibleVersion === "NLT" && item.book === "Song of Solomon"
-                  ? "Song of Songs"
-                  : item.book
-              }
+              book={item.book}
               numChapters={item.numChapters}
               setBook={setBook}
               setChapter={setChapter}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Keyboard,
@@ -9,56 +9,39 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import Toast from "react-native-root-toast";
-import { storeQuestion } from "../../helpers/fb-questions";
-import { storeImage } from "../../helpers/fb-images";
-import { AntDesign } from "@expo/vector-icons";
+import { storePrayerRequest } from "../../helpers/fb-prayer-request";
 
 // This component gives the user a form to submit anonymous
-// questions directly to our church's youth pastor.
-const QuestionForm = ({ navigation, route }) => {
-  const [enteredQuestion, setEnteredQuestion] = useState("");
+// prayers directly to our church's youth pastor.
+const PrayerScreen = () => {
+  const [enteredName, setEnteredName] = useState("");
+  const [enteredPrayer, setEnteredPrayer] = useState("");
   const [validationMsg, setValidationMsg] = useState("");
-  const [savedImage, setSavedImage] = useState(null);
-
-  // Checks and handles a photo in the case that the user
-  // just saved an image.
-  useEffect(() => {
-    if (route.params) {
-      setSavedImage(route.params);
-    }
-  }, [route?.params]);
 
   function clearInput() {
-    setEnteredQuestion("");
+    setEnteredName("");
+    setEnteredPrayer("");
     setValidationMsg("");
-    setSavedImage(null);
     Keyboard.dismiss();
   }
 
-  // Sends the question and the image along to the server.
-  // Note that the image and question must be stored separately
-  // due to Firebase requirements, but they are linked by the
-  // same ID, which is taken from the image's assigned name.
+  // Sends the prayer request along to the server.
   function handleSubmit() {
-    if (enteredQuestion === "") {
+    if (enteredPrayer === "" || enteredName === "") {
       setValidationMsg("Entry cannot be blank.");
       return;
     } else {
       setValidationMsg("");
     }
-    const imageId = savedImage ? savedImage.uri.split("/").pop() : "n/a";
-    storeQuestion({ enteredQuestion, imageId });
-    setEnteredQuestion("");
+    storePrayerRequest({ enteredName, enteredPrayer });
+    setEnteredName("");
+    setEnteredPrayer("");
     Keyboard.dismiss();
-    Toast.show("Your question has been submitted!", {
+    Toast.show("Your prayer request has been submitted!", {
       duration: Toast.durations.LONG,
       animation: true,
       hideOnPress: true,
     });
-    if (savedImage) {
-      storeImage(savedImage, imageId);
-    }
-    setSavedImage(null);
   }
 
   return (
@@ -66,21 +49,31 @@ const QuestionForm = ({ navigation, route }) => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.formContainer}>
           <Text style={styles.text}>
-            Ask a question about life, faith, or anything!
+            "My house will be called a house of prayer" Matt 12:13.
+          </Text>
+          <Text style={[styles.text, { marginVertical: 20 }]}>
+            Submit your prayer request here and Berkley staff will pray for you.
           </Text>
 
-          <Text style={styles.inputLabel}>Question</Text>
+          <Text style={styles.inputLabel}>Name</Text>
+          <TextInput
+            style={styles.nameInput}
+            value={enteredName}
+            autoCorrect={true}
+            onChangeText={setEnteredName}
+          />
+
+          <Text style={styles.inputLabel}>Prayer Request</Text>
           <TextInput
             style={styles.input}
-            value={enteredQuestion}
-            // autoFocus={true}
+            value={enteredPrayer}
             autoCorrect={true}
             numberOfLines={8}
             multiline
-            onChangeText={setEnteredQuestion}
+            onChangeText={setEnteredPrayer}
           />
-          <Text style={styles.inputError}>{validationMsg}</Text>
 
+          <Text style={styles.inputError}>{validationMsg}</Text>
           <View style={styles.buttonRows}>
             <View style={styles.buttonSecondRow}>
               <TouchableOpacity onPress={clearInput} style={styles.cancel}>
@@ -90,21 +83,6 @@ const QuestionForm = ({ navigation, route }) => {
                 <Text style={styles.buttonText}>Submit</Text>
               </TouchableOpacity>
             </View>
-          </View>
-
-          <View style={styles.attachmentImg}>
-            {savedImage && (
-              <AntDesign
-                name="picture"
-                size={48}
-                color="black"
-                style={styles.attachmentImgIcon}
-              />
-            )}
-
-            {savedImage && (
-              <Text style={styles.attachmentImgText}>Image attached</Text>
-            )}
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -116,6 +94,14 @@ const styles = StyleSheet.create({
   container: { backgroundColor: "#fff" },
   formContainer: { height: "100%", margin: 20 },
   text: { fontSize: 24 },
+  nameInput: {
+    padding: 10,
+    // height: 80,
+    borderColor: "#000",
+    borderWidth: 1,
+    borderRadius: 4,
+    fontSize: 18,
+  },
   inputLabel: {
     fontSize: 20,
     marginTop: 10,
@@ -139,21 +125,21 @@ const styles = StyleSheet.create({
     alignContent: "flex-end",
     textAlign: "right",
   },
-  buttonTopRow: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    textAlign: "right",
-  },
+  // buttonTopRow: {
+  //   flex: 1,
+  //   flexDirection: "row",
+  //   justifyContent: "flex-end",
+  //   textAlign: "right",
+  // },
   buttonSecondRow: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "flex-end",
     textAlign: "right",
   },
-  attachmentImg: { flex: 2.5 },
-  attachmentImgIcon: { textAlign: "right" },
-  attachmentImgText: { textAlign: "right" },
+  // attachmentImg: { flex: 2.5 },
+  // attachmentImgIcon: { textAlign: "right" },
+  // attachmentImgText: { textAlign: "right" },
   cancel: {
     flex: 1,
     alignItems: "center",
@@ -177,17 +163,17 @@ const styles = StyleSheet.create({
     width: 160,
   },
 
-  submitPhotoButton: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    // marginLeft: 10,
-    marginVertical: 20,
-    backgroundColor: "#42a5f5",
-    borderRadius: 9,
-    height: 40,
-    width: 160,
-  },
+  // submitPhotoButton: {
+  //   flex: 1,
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  //   // marginLeft: 10,
+  //   marginVertical: 20,
+  //   backgroundColor: "#42a5f5",
+  //   borderRadius: 9,
+  //   height: 40,
+  //   width: 160,
+  // },
   buttonText: {
     textAlign: "center",
     color: "#fff",
@@ -196,4 +182,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuestionForm;
+export default PrayerScreen;
