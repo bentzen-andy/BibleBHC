@@ -7,7 +7,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/Berkley_HillsChurch_Horiz_Black-1-1030x361.png",
+      "image": "./assets/Berkley_HillsChurch_Horiz_Black-With-Whitespace-1-1030x361.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

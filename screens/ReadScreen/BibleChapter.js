@@ -14,6 +14,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { BIBLE } from "../../data/bible";
 import { getBibleChapterESV } from "../../helpers/getBibleChapterESV";
 import { getBibleChapterNLT } from "../../helpers/getBibleChapterNLT";
+import { Entypo } from "@expo/vector-icons";
 
 // This component displays the Bible text, and provides a few buttons
 // to navigate to other chapters.
@@ -56,16 +57,15 @@ const BibleChapter = ({
       headerLeft: () => (
         <View>
           {assignedReadings && (
-            <View style={styles.headerLeftPlanReading}>
-              <Text style={styles.headerLeftText}>
-                Plan Reading: {getPlanReadingIndex() + 1} of{" "}
-                {assignedReadings.length}
-              </Text>
-              <Text style={styles.headerLeftText}>
-                {book} {chapter}
-              </Text>
-            </View>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+            >
+              <Entypo name="chevron-thin-left" size={24} color="black" />
+            </TouchableOpacity>
           )}
+
           {!assignedReadings && (
             <View style={styles.headerLeft}>
               <View>
@@ -92,13 +92,25 @@ const BibleChapter = ({
       ),
       headerRight: () => (
         <View>
-          <Image
-            source={require("../../assets/Berkley_HillsChurch_Logo_Black-400x361.png")}
-            style={[
-              styles.headerRightImage,
-              !assignedReadings && { marginRight: 20 },
-            ]}
-          />
+          {assignedReadings && (
+            <View style={styles.headerRightPlanReading}>
+              <Text style={styles.headerRightText}>
+                Plan: {getPlanReadingIndex() + 1} of {assignedReadings.length}
+              </Text>
+              <Text style={styles.headerRightText}>
+                {book} {chapter}
+              </Text>
+            </View>
+          )}
+          {!assignedReadings && (
+            <Image
+              source={require("../../assets/Berkley_HillsChurch_Logo_Black-400x361.png")}
+              style={[
+                styles.headerRightImage,
+                !assignedReadings && { marginRight: 20 },
+              ]}
+            />
+          )}
         </View>
       ),
     });
@@ -129,10 +141,7 @@ const BibleChapter = ({
         hideOnPress: true,
       });
       setTimeout(() => {
-        navigation.navigate("ReadingPlanList", {
-          item: assignedReadings,
-          planId: planId,
-        });
+        navigation.navigate("ReadingPlanList");
       }, 2000);
     }
   }, [completedReadings]);
@@ -369,7 +378,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginTop: 5,
   },
-  headerLeftPlanReading: {
+  headerRightPlanReading: {
     marginLeft: -20,
     borderColor: "#fff",
     borderTopWidth: 1,
@@ -381,6 +390,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     backgroundColor: "#fff",
   },
+  headerRightText: { textAlign: "right", fontWeight: "bold" },
   bibleChapterButton: {
     textAlign: "center",
     borderWidth: 0,

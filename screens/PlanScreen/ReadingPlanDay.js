@@ -1,48 +1,86 @@
-import React from "react";
-import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
-import { ListItem } from "react-native-elements";
-
-import FlatListItemSeparator from "./FlatListItemSeparator";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+} from "react-native";
+import Readings from "./Readings";
 
 // This component is a list of Day items that the user can tap on.
 // Each Day item brings you do the assigned readings for that day.
 const ReadingPlanDay = ({ navigation, route }) => {
-  const { readings, id } = route.params;
+  const { readings, id, planImage, planName } = route.params;
+  const [currentReadingList, setCurrentReadingList] = useState(readings[0]);
+  const ICONS = {
+    book: require("../../assets/book.jpg"),
+    cross: require("../../assets/cross.jpg"),
+    stress: require("../../assets/stress.jpg"),
+  };
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: planName,
+    });
+  }, []);
 
   const renderDay = ({ index, item }) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate("ReadingPlanReadings", { item, id })}
+        onPress={() => {
+          setCurrentReadingList(readings[index]);
+        }}
+        style={styles.dayButton}
       >
-        <ListItem key={index}>
-          <ListItem.Content>
-            <ListItem.Title>Day: {index + 1}</ListItem.Title>
-          </ListItem.Content>
-          <ListItem.Chevron />
-        </ListItem>
+        <Text>{index + 1}</Text>
       </TouchableOpacity>
     );
   };
 
   return (
-    <View style={styles.screen}>
-      <FlatList
-        style={styles.screen}
-        keyExtractor={(item) => `${item[0].book}-${item[0].chapter}`}
-        data={readings}
-        ItemSeparatorComponent={FlatListItemSeparator}
-        renderItem={renderDay}
+    <View style={{ height: "100%" }}>
+      <Image source={ICONS[planImage]} style={styles.heroImg} />
+      <View style={{ height: 60 }}>
+        <FlatList
+          style={styles.dayList}
+          data={readings}
+          keyExtractor={(item) => `${item[0].book}-${item[0].chapter}`}
+          renderItem={renderDay}
+          horizontal
+        />
+      </View>
+      <Readings
+        readings={currentReadingList}
+        planId={id}
+        navigation={navigation}
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  screen: {
+  dayList: { borderWidth: 1, borderColor: "#999" },
+  heroImg: {
+    height: "40%",
+    // height: 50,
+    width: "100%",
+  },
+  dayButton: {
     flex: 1,
-    padding: 4,
-    paddingTop: 10,
-    backgroundColor: "#eee",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+    width: 60,
+    // height: 60,
+    // width: 60,
+    backgroundColor: "#fff",
+    borderColor: "#999",
+
+    borderRightWidth: 1,
+    borderBottomColor: "#000",
   },
 });
 

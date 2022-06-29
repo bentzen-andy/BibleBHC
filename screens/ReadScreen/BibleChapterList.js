@@ -23,7 +23,7 @@ const BibleChapterList = ({
   return (
     <ScrollView>
       <View style={styles.chapters}>
-        {[...Array(numChapters)].fill("").map((item, i) => (
+        {[...Array(numChapters)].map((item, i) => (
           <TouchableOpacity
             key={`${book}${i}`}
             onPress={() => {
