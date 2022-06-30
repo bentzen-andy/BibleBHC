@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { FlatList, TouchableOpacity } from "react-native";
 import { CheckBox, ListItem } from "react-native-elements";
 import {
   getMultipleStoredValues,
@@ -16,7 +10,14 @@ import FlatListItemSeparator from "./FlatListItemSeparator";
 
 const Readings = ({ navigation, readings, planId }) => {
   const [checked, setChecked] = useState([]);
-  const [checkboxIsPressed, setCheckboxIsPressed] = useState(false);
+  const [componentShouldRerender, setComponentShouldRerender] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      setComponentShouldRerender(!componentShouldRerender);
+    });
+    return unsubscribe;
+  });
 
   // Every reading in the reading plans is uniquely identified in
   // the phone's local storage. This function checks to see if the
@@ -27,7 +28,7 @@ const Readings = ({ navigation, readings, planId }) => {
       (reading) => `${planId}${reading.book}${reading.chapter}`
     );
     getMultipleStoredValues(readingIds, (valueArray) => setChecked(valueArray));
-  }, [checkboxIsPressed, readings]);
+  }, [componentShouldRerender, readings]);
 
   const renderReading = ({ index, item }) => {
     return (
@@ -50,7 +51,7 @@ const Readings = ({ navigation, readings, planId }) => {
                 `${planId}${item.book}${item.chapter}`,
                 `${planId}${item.book}${item.chapter}`,
                 () => {
-                  setCheckboxIsPressed(!checkboxIsPressed);
+                  setComponentShouldRerender(!componentShouldRerender);
                 }
               );
             }}
@@ -75,7 +76,5 @@ const Readings = ({ navigation, readings, planId }) => {
     />
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default Readings;

@@ -8,7 +8,6 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-root-toast";
 import { AntDesign } from "@expo/vector-icons";
 import { BIBLE } from "../../data/bible";
@@ -102,7 +101,8 @@ const BibleChapter = ({
         hideOnPress: true,
       });
       setTimeout(() => {
-        navigation.navigate("ReadingPlansAll");
+        // navigation.navigate("ReadingPlansAll");
+        navigation.goBack();
       }, 2000);
     }
   }, [completedReadings]);
