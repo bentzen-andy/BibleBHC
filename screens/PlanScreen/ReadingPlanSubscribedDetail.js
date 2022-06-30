@@ -13,7 +13,7 @@ import Readings from "./Readings";
 
 // This component is a list of Day items that the user can tap on.
 // Each Day item brings you do the assigned readings for that day.
-const ReadingPlanDetail = ({ navigation, route }) => {
+const ReadingPlanSubscribedDetail = ({ navigation, route }) => {
   const { readings, id, planImage, planName } = route.params;
   const [currentReadingList, setCurrentReadingList] = useState(readings[0]);
   const ICONS = {
@@ -89,4 +89,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ReadingPlanDetail;
+export default ReadingPlanSubscribedDetail;

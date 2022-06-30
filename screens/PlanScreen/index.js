@@ -4,8 +4,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ReadingPlansAll from "./ReadingPlansAll";
 import ReadingPlansSubscribed from "./ReadingPlansSubscribed";
 import ReadingPlansNotSubscribed from "./ReadingPlansNotSubscribed";
-import ReadingPlanDetail from "./ReadingPlanDetail";
-import ReadingPlanSummary from "./ReadingPlanSummary";
+import ReadingPlanSubscribedDetail from "./ReadingPlanSubscribedDetail";
+import ReadingPlanNotSubscribedDetail from "./ReadingPlanNotSubscribedDetail";
 import ReadScreen from "../ReadScreen";
 
 const PlanScreen = ({ navigation }) => {
@@ -36,13 +36,13 @@ const PlanScreen = ({ navigation }) => {
         options={{ title: "My Plans" }}
       />
       <Stack.Screen
-        name="ReadingPlanDetail"
-        component={ReadingPlanDetail}
+        name="ReadingPlanSubscribedDetail"
+        component={ReadingPlanSubscribedDetail}
         options={{ title: "Plan" }}
       />
       <Stack.Screen
-        name="ReadingPlanSummary"
-        component={ReadingPlanSummary}
+        name="ReadingPlanNotSubscribedDetail"
+        component={ReadingPlanNotSubscribedDetail}
         options={{ title: "Plan Summary" }}
       />
       <Stack.Screen

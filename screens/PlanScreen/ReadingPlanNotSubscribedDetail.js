@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity } from "react-native";
 import { pushValueToStoredObjectArray } from "../../helpers/async-storage";
 
-const ReadingPlanSummary = ({ route, navigation }) => {
+const ReadingPlanNotSubscribedDetail = ({ route, navigation }) => {
   const [planName, setPlanName] = useState("");
   const [planSummary, setPlanSummary] = useState("");
   const [planId, setPlanId] = useState("");
@@ -36,4 +36,4 @@ const ReadingPlanSummary = ({ route, navigation }) => {
   );
 };
 
-export default ReadingPlanSummary;
+export default ReadingPlanNotSubscribedDetail;
