@@ -6,8 +6,9 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
-  ScrollView,
 } from "react-native";
+import { removeValueFromStoredObjectArray } from "../../helpers/async-storage";
+
 import Readings from "./Readings";
 
 // This component is a list of Day items that the user can tap on.
@@ -42,6 +43,14 @@ const ReadingPlanDetail = ({ navigation, route }) => {
 
   return (
     <View style={{ height: "100%" }}>
+      <TouchableOpacity
+        onPress={() => {
+          removeValueFromStoredObjectArray("subscribed-plans", id);
+          navigation.goBack();
+        }}
+      >
+        <Text>unsubscribe</Text>
+      </TouchableOpacity>
       <Image source={ICONS[planImage]} style={styles.heroImg} />
       <View style={{ height: 60 }}>
         <FlatList

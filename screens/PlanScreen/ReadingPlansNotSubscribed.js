@@ -1,20 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, FlatList, Image } from "react-native";
 import { ListItem } from "react-native-elements";
+import { getStoredObjectValue } from "../../helpers/async-storage";
 import { setupReadingPlanListener } from "../../helpers/fb-reading-plans";
 
 import FlatListItemSeparator from "./FlatListItemSeparator";
 
 // This component is a list of reading plans that the user is subscribed to
 const ReadingPlansNotSubscribed = ({ navigation }) => {
+  console.log("rendering");
   const [plans, setPlans] = useState([]);
+  const [filteredPlans, setFilteredPlans] = useState([]);
+  const [componentShouldRerender, setComponentShouldRerender] = useState(false);
 
   // Pulls all the reading plans down from the server.
   useEffect(() => {
     setupReadingPlanListener((items) => {
       setPlans(items);
     });
-  }, []);
+  }, [componentShouldRerender]);
+
+  useEffect(() => {
+    getUnsubscribedPlans();
+  }, [plans]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      setComponentShouldRerender(!componentShouldRerender);
+    });
+    return unsubscribe;
+  });
+
+  async function getUnsubscribedPlans() {
+    let subscribedPlans = await getStoredObjectValue("subscribed-plans");
+    subscribedPlans = !subscribedPlans ? [] : subscribedPlans;
+    subscribedPlans = subscribedPlans.map((plan) => plan.planId);
+    let result = plans.filter((plan) => {
+      return !subscribedPlans.includes(plan.id);
+    });
+    setFilteredPlans(result);
+  }
 
   const renderPlan = ({ index, item }) => {
     const ICONS = {
@@ -24,7 +49,7 @@ const ReadingPlansNotSubscribed = ({ navigation }) => {
     };
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate("ReadingPlanDetail", item)}
+        onPress={() => navigation.navigate("ReadingPlanSummary", item)}
       >
         <ListItem key={index}>
           <Image source={ICONS[item.planImage]} style={styles.icon} />
@@ -41,7 +66,7 @@ const ReadingPlansNotSubscribed = ({ navigation }) => {
     <FlatList
       style={styles.screen}
       keyExtractor={(item) => item.id}
-      data={plans}
+      data={filteredPlans}
       ItemSeparatorComponent={FlatListItemSeparator}
       renderItem={renderPlan}
     />

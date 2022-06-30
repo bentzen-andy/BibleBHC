@@ -5,6 +5,7 @@ import ReadingPlansAll from "./ReadingPlansAll";
 import ReadingPlansSubscribed from "./ReadingPlansSubscribed";
 import ReadingPlansNotSubscribed from "./ReadingPlansNotSubscribed";
 import ReadingPlanDetail from "./ReadingPlanDetail";
+import ReadingPlanSummary from "./ReadingPlanSummary";
 import ReadScreen from "../ReadScreen";
 
 const PlanScreen = ({ navigation }) => {
@@ -38,6 +39,11 @@ const PlanScreen = ({ navigation }) => {
         name="ReadingPlanDetail"
         component={ReadingPlanDetail}
         options={{ title: "Plan" }}
+      />
+      <Stack.Screen
+        name="ReadingPlanSummary"
+        component={ReadingPlanSummary}
+        options={{ title: "Plan Summary" }}
       />
       <Stack.Screen
         name="ReadScreen"

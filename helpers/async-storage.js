@@ -9,12 +9,60 @@ export async function setStoredValue(key, val = key) {
   }
 }
 
+export async function setStoredObjectValue(key, val = key) {
+  try {
+    const jsonValue = JSON.stringify(val);
+    await AsyncStorage.setItem(`@${key}`, jsonValue);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function pushValueToStoredObjectArray(key, val = key) {
+  try {
+    let currentValue = await getStoredObjectValue(key);
+    currentValue = !currentValue ? [] : currentValue;
+    // check if item is already in the list
+    let die = false;
+    currentValue.map((item) => {
+      if (item.planId === val) die = true;
+    });
+    if (die) return;
+    currentValue.push({ planId: val });
+    setStoredObjectValue(key, currentValue);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function removeValueFromStoredObjectArray(key, val = key) {
+  try {
+    let currentValue = await getStoredObjectValue(key);
+    currentValue = !currentValue ? [] : currentValue;
+    currentValue = currentValue.filter((item) => {
+      return item.planId !== val;
+    });
+    setStoredObjectValue(key, currentValue);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 // Retrieves a particular key from local storage and if successful, passes
 // that value to a callback function.
 export async function getStoredValue(key, action) {
   try {
     let val = await AsyncStorage.getItem(`@${key}`);
     action(val);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function getStoredObjectValue(key) {
+  try {
+    const jsonValue = await AsyncStorage.getItem(`@${key}`);
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
   } catch (err) {
     console.log(err);
   }
