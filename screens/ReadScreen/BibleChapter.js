@@ -14,7 +14,14 @@ import { AntDesign } from "@expo/vector-icons";
 import { BIBLE } from "../../data/bible";
 import { getBibleChapterESV } from "../../helpers/getBibleChapterESV";
 import { getBibleChapterNLT } from "../../helpers/getBibleChapterNLT";
-import { Entypo } from "@expo/vector-icons";
+import {
+  getStoredValue,
+  setStoredValue,
+  getMultipleStoredValues,
+  toggleStoredValue,
+} from "../../helpers/async-storage";
+import BibleChapterHeaderLeft from "./BibleChapterHeaderLeft";
+import BibleChapterHeaderRight from "./BibleChapterHeaderRight";
 
 // This component displays the Bible text, and provides a few buttons
 // to navigate to other chapters.
@@ -55,63 +62,22 @@ const BibleChapter = ({
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <View>
-          {assignedReadings && (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.goBack();
-              }}
-            >
-              <Entypo name="chevron-thin-left" size={24} color="black" />
-            </TouchableOpacity>
-          )}
-
-          {!assignedReadings && (
-            <View style={styles.headerLeft}>
-              <View>
-                <TouchableOpacity
-                  style={styles.bibleChapterButton}
-                  onPress={() => setIsVisible(true)}
-                >
-                  <Text style={styles.headerLeftText}>
-                    {book} {chapter}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View>
-                <TouchableOpacity
-                  style={styles.bibleVersionButton}
-                  onPress={() => setBibleVersionListIsVisible(true)}
-                >
-                  <Text style={styles.headerLeftText}>{bibleVersion}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
-        </View>
+        <BibleChapterHeaderLeft
+          assignedReadings={assignedReadings}
+          setIsVisible={setIsVisible}
+          setBibleVersionListIsVisible={setBibleVersionListIsVisible}
+          book={book}
+          chapter={chapter}
+          bibleVersion={bibleVersion}
+          navigation={navigation}
+        />
       ),
       headerRight: () => (
-        <View>
-          {assignedReadings && (
-            <View style={styles.headerRightPlanReading}>
-              <Text style={styles.headerRightText}>
-                Plan: {getPlanReadingIndex() + 1} of {assignedReadings.length}
-              </Text>
-              <Text style={styles.headerRightText}>
-                {book} {chapter}
-              </Text>
-            </View>
-          )}
-          {!assignedReadings && (
-            <Image
-              source={require("../../assets/Berkley_HillsChurch_Logo_Black-400x361.png")}
-              style={[
-                styles.headerRightImage,
-                !assignedReadings && { marginRight: 20 },
-              ]}
-            />
-          )}
-        </View>
+        <BibleChapterHeaderRight
+          assignedReadings={assignedReadings}
+          book={book}
+          chapter={chapter}
+        />
       ),
     });
   });
@@ -146,8 +112,8 @@ const BibleChapter = ({
     }
   }, [completedReadings]);
 
-  // See comment for "advanceRight()" This component navigates back instead of forward.
-  function advanceLeft() {
+  // See comment for "advanceBibleChapterRight()" This component navigates back instead of forward.
+  function advanceBibleChapterLeft() {
     if (assignedReadings) {
       let index;
       assignedReadings.map((item, i) => {
@@ -195,7 +161,7 @@ const BibleChapter = ({
   // Handles the button to display the next chapter.
   // Note: if a reading plan is active, this will bring the reader to the next chapter
   // in the reading plan, not necessarily the chapter that follows the current chapter.
-  function advanceRight() {
+  function advanceBibleChapterRight() {
     if (assignedReadings) {
       let index;
       assignedReadings.map((item, i) => {
@@ -238,19 +204,6 @@ const BibleChapter = ({
     setChapter(nextChapter);
     lookUpPassage(nextBook, nextChapter);
     scrollRef.current.scrollTo({ x: 0, y: 0, animated: true });
-  }
-
-  // The current reading plan will be stored in an array. This helper function
-  // determines which index of the reading plan array we are currently on based
-  // on which book/chapter is actively displayed.
-  function getPlanReadingIndex() {
-    let index;
-    assignedReadings.map((item, i) => {
-      if (item.book === book && item.chapter === chapter) {
-        index = i;
-      }
-    });
-    return index;
   }
 
   // Pulls down the bible text from the API.
@@ -332,7 +285,7 @@ const BibleChapter = ({
       <TouchableOpacity
         style={[styles.button, styles.buttonLeft]}
         onPress={() => {
-          advanceLeft();
+          advanceBibleChapterLeft();
         }}
       >
         <AntDesign
@@ -345,7 +298,7 @@ const BibleChapter = ({
       <TouchableOpacity
         style={[styles.button, styles.buttonRight]}
         onPress={() => {
-          advanceRight();
+          advanceBibleChapterRight();
         }}
       >
         <AntDesign
@@ -372,47 +325,6 @@ const styles = StyleSheet.create({
   buttonLeft: { left: 50 },
   buttonRight: { right: 50 },
   bibleText: { fontSize: 20, margin: 16 },
-  headerLeft: {
-    flex: 1,
-    flexDirection: "row",
-    marginLeft: 5,
-    marginTop: 5,
-  },
-  headerRightPlanReading: {
-    marginLeft: -20,
-    borderColor: "#fff",
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 24,
-    backgroundColor: "#fff",
-  },
-  headerRightText: { textAlign: "right", fontWeight: "bold" },
-  bibleChapterButton: {
-    textAlign: "center",
-    borderWidth: 0,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    marginLeft: 1,
-    borderBottomLeftRadius: 24,
-    borderTopLeftRadius: 24,
-    backgroundColor: "#ddd",
-  },
-  bibleVersionButton: {
-    textAlign: "center",
-    borderWidth: 0,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    marginLeft: 1,
-    borderBottomRightRadius: 24,
-    borderTopRightRadius: 24,
-    backgroundColor: "#ddd",
-  },
-  headerLeftText: { fontWeight: "bold" },
-  headerRightImage: { width: 46, height: 42 },
 });
 
 export default BibleChapter;

@@ -8,6 +8,12 @@ import {
 } from "react-native";
 import { CheckBox, ListItem } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  getStoredValue,
+  setStoredValue,
+  getMultipleStoredValues,
+  toggleStoredValue,
+} from "../../helpers/async-storage";
 
 import FlatListItemSeparator from "./FlatListItemSeparator";
 
@@ -25,47 +31,8 @@ const Readings = ({ navigation, readings, planId }) => {
     let readingIds = readings.map(
       (reading) => `${planId}${reading.book}${reading.chapter}`
     );
-    getCompletedReadings(readingIds);
+    getMultipleStoredValues(readingIds, (valueArray) => setChecked(valueArray));
   }, [asyncStorageDidChange, readings]);
-
-  // Checks local storage to see which readings have already been read.
-  async function getCompletedReadings(readingIds) {
-    try {
-      let arr = [];
-      for (const id of readingIds) {
-        const value = await AsyncStorage.getItem(`@${id}`);
-        arr.push(value);
-      }
-      setChecked(arr);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  // Toggles the check mark for a reading by checking the status in
-  // local storage and then setting it's status to the opposite.
-  async function toggleCompletedReading(value) {
-    try {
-      const retrievedVal = await AsyncStorage.getItem(`@${value}`);
-      if (retrievedVal != null) {
-        await AsyncStorage.removeItem(`@${value}`);
-        // this is a real hacky solution, but it helps prevent the
-        // component from re-rendering infinitely
-        setTimeout(() => {
-          setAsyncStorageDidChange(!asyncStorageDidChange);
-        }, 1);
-      } else {
-        // this is a real hacky solution, but it helps prevent the
-        // component from re-rendering infinitely
-        await AsyncStorage.setItem(`@${value}`, value);
-        setTimeout(() => {
-          setAsyncStorageDidChange(!asyncStorageDidChange);
-        }, 1);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }
 
   const renderReading = ({ index, item }) => {
     return (
@@ -84,7 +51,10 @@ const Readings = ({ navigation, readings, planId }) => {
           <CheckBox
             checked={checked.includes(`${planId}${item.book}${item.chapter}`)}
             onPress={() => {
-              toggleCompletedReading(`${planId}${item.book}${item.chapter}`);
+              toggleStoredValue(`${planId}${item.book}${item.chapter}`);
+              setTimeout(() => {
+                setAsyncStorageDidChange(!asyncStorageDidChange);
+              }, 1);
             }}
           />
           <ListItem.Content>
