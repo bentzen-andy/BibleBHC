@@ -141,7 +141,7 @@ const BibleChapter = ({
         hideOnPress: true,
       });
       setTimeout(() => {
-        navigation.navigate("ReadingPlanList");
+        navigation.navigate("ReadingPlansAll");
       }, 2000);
     }
   }, [completedReadings]);

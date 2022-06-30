@@ -99,15 +99,6 @@ const Readings = ({ navigation, readings, planId }) => {
   };
 
   return (
-    // <ScrollView>
-    //   {readings.map((reading, i) => {
-    //     <View key={`${reading.book}-${reading.chapter}`}>
-    //       <renderReading index={i} item={reading} />
-    //       <FlatListItemSeparator />
-    //     </View>;
-    //   })}
-    // </ScrollView>
-    //   );
     <FlatList
       keyExtractor={(item) => `${item.book}-${item.chapter}`}
       data={readings}

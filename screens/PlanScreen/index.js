@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import ReadingPlanList from "./ReadingPlanList";
-import ReadingPlanDay from "./ReadingPlanDay";
+import ReadingPlansAll from "./ReadingPlansAll";
+import ReadingPlansSubscribed from "./ReadingPlansSubscribed";
+import ReadingPlansNotSubscribed from "./ReadingPlansNotSubscribed";
+import ReadingPlanDetail from "./ReadingPlanDetail";
 import ReadScreen from "../ReadScreen";
 
 const PlanScreen = ({ navigation }) => {
@@ -16,16 +18,26 @@ const PlanScreen = ({ navigation }) => {
 
   // Routes for the Bible-reading plan screens
   return (
-    <Stack.Navigator initialRouteName="ReadingPlanList">
+    <Stack.Navigator initialRouteName="ReadingPlansAll">
       <Stack.Screen
-        name="ReadingPlanList"
-        component={ReadingPlanList}
-        options={{ title: "Reading Plan List" }}
+        name="ReadingPlansAll"
+        component={ReadingPlansAll}
+        options={{ title: "Plans" }}
       />
       <Stack.Screen
-        name="ReadingPlanDay"
-        component={ReadingPlanDay}
-        options={{ title: "Reading Plan Day" }}
+        name="ReadingPlansNotSubscribed"
+        component={ReadingPlansNotSubscribed}
+        options={{ title: "Find Plans" }}
+      />
+      <Stack.Screen
+        name="ReadingPlansSubscribed"
+        component={ReadingPlansSubscribed}
+        options={{ title: "My Plans" }}
+      />
+      <Stack.Screen
+        name="ReadingPlanDetail"
+        component={ReadingPlanDetail}
+        options={{ title: "Plan" }}
       />
       <Stack.Screen
         name="ReadScreen"
