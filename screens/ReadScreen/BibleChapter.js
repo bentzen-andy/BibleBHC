@@ -14,12 +14,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { BIBLE } from "../../data/bible";
 import { getBibleChapterESV } from "../../helpers/getBibleChapterESV";
 import { getBibleChapterNLT } from "../../helpers/getBibleChapterNLT";
-import {
-  getStoredValue,
-  setStoredValue,
-  getMultipleStoredValues,
-  toggleStoredValue,
-} from "../../helpers/async-storage";
+import { getStoredValue, setStoredValue } from "../../helpers/async-storage";
 import BibleChapterHeaderLeft from "./BibleChapterHeaderLeft";
 import BibleChapterHeaderRight from "./BibleChapterHeaderRight";
 
@@ -126,7 +121,7 @@ const BibleChapter = ({
       let prevBook = assignedReadings[index].book;
       let prevChapter = assignedReadings[index].chapter;
 
-      setCompletedReading(`${planId}${book}${chapter}`);
+      setStoredValue(`${planId}${book}${chapter}`);
       setBook(prevBook);
       setChapter(prevChapter);
       lookUpPassage(prevBook, prevChapter);
@@ -174,7 +169,7 @@ const BibleChapter = ({
       let nextBook = assignedReadings[index].book;
       let nextChapter = assignedReadings[index].chapter;
 
-      setCompletedReading(`${planId}${book}${chapter}`);
+      setStoredValue(`${planId}${book}${chapter}`);
       setAssignedReadingCompletion();
       setBook(nextBook);
       setChapter(nextChapter);
@@ -215,26 +210,6 @@ const BibleChapter = ({
     }
     if (bibleVersion === "ESV") {
       getBibleChapterESV(book, chapter).then((text) => setPassage(text));
-    }
-  }
-
-  // Stores a reading ID in local storage so that the plan checklist
-  // can show it as read
-  async function setCompletedReading(value) {
-    try {
-      await AsyncStorage.setItem(`@${value}`, value);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  // Checks in local storage whether a particular reading has been read.
-  async function getStoredValue(value, action) {
-    try {
-      let val = await AsyncStorage.getItem(`@${value}`);
-      action(val);
-    } catch (err) {
-      console.log(err);
     }
   }
 

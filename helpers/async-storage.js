@@ -37,13 +37,15 @@ export async function getMultipleStoredValues(keyArray, action) {
 
 // Toggle a key value pair in local storage. If exists, it removes
 // the key value pair, if not exists, it stores it
-export async function toggleStoredValue(key, val = key) {
+export async function toggleStoredValue(key, val = key, action) {
   try {
     const retrievedVal = await AsyncStorage.getItem(`@${key}`);
     if (retrievedVal != null) {
       await AsyncStorage.removeItem(`@${key}`);
+      action();
     } else {
       await AsyncStorage.setItem(`@${key}`, val);
+      action();
     }
   } catch (err) {
     console.log(err);

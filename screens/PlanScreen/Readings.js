@@ -7,10 +7,7 @@ import {
   ScrollView,
 } from "react-native";
 import { CheckBox, ListItem } from "react-native-elements";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
-  getStoredValue,
-  setStoredValue,
   getMultipleStoredValues,
   toggleStoredValue,
 } from "../../helpers/async-storage";
@@ -19,9 +16,7 @@ import FlatListItemSeparator from "./FlatListItemSeparator";
 
 const Readings = ({ navigation, readings, planId }) => {
   const [checked, setChecked] = useState([]);
-  // this is a real hacky solution, but it helps prevent the
-  // component from re-rendering infinitely
-  const [asyncStorageDidChange, setAsyncStorageDidChange] = useState(false);
+  const [checkboxIsPressed, setCheckboxIsPressed] = useState(false);
 
   // Every reading in the reading plans is uniquely identified in
   // the phone's local storage. This function checks to see if the
@@ -32,7 +27,7 @@ const Readings = ({ navigation, readings, planId }) => {
       (reading) => `${planId}${reading.book}${reading.chapter}`
     );
     getMultipleStoredValues(readingIds, (valueArray) => setChecked(valueArray));
-  }, [asyncStorageDidChange, readings]);
+  }, [checkboxIsPressed, readings]);
 
   const renderReading = ({ index, item }) => {
     return (
@@ -51,10 +46,13 @@ const Readings = ({ navigation, readings, planId }) => {
           <CheckBox
             checked={checked.includes(`${planId}${item.book}${item.chapter}`)}
             onPress={() => {
-              toggleStoredValue(`${planId}${item.book}${item.chapter}`);
-              setTimeout(() => {
-                setAsyncStorageDidChange(!asyncStorageDidChange);
-              }, 1);
+              toggleStoredValue(
+                `${planId}${item.book}${item.chapter}`,
+                `${planId}${item.book}${item.chapter}`,
+                () => {
+                  setCheckboxIsPressed(!checkboxIsPressed);
+                }
+              );
             }}
           />
           <ListItem.Content>
