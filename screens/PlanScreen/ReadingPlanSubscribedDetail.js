@@ -7,11 +7,16 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
+import { BottomSheet, ListItem } from "react-native-elements";
+import { AntDesign } from "@expo/vector-icons";
 import {
   getStoredValue,
+  removeStoredValue,
   removeValueFromStoredObjectArray,
 } from "../../helpers/async-storage";
 import { getImage } from "../../helpers/fb-images";
+import { Feather } from "@expo/vector-icons";
+import { setStoredValue } from "../../helpers/async-storage";
 
 import Readings from "./Readings";
 
@@ -22,6 +27,18 @@ const ReadingPlanSubscribedDetail = ({ navigation, route }) => {
   const [currentReadingList, setCurrentReadingList] = useState(readings[0]);
   const [imageURL, setImageURL] = useState(null);
   const [planStartDate, setPlanStartDate] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: planName,
+      headerRight: () => (
+        <TouchableOpacity onPress={() => setIsVisible(!isVisible)}>
+          <Feather name="menu" size={24} color="black" />
+        </TouchableOpacity>
+      ),
+    });
+  }, []);
 
   useEffect(() => {
     getImage("ReadingPlanAssets", planImage, (path) => {
@@ -33,13 +50,7 @@ const ReadingPlanSubscribedDetail = ({ navigation, route }) => {
     getStoredValue(`plan-start-date-${id}`, (timeStamp) => {
       setPlanStartDate(new Date(+timeStamp));
     });
-  }, []);
-
-  useEffect(() => {
-    navigation.setOptions({
-      title: planName,
-    });
-  }, []);
+  }, [isVisible]);
 
   function getFormattedDateMonthPlusDays(numDays) {
     let date = new Date(planStartDate);
@@ -56,6 +67,77 @@ const ReadingPlanSubscribedDetail = ({ navigation, route }) => {
         .split(" ")[2]
     );
   }
+
+  function uncheckAllReadings(id, readingsArray) {
+    readingsArray.map((readings) => {
+      readings.map((reading) => {
+        removeStoredValue(`${id}${reading.book}${reading.chapter}`);
+      });
+    });
+  }
+
+  const menu = (
+    <BottomSheet
+      isVisible={isVisible}
+      style={{ marginTop: 50, backgroundColor: "#fff", height: 10000 }}
+    >
+      <ListItem
+        key={0}
+        onPress={() => setIsVisible(false)}
+        containerStyle={{
+          backgroundColor: "#eee",
+          borderBottomWidth: 1,
+        }}
+      >
+        <ListItem.Content>
+          <ListItem.Title>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <AntDesign name="close" size={24} color="black" />
+            </View>
+          </ListItem.Title>
+        </ListItem.Content>
+      </ListItem>
+
+      <ListItem
+        key={1}
+        style={{ borderBottomWidth: 1, borderBottomColor: "#444" }}
+        onPress={() => {
+          removeValueFromStoredObjectArray("subscribed-plans", id);
+          navigation.goBack();
+        }}
+      >
+        <ListItem.Content>
+          <ListItem.Title>
+            <Text>Stop This Plan</Text>
+          </ListItem.Title>
+        </ListItem.Content>
+      </ListItem>
+
+      <ListItem
+        key={2}
+        style={{ borderBottomWidth: 1, borderBottomColor: "#444" }}
+        onPress={() => {
+          setStoredValue(`plan-start-date-${id}`, `${Date.now()}`);
+          uncheckAllReadings(id, readings);
+          setIsVisible(false);
+          navigation.goBack();
+        }}
+      >
+        <ListItem.Content>
+          <ListItem.Title>
+            <Text>Restart Plan</Text>
+          </ListItem.Title>
+        </ListItem.Content>
+      </ListItem>
+    </BottomSheet>
+  );
 
   const renderDay = ({ index, item }) => {
     return (
@@ -79,15 +161,6 @@ const ReadingPlanSubscribedDetail = ({ navigation, route }) => {
 
   return (
     <View style={{ height: "100%" }}>
-      <TouchableOpacity
-        onPress={() => {
-          removeValueFromStoredObjectArray("subscribed-plans", id);
-          navigation.goBack();
-        }}
-      >
-        <Text>unsubscribe</Text>
-      </TouchableOpacity>
-
       <Image
         source={
           imageURL
@@ -111,6 +184,7 @@ const ReadingPlanSubscribedDetail = ({ navigation, route }) => {
         planId={id}
         navigation={navigation}
       />
+      {menu}
     </View>
   );
 };

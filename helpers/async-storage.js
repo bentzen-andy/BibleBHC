@@ -99,3 +99,10 @@ export async function toggleStoredValue(key, val = key, action) {
     console.log(err);
   }
 }
+export async function removeStoredValue(key) {
+  try {
+    await AsyncStorage.removeItem(`@${key}`);
+  } catch (err) {
+    console.log(err);
+  }
+}
