@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 
-const BibleChapterHeaderRight = ({ assignedReadings, book, chapter }) => {
+const BerkleyLogoHeaderRight = ({ assignedReadings, book, chapter }) => {
   // The current reading plan will be stored in an array. This helper function
   // determines which index of the reading plan array we are currently on based
   // on which book/chapter is actively displayed.
@@ -56,4 +56,4 @@ const styles = StyleSheet.create({
   headerRightText: { textAlign: "right", fontWeight: "bold" },
   headerRightImage: { width: 46, height: 42 },
 });
-export default BibleChapterHeaderRight;
+export default BerkleyLogoHeaderRight;

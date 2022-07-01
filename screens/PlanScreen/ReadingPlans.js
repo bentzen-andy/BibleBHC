@@ -7,7 +7,7 @@ import FlatListItemSeparator from "./FlatListItemSeparator";
 
 // This component is a list of reading plans that the user is subscribed to
 const ReadingPlans = ({ navigation, getFilteredPlans, planDetail }) => {
-  console.log("rendering");
+  //   console.log("rendering");
   const [plans, setPlans] = useState([]);
   const [filteredPlans, setFilteredPlans] = useState([]);
   const [componentShouldRerender, setComponentShouldRerender] = useState(false);

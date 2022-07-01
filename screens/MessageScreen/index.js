@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import PrayerForm from "./PrayerForm";
 import QuestionForm from "./QuestionForm";
-import BibleChapterHeaderRight from "../ReadScreen/BibleChapterHeaderRight";
+import BerkleyLogoHeaderRight from "../ReadScreen/BerkleyLogoHeaderRight";
 
 const Tab = createMaterialTopTabNavigator();
 
 const MessageScreen = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <BibleChapterHeaderRight />,
+      headerRight: () => <BerkleyLogoHeaderRight />,
       // headerShown: false,
     });
   }, []);

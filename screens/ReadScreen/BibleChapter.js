@@ -15,7 +15,7 @@ import { getBibleChapterESV } from "../../helpers/getBibleChapterESV";
 import { getBibleChapterNLT } from "../../helpers/getBibleChapterNLT";
 import { getStoredValue, setStoredValue } from "../../helpers/async-storage";
 import BibleChapterHeaderLeft from "./BibleChapterHeaderLeft";
-import BibleChapterHeaderRight from "./BibleChapterHeaderRight";
+import BerkleyLogoHeaderRight from "./BerkleyLogoHeaderRight";
 
 // This component displays the Bible text, and provides a few buttons
 // to navigate to other chapters.
@@ -48,6 +48,14 @@ const BibleChapter = ({
   const buttonLeftRef = useRef(null);
   const buttonRightRef = useRef(null);
 
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitleStyle: {
+        opacity: 0,
+      },
+    });
+  });
+
   // Places button / text at the header
   // If the user is currently reading as part of the reading plan,
   // then there is not button to change to a different chapter. Chapter
@@ -67,7 +75,7 @@ const BibleChapter = ({
         />
       ),
       headerRight: () => (
-        <BibleChapterHeaderRight
+        <BerkleyLogoHeaderRight
           assignedReadings={assignedReadings}
           book={book}
           chapter={chapter}
@@ -242,13 +250,15 @@ const BibleChapter = ({
         bounces
         onScrollBeginDrag={() => {
           clearTimeout(scrollTimerId);
-          buttonLeftRef.current.setNativeProps({ style: { color: "#eeea" } });
-          buttonRightRef.current.setNativeProps({ style: { color: "#eeea" } });
+          buttonLeftRef?.current.setNativeProps({ style: { color: "#eeea" } });
+          buttonRightRef?.current.setNativeProps({ style: { color: "#eeea" } });
         }}
         onScrollEndDrag={() => {
           let scrollTimerId = setTimeout(() => {
-            buttonLeftRef.current.setNativeProps({ style: { color: "#444" } });
-            buttonRightRef.current.setNativeProps({ style: { color: "#444" } });
+            buttonLeftRef?.current.setNativeProps({ style: { color: "#444" } });
+            buttonRightRef?.current.setNativeProps({
+              style: { color: "#444" },
+            });
           }, 1500);
           setScrollTimerId(scrollTimerId);
         }}
@@ -299,7 +309,7 @@ const styles = StyleSheet.create({
   },
   buttonLeft: { left: 50 },
   buttonRight: { right: 50 },
-  bibleText: { fontSize: 20, margin: 16 },
+  bibleText: { fontSize: 24, lineHeight: 36, margin: 16 },
 });
 
 export default BibleChapter;

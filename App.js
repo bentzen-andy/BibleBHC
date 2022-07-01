@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { initDB } from "./helpers/fb-init";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
 import ReadScreen from "./screens/ReadScreen";
 import PlanScreen from "./screens/PlanScreen";
@@ -25,6 +26,14 @@ export default function App() {
       console.log(err);
     }
   });
+
+  function shouldShowHeader(route) {
+    const routeName = getFocusedRouteNameFromRoute(route);
+    if (routeName === "ReadScreen") return false;
+    if (routeName === "ReadingPlanSubscribedDetail") return false;
+    if (routeName === "ReadingPlanNotSubscribedDetail") return false;
+    return true;
+  }
 
   return (
     <NavigationContainer
@@ -73,7 +82,11 @@ export default function App() {
         <Tab.Screen
           name="Plan"
           component={PlanScreen}
-          options={{ title: "Plan" }}
+          options={({ route }) => ({
+            headerShown: shouldShowHeader(route),
+            title: "Plan",
+          })}
+          // options={{ title: "Plan" }}
         />
         <Tab.Screen
           name="Message"
