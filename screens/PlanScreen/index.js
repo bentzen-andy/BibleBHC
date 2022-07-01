@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+import BibleChapterHeaderRight from "../ReadScreen/BibleChapterHeaderRight";
 import ReadingPlansAll from "./ReadingPlansAll";
 import ReadingPlansSubscribed from "./ReadingPlansSubscribed";
 import ReadingPlansNotSubscribed from "./ReadingPlansNotSubscribed";
@@ -13,7 +14,8 @@ const PlanScreen = ({ navigation }) => {
 
   useEffect(() => {
     navigation.setOptions({
-      headerShown: false,
+      headerRight: () => <BibleChapterHeaderRight />,
+      // headerShown: false,
     });
   }, []);
 
