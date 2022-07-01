@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity } from "react-native";
-import { pushValueToStoredObjectArray } from "../../helpers/async-storage";
+import {
+  pushValueToStoredObjectArray,
+  setStoredValue,
+} from "../../helpers/async-storage";
 
 const ReadingPlanNotSubscribedDetail = ({ route, navigation }) => {
   const [planName, setPlanName] = useState("");
@@ -27,6 +30,7 @@ const ReadingPlanNotSubscribedDetail = ({ route, navigation }) => {
         onPress={() => {
           console.log("Subscribed to " + planId);
           pushValueToStoredObjectArray("subscribed-plans", planId);
+          setStoredValue(`plan-start-date-${planId}`, `${Date.now()}`);
           navigation.goBack();
         }}
       >

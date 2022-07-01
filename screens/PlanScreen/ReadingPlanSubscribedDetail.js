@@ -7,7 +7,10 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { removeValueFromStoredObjectArray } from "../../helpers/async-storage";
+import {
+  getStoredValue,
+  removeValueFromStoredObjectArray,
+} from "../../helpers/async-storage";
 import { getImage } from "../../helpers/fb-images";
 
 import Readings from "./Readings";
@@ -18,6 +21,7 @@ const ReadingPlanSubscribedDetail = ({ navigation, route }) => {
   const { readings, id, planImage, planName } = route.params;
   const [currentReadingList, setCurrentReadingList] = useState(readings[0]);
   const [imageURL, setImageURL] = useState(null);
+  const [planStartDate, setPlanStartDate] = useState(null);
 
   useEffect(() => {
     getImage("ReadingPlanAssets", planImage, (path) => {
@@ -26,10 +30,32 @@ const ReadingPlanSubscribedDetail = ({ navigation, route }) => {
   }, []);
 
   useEffect(() => {
+    getStoredValue(`plan-start-date-${id}`, (timeStamp) => {
+      setPlanStartDate(new Date(+timeStamp));
+    });
+  }, []);
+
+  useEffect(() => {
     navigation.setOptions({
       title: planName,
     });
   }, []);
+
+  function getFormattedDateMonthPlusDays(numDays) {
+    let date = new Date(planStartDate);
+    return new Date(date.setDate(date.getDate() + numDays))
+      .toDateString()
+      .split(" ")[1];
+  }
+
+  function getFormattedDateDayPlusDays(numDays) {
+    let date = new Date(planStartDate);
+    return Number.parseInt(
+      new Date(date.setDate(date.getDate() + numDays))
+        .toDateString()
+        .split(" ")[2]
+    );
+  }
 
   const renderDay = ({ index, item }) => {
     return (
@@ -40,6 +66,13 @@ const ReadingPlanSubscribedDetail = ({ navigation, route }) => {
         style={styles.dayButton}
       >
         <Text>{index + 1}</Text>
+        <Text style={{ color: "#444", marginTop: 8, fontSize: 12 }}>
+          {planStartDate
+            ? `${getFormattedDateMonthPlusDays(
+                index
+              )} ${getFormattedDateDayPlusDays(index)}`
+            : ""}
+        </Text>
       </TouchableOpacity>
     );
   };
