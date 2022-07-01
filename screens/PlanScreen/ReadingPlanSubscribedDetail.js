@@ -8,6 +8,7 @@ import {
   Image,
 } from "react-native";
 import { removeValueFromStoredObjectArray } from "../../helpers/async-storage";
+import { getImage } from "../../helpers/fb-images";
 
 import Readings from "./Readings";
 
@@ -16,11 +17,13 @@ import Readings from "./Readings";
 const ReadingPlanSubscribedDetail = ({ navigation, route }) => {
   const { readings, id, planImage, planName } = route.params;
   const [currentReadingList, setCurrentReadingList] = useState(readings[0]);
-  const ICONS = {
-    book: require("../../assets/book.jpg"),
-    cross: require("../../assets/cross.jpg"),
-    stress: require("../../assets/stress.jpg"),
-  };
+  const [imageURL, setImageURL] = useState(null);
+
+  useEffect(() => {
+    getImage("ReadingPlanAssets", planImage, (path) => {
+      setImageURL(path);
+    });
+  }, []);
 
   useEffect(() => {
     navigation.setOptions({
@@ -51,7 +54,16 @@ const ReadingPlanSubscribedDetail = ({ navigation, route }) => {
       >
         <Text>unsubscribe</Text>
       </TouchableOpacity>
-      <Image source={ICONS[planImage]} style={styles.heroImg} />
+
+      <Image
+        source={
+          imageURL
+            ? { uri: imageURL }
+            : require("../../assets/placeholder-image.png")
+        }
+        style={styles.heroImg}
+      />
+
       <View style={{ height: 60 }}>
         <FlatList
           style={styles.dayList}

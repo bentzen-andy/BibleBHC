@@ -4,6 +4,7 @@ import { ListItem } from "react-native-elements";
 import { setupReadingPlanListener } from "../../helpers/fb-reading-plans";
 
 import FlatListItemSeparator from "./FlatListItemSeparator";
+import ReadingPlanIcon from "./ReadingPlanIcon";
 
 // This component is a list of reading plans that the user is subscribed to
 const ReadingPlans = ({ navigation, getFilteredPlans, planDetail }) => {
@@ -31,15 +32,10 @@ const ReadingPlans = ({ navigation, getFilteredPlans, planDetail }) => {
   });
 
   const renderPlan = ({ index, item }) => {
-    const ICONS = {
-      book: require("../../assets/book.jpg"),
-      cross: require("../../assets/cross.jpg"),
-      stress: require("../../assets/stress.jpg"),
-    };
     return (
       <TouchableOpacity onPress={() => navigation.navigate(planDetail, item)}>
         <ListItem key={index}>
-          <Image source={ICONS[item.planImage]} style={styles.icon} />
+          <ReadingPlanIcon imgName={item.planImage} />
           <ListItem.Content>
             <ListItem.Title>{item.planName}</ListItem.Title>
           </ListItem.Content>
@@ -76,7 +72,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
     alignSelf: "flex-end",
   },
-  icon: { width: 100, height: 55 },
 });
 
 export default ReadingPlans;
