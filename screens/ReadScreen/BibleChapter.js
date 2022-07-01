@@ -250,13 +250,13 @@ const BibleChapter = ({
         bounces
         onScrollBeginDrag={() => {
           clearTimeout(scrollTimerId);
-          buttonLeftRef?.current.setNativeProps({ style: { color: "#eeea" } });
-          buttonRightRef?.current.setNativeProps({ style: { color: "#eeea" } });
+          buttonLeftRef.current?.setNativeProps({ style: { color: "#eeea" } });
+          buttonRightRef.current?.setNativeProps({ style: { color: "#eeea" } });
         }}
         onScrollEndDrag={() => {
           let scrollTimerId = setTimeout(() => {
-            buttonLeftRef?.current.setNativeProps({ style: { color: "#444" } });
-            buttonRightRef?.current.setNativeProps({
+            buttonLeftRef.current?.setNativeProps({ style: { color: "#444" } });
+            buttonRightRef.current?.setNativeProps({
               style: { color: "#444" },
             });
           }, 1500);
