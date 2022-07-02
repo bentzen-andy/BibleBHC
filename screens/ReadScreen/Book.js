@@ -15,7 +15,11 @@ const Book = ({ book, numChapters, setBook, setChapter, setIsVisible }) => {
           </ListItem.Title>
         </ListItem.Content>
       }
-      containerStyle={{ backgroundColor: "#fff" }}
+      containerStyle={{
+        backgroundColor: "#fff",
+        borderBottomWidth: 1,
+        borderBottomColor: "#ddd",
+      }}
       isExpanded={expanded}
       onPress={() => {
         setExpanded(!expanded);

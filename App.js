@@ -91,7 +91,7 @@ export default function App() {
         <Tab.Screen
           name="Message"
           component={MessageScreen}
-          options={{ title: "Talk to Your Pastor" }}
+          options={{ title: "Let's Talk!" }}
         />
       </Tab.Navigator>
     </NavigationContainer>

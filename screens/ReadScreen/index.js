@@ -134,6 +134,7 @@ const ReadScreen = ({ navigation, route }) => {
           </ListItem>
 
           <ListItem
+            style={{ borderBottomWidth: 1, borderBottomColor: "#ddd" }}
             key={"bible-version-esv"}
             onPress={() => {
               setBibleVersion("ESV");
@@ -147,6 +148,7 @@ const ReadScreen = ({ navigation, route }) => {
             </ListItem.Content>
           </ListItem>
           <ListItem
+            style={{ borderBottomWidth: 1, borderBottomColor: "#ddd" }}
             key={"bible-version-nlt"}
             onPress={() => {
               setBibleVersion("NLT");

@@ -7,7 +7,7 @@ import FlatListItemSeparator from "./FlatListItemSeparator";
 import ReadingPlanIcon from "./ReadingPlanIcon";
 
 // This component is a list of reading plans that the user is subscribed to
-const ReadingPlans = ({ navigation, getFilteredPlans, planDetail }) => {
+const ReadingPlans = ({ navigation, getFilteredPlans, planDetailView }) => {
   //   console.log("rendering");
   const [plans, setPlans] = useState([]);
   const [filteredPlans, setFilteredPlans] = useState([]);
@@ -33,7 +33,9 @@ const ReadingPlans = ({ navigation, getFilteredPlans, planDetail }) => {
 
   const renderPlan = ({ index, item }) => {
     return (
-      <TouchableOpacity onPress={() => navigation.navigate(planDetail, item)}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate(planDetailView, item)}
+      >
         <ListItem key={index}>
           <ReadingPlanIcon imgName={item.planImage} />
           <ListItem.Content>

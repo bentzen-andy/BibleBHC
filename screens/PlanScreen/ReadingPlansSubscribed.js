@@ -11,13 +11,13 @@ const ReadingPlansSubscribed = ({ route, navigation }) => {
     return plans.filter((plan) => subscribedPlans.includes(plan.id));
   };
 
-  const planDetail = "ReadingPlanSubscribedDetail";
+  const planDetailView = "ReadingPlanSubscribedDetail";
 
   return (
     <ReadingPlans
       navigation={navigation}
       getFilteredPlans={getFilteredPlans}
-      planDetail={planDetail}
+      planDetailView={planDetailView}
     />
   );
 };

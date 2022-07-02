@@ -11,13 +11,13 @@ const ReadingPlansNotSubscribed = ({ route, navigation }) => {
     return plans.filter((plan) => !subscribedPlans.includes(plan.id));
   };
 
-  const planDetail = "ReadingPlanNotSubscribedDetail";
+  const planDetailView = "ReadingPlanNotSubscribedDetail";
 
   return (
     <ReadingPlans
       navigation={navigation}
       getFilteredPlans={getFilteredPlans}
-      planDetail={planDetail}
+      planDetailView={planDetailView}
     />
   );
 };

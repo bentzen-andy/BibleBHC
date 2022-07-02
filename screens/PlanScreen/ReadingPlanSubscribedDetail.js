@@ -107,7 +107,7 @@ const ReadingPlanSubscribedDetail = ({ navigation, route }) => {
 
       <ListItem
         key={1}
-        style={{ borderBottomWidth: 1, borderBottomColor: "#444" }}
+        style={{ borderBottomWidth: 1, borderBottomColor: "#ddd" }}
         onPress={() => {
           removeValueFromStoredObjectArray("subscribed-plans", id);
           navigation.goBack();
@@ -122,7 +122,7 @@ const ReadingPlanSubscribedDetail = ({ navigation, route }) => {
 
       <ListItem
         key={2}
-        style={{ borderBottomWidth: 1, borderBottomColor: "#444" }}
+        style={{ borderBottomWidth: 1, borderBottomColor: "#ddd" }}
         onPress={() => {
           setStoredValue(`plan-start-date-${id}`, `${Date.now()}`);
           uncheckAllReadings(id, readings);

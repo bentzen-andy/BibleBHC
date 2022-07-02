@@ -46,6 +46,10 @@ const Readings = ({ navigation, readings, planId }) => {
         <ListItem key={index}>
           <CheckBox
             checked={checked.includes(`${planId}${item.book}${item.chapter}`)}
+            checkedColor={"#629f82"}
+            iconType="feather"
+            checkedIcon="check"
+            uncheckedIcon="square"
             onPress={() => {
               toggleStoredValue(
                 `${planId}${item.book}${item.chapter}`,
