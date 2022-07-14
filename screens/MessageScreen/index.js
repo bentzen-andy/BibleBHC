@@ -15,7 +15,12 @@ const MessageScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <Tab.Navigator initialRouteName="PrayerForm">
+    <Tab.Navigator
+      initialRouteName="PrayerForm"
+      screenOptions={{
+        tabBarIndicatorStyle: { borderBottomWidth: 3, borderColor: "#3057d4" },
+      }}
+    >
       <Tab.Screen
         name="PrayerForm"
         component={PrayerForm}

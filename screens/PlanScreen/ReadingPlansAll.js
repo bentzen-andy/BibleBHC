@@ -14,7 +14,12 @@ const ReadingPlansAll = ({ route, navigation }) => {
   }, []);
 
   return (
-    <Tab.Navigator initialRouteName="ReadingPlansSubscribed">
+    <Tab.Navigator
+      initialRouteName="ReadingPlansSubscribed"
+      screenOptions={{
+        tabBarIndicatorStyle: { borderBottomWidth: 3, borderColor: "#3057d4" },
+      }}
+    >
       <Tab.Screen name="My Plans" component={ReadingPlansSubscribed} />
       <Tab.Screen name="Find Plans" component={ReadingPlansNotSubscribed} />
     </Tab.Navigator>

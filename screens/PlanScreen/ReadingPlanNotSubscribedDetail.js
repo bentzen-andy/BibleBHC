@@ -68,7 +68,8 @@ const styles = StyleSheet.create({
   container: { margin: 12 },
   colorBackground: {
     position: "absolute",
-    backgroundColor: "#457964",
+    // backgroundColor: "#457964",
+    backgroundColor: "#3057d4",
     height: "30%",
     width: "100%",
   },
