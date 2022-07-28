@@ -14,6 +14,7 @@ import { storeQuestion } from "../../helpers/fb-questions";
 // This component gives the user a form to submit anonymous
 // questions directly to our church's youth pastor.
 const QuestionForm = ({ navigation, route }) => {
+  const [enteredName, setEnteredName] = useState("");
   const [enteredQuestion, setEnteredQuestion] = useState("");
   const [validationMsg, setValidationMsg] = useState("");
 
@@ -30,7 +31,11 @@ const QuestionForm = ({ navigation, route }) => {
     } else {
       setValidationMsg("");
     }
-    storeQuestion({ enteredQuestion });
+    storeQuestion({
+      enteredName,
+      enteredQuestion,
+      timeStamp: new Date(new Date().getTime()).toString(),
+    });
     setEnteredQuestion("");
     Keyboard.dismiss();
     Toast.show("Your question has been submitted!", {
@@ -48,6 +53,14 @@ const QuestionForm = ({ navigation, route }) => {
           <Text style={styles.text}>
             Ask a question about life, faith, or anything!
           </Text>
+
+          <Text style={styles.inputLabel}>Name (optional)</Text>
+          <TextInput
+            style={styles.nameInput}
+            value={enteredName}
+            autoCorrect={true}
+            onChangeText={setEnteredName}
+          />
 
           <Text style={styles.inputLabel}>Question</Text>
           <TextInput
@@ -82,6 +95,14 @@ const styles = StyleSheet.create({
   text: { fontSize: 24, marginBottom: 20 },
   inputLabel: {
     fontSize: 20,
+    marginTop: 10,
+  },
+  nameInput: {
+    padding: 10,
+    borderColor: "#000",
+    borderWidth: 1,
+    borderRadius: 4,
+    fontSize: 18,
   },
   input: {
     padding: 10,
@@ -125,7 +146,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginVertical: 20,
     // backgroundColor: "#42a5f5",
-    backgroundColor: "#3057d4",
+    backgroundColor: "#3d62b4",
     borderRadius: 9,
     height: 40,
     width: 160,

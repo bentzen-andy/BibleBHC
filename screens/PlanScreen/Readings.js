@@ -47,7 +47,7 @@ const Readings = ({ navigation, readings, planId }) => {
           <CheckBox
             checked={checked.includes(`${planId}${item.book}${item.chapter}`)}
             // checkedColor={"#629f82"}
-            checkedColor={"#3057d4"}
+            checkedColor={"#3d62b4"}
             iconType="feather"
             checkedIcon="check"
             uncheckedIcon="square"

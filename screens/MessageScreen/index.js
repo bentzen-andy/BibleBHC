@@ -18,7 +18,7 @@ const MessageScreen = ({ navigation }) => {
     <Tab.Navigator
       initialRouteName="PrayerForm"
       screenOptions={{
-        tabBarIndicatorStyle: { borderBottomWidth: 3, borderColor: "#3057d4" },
+        tabBarIndicatorStyle: { borderBottomWidth: 3, borderColor: "#3d62b4" },
       }}
     >
       <Tab.Screen

@@ -33,7 +33,11 @@ const PrayerForm = () => {
     } else {
       setValidationMsg("");
     }
-    storePrayerRequest({ enteredName, enteredPrayer });
+    storePrayerRequest({
+      enteredName,
+      enteredPrayer,
+      timeStamp: new Date(new Date().getTime()).toString(),
+    });
     setEnteredName("");
     setEnteredPrayer("");
     Keyboard.dismiss();
@@ -147,7 +151,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginVertical: 20,
     // backgroundColor: "#42a5f5",
-    backgroundColor: "#3057d4",
+    backgroundColor: "#3d62b4",
     borderRadius: 9,
     height: 40,
     width: 160,
